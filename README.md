@@ -1,9 +1,10 @@
 # ShrooML Android Application
 
 ## Authors
-- Maelig Pesantez (maelig.pesantez.Etu@univ-lemans.fr, @e2103064)  
+- Maelig Pesantez (Maelig.Pesantez.Etu@univ-lemans.fr, @e2103064)  
 - Luka Cognard (Luka.Cognard.Etu@univ-lemans.fr, @s2200371)  
 - Mewen Puren (Mewen.Puren.Etu@univ-lemans.fr, @s201509)  
+- Bilal Mezrhab (Bilal.Mezrhab.Etu@univ-lemans.fr, @s2201668)
 
 ## Supervisors
 - Aghilas Sini (Aghilas.Sini@univ-lemans.fr, @asini)  
@@ -66,6 +67,15 @@ The application will be launched on a device/emulator, and users can:
 1. Take a photo of a mushroom for automatic recognition  
 2. Participate in quizzes to compare knowledge on annotated datasets  
 3. Submit observations and see confidence scores  
+
+---
+
+## Base Datasets
+
+The application uses the following datasets for model training and quizzes:
+
+- **Kaggle Mushroom Classification Dataset**: [https://www.kaggle.com/datasets/uciml/mushroom-classification](https://www.kaggle.com/datasets/uciml/mushroom-classification)
+- **kaggle Mushroom Image By Specie Dataset**: [https://www.kaggle.com/datasets/thehir0/mushroom-species?select=dataset](https://www.kaggle.com/datasets/thehir0/mushroom-species?select=dataset)
 
 ---
 
@@ -135,10 +145,11 @@ Commercial use is strictly prohibited.
 
 ## Contact
 
-| Role        | Name            | Email                               | Identifier   |
+| Role        | Name            | Email                               | University Identifier   |
 |-------------|----------------|-------------------------------------|--------------|
 | Developer   | Maelig Pesantez | maelig.pesantez.Etu@univ-lemans.fr | @e2103064    |
 | Developer   | Luka Cognard   | Luka.Cognard.Etu@univ-lemans.fr   | @s2200371    |
 | Developer   | Mewen Puren    | Mewen.Puren.Etu@univ-lemans.fr    | @s201509     |
+| Developer   | Bilal Mezrhab   | Bilal.Mezrhab.Etu@univ-lemans.fr   | @s2201668    |
 | Supervisor  | Aghilas Sini   | Aghilas.Sini@univ-lemans.fr       | @asini       |
-| Supervisor  | Frédéric Lagrange | Frederic.Lagran
+| Supervisor  | Frédéric Lagrange | Frederic.Lagrange@univ-lemans.fr | @flagrange   |
