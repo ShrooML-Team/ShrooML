@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ShrooML appli</string>
+    <string name="hello_world">Bonjour le monde !</string>
+    <string name="menu_settings">Paramètre</string>
+
+    <string name="quizz_question_1">Quel est le nom scientifique du %1$s ?</string>
+    <string name="quizz_question_2">Le champignon %1$s est-il comestible ?</string>
+    <string name="quizz_question_3">Dans qu\'elle habitat pousse le %1$s ?</string>
+    <string name="quizz_question_4">Dans qu\'elle habitat pousse le %1$s ?</string>
+    <string name="quizz_question_5">Comment s\'appelle ce champignon ?</string>
+
+</resources>

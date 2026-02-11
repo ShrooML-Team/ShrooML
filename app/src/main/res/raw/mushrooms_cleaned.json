@@ -1,0 +1,974 @@
+[
+  {
+    "scientific_name": "Boletus edulis",
+    "common_name": "Cèpe de Bordeaux",
+    "edibility": "edible",
+    "season": [
+      "autumn"
+    ],
+    "min_temp": 10,
+    "max_temp": 25,
+    "min_humidity": 70,
+    "habitat": [
+      "forêt de feuillus",
+      "forêt mixte"
+    ],
+    "notes": "Très recherché, comestible."
+  },
+  {
+    "scientific_name": "Cantharellus cibarius",
+    "common_name": "Girolle",
+    "edibility": "edible",
+    "season": [
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 15,
+    "max_temp": 25,
+    "min_humidity": 65,
+    "habitat": [
+      "forêt de conifères",
+      "forêt de feuillus"
+    ],
+    "notes": "Champignon comestible courant."
+  },
+  {
+    "scientific_name": "Amanita phalloides",
+    "common_name": "Amanite phalloïde",
+    "edibility": "deadly",
+    "season": [
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 12,
+    "max_temp": 28,
+    "min_humidity": 60,
+    "habitat": [
+      "forêt de feuillus"
+    ],
+    "notes": "Champignon mortel."
+  },
+  {
+    "scientific_name": "Pleurotus ostreatus",
+    "common_name": "Pleurote en huître",
+    "edibility": "edible",
+    "season": [
+      "autumn",
+      "winter"
+    ],
+    "min_temp": 5,
+    "max_temp": 20,
+    "min_humidity": 75,
+    "habitat": [
+      "bois mort"
+    ],
+    "notes": "Souvent trouvé sur bois mort."
+  },
+  {
+    "scientific_name": "Macrolepiota procera",
+    "common_name": "Coulemelle",
+    "edibility": "edible",
+    "season": [
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 12,
+    "max_temp": 25,
+    "min_humidity": 60,
+    "habitat": [
+      "lisière",
+      "prairie"
+    ],
+    "notes": "Grand champignon comestible."
+  },
+  {
+    "scientific_name": "Morchella esculenta",
+    "common_name": "Morille commune",
+    "edibility": "edible",
+    "season": [
+      "spring"
+    ],
+    "min_temp": 8,
+    "max_temp": 18,
+    "min_humidity": 60,
+    "habitat": [
+      "forêts claires",
+      "prairie"
+    ],
+    "notes": "Très appréciée au printemps."
+  },
+  {
+    "scientific_name": "Amanita muscaria",
+    "common_name": "Amanite tue-mouches",
+    "edibility": "poisonous",
+    "season": [
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 10,
+    "max_temp": 25,
+    "min_humidity": 60,
+    "habitat": [
+      "forêt de conifères",
+      "forêt mixte"
+    ],
+    "notes": "Toxique avec effets perturbants."
+  },
+  {
+    "scientific_name": "Amanita caesarea",
+    "common_name": "Amanite des Césars",
+    "edibility": "edible",
+    "season": [
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 15,
+    "max_temp": 28,
+    "min_humidity": 60,
+    "habitat": [
+      "forêt de feuillus"
+    ],
+    "notes": "Excellent comestible."
+  },
+  {
+    "scientific_name": "Russula cyanoxantha",
+    "common_name": "Russule charbonnière",
+    "edibility": "edible",
+    "season": [
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 12,
+    "max_temp": 24,
+    "min_humidity": 60,
+    "habitat": [
+      "forêt mixte"
+    ],
+    "notes": "Russule courante et comestible."
+  },
+  {
+    "scientific_name": "Russula emetica",
+    "common_name": "Russule émétique",
+    "edibility": "poisonous",
+    "season": [
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 10,
+    "max_temp": 22,
+    "min_humidity": 70,
+    "habitat": [
+      "forêts humides"
+    ],
+    "notes": "Provoque des troubles digestifs."
+  },
+  {
+    "scientific_name": "Lepista nuda",
+    "common_name": "Lépiote violette",
+    "edibility": "edible",
+    "season": [
+      "autumn"
+    ],
+    "min_temp": 10,
+    "max_temp": 20,
+    "min_humidity": 65,
+    "habitat": [
+      "forêts",
+      "lisière"
+    ],
+    "notes": "Comestible agréable."
+  },
+  {
+    "scientific_name": "Suillellus luridus",
+    "common_name": "Bolet luisant",
+    "edibility": "poisonous",
+    "season": [
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 12,
+    "max_temp": 26,
+    "min_humidity": 70,
+    "habitat": [
+      "forêt de feuillus"
+    ],
+    "notes": "Toxique, à éviter."
+  },
+  {
+    "scientific_name": "Chroogomphus rutilus",
+    "common_name": "Bolet puant",
+    "edibility": "edible",
+    "season": [
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 10,
+    "max_temp": 24,
+    "min_humidity": 65,
+    "habitat": [
+      "forêt de conifères"
+    ],
+    "notes": "Comestible correct."
+  },
+  {
+    "scientific_name": "Tricholoma equestre",
+    "common_name": "Tricholome équestre",
+    "edibility": "edible",
+    "season": [
+      "autumn"
+    ],
+    "min_temp": 10,
+    "max_temp": 22,
+    "min_humidity": 65,
+    "habitat": [
+      "forêt de conifères",
+      "forêt mixte"
+    ],
+    "notes": "Comestible (débat sur toxicité longue)."
+  },
+  {
+    "scientific_name": "Agaricus campestris",
+    "common_name": "Rosé des prés",
+    "edibility": "edible",
+    "season": [
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 12,
+    "max_temp": 26,
+    "min_humidity": 60,
+    "habitat": [
+      "prairie"
+    ],
+    "notes": "Comestible courant."
+  },
+  {
+    "scientific_name": "Agaricus bisporus",
+    "common_name": "Champignon de Paris",
+    "edibility": "edible",
+    "season": [
+      "all year"
+    ],
+    "min_temp": 5,
+    "max_temp": 30,
+    "min_humidity": 50,
+    "habitat": [
+      "prairie",
+      "zones urbaines"
+    ],
+    "notes": "Cultivé, parfois trouvé à l’état sauvage."
+  },
+  {
+    "scientific_name": "Calocybe gambosa",
+    "common_name": "Tricholome de la Saint-Georges",
+    "edibility": "edible",
+    "season": [
+      "spring"
+    ],
+    "min_temp": 8,
+    "max_temp": 18,
+    "min_humidity": 60,
+    "habitat": [
+      "prairie"
+    ],
+    "notes": "Printanier."
+  },
+  {
+    "scientific_name": "Hygrophoropsis aurantiaca",
+    "common_name": "Fausses girolles",
+    "edibility": "edible",
+    "season": [
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 12,
+    "max_temp": 26,
+    "min_humidity": 65,
+    "habitat": [
+      "forêts"
+    ],
+    "notes": "Goût médiocre."
+  },
+  {
+    "scientific_name": "Armillaria mellea",
+    "common_name": "Armillaire couleur de miel",
+    "edibility": "edible",
+    "season": [
+      "autumn"
+    ],
+    "min_temp": 8,
+    "max_temp": 22,
+    "min_humidity": 70,
+    "habitat": [
+      "bois mort"
+    ],
+    "notes": "Comestible après cuisson."
+  },
+  {
+    "scientific_name": "Inocybe geophylla",
+    "common_name": "Inocybe blanc",
+    "edibility": "poisonous",
+    "season": [
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 10,
+    "max_temp": 24,
+    "min_humidity": 60,
+    "habitat": [
+      "forêts"
+    ],
+    "notes": "Fortement toxique."
+  },
+  {
+    "scientific_name": "Laccaria laccata",
+    "common_name": "Laccaire laquée",
+    "edibility": "edible",
+    "season": [
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 10,
+    "max_temp": 24,
+    "min_humidity": 60,
+    "habitat": [
+      "forêts"
+    ],
+    "notes": "Petit champignon comestible."
+  },
+  {
+    "scientific_name": "Clitocybe nebularis",
+    "common_name": "Clitocybe nébuleux",
+    "edibility": "poisonous",
+    "season": [
+      "autumn"
+    ],
+    "min_temp": 8,
+    "max_temp": 20,
+    "min_humidity": 70,
+    "habitat": [
+      "forêts"
+    ],
+    "notes": "Toxique pour beaucoup."
+  },
+  {
+    "scientific_name": "Coprinus comatus",
+    "common_name": "Coprin chevelu",
+    "edibility": "edible",
+    "season": [
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 10,
+    "max_temp": 22,
+    "min_humidity": 65,
+    "habitat": [
+      "prairie"
+    ],
+    "notes": "Bonne comestibilité fraîche."
+  },
+  {
+    "scientific_name": "Leccinum scabrum",
+    "common_name": "Bolet à pieds noirs",
+    "edibility": "edible",
+    "season": [
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 12,
+    "max_temp": 25,
+    "min_humidity": 65,
+    "habitat": [
+      "forêt de feuillus",
+      "lisière"
+    ],
+    "notes": "Comestible, souvent sous les bouleaux."
+  },
+  {
+    "scientific_name": "Clitopilus prunulus",
+    "common_name": "Clitopile en forme de plâtre",
+    "edibility": "edible",
+    "season": [
+      "autumn"
+    ],
+    "min_temp": 10,
+    "max_temp": 22,
+    "min_humidity": 70,
+    "habitat": [
+      "forêt de feuillus",
+      "lisière"
+    ],
+    "notes": "Comestible agréable, odeur farineuse."
+  },
+  {
+    "scientific_name": "Hypholoma fasciculare",
+    "common_name": "Tête jaune",
+    "edibility": "poisonous",
+    "season": [
+      "autumn"
+    ],
+    "min_temp": 10,
+    "max_temp": 22,
+    "min_humidity": 70,
+    "habitat": [
+      "bois mort"
+    ],
+    "notes": "Toxique, à éviter."
+  },
+  {
+    "scientific_name": "Gymnopilus junonius",
+    "common_name": "Gymnopile élégant",
+    "edibility": "poisonous",
+    "season": [
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 12,
+    "max_temp": 25,
+    "min_humidity": 65,
+    "habitat": [
+      "bois mort"
+    ],
+    "notes": "Toxique ou psychotrope selon variété."
+  },
+  {
+    "scientific_name": "Boletus aereus",
+    "common_name": "Cèpe bronzé",
+    "edibility": "edible",
+    "season": [
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 15,
+    "max_temp": 28,
+    "min_humidity": 65,
+    "habitat": [
+      "forêt de conifères",
+      "forêt de feuillus"
+    ],
+    "notes": "Très recherché, comestible de qualité."
+  },
+  {
+    "scientific_name": "Calvatia gigantea",
+    "common_name": "Vesse-de-loup géante",
+    "edibility": "edible",
+    "season": [
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 12,
+    "max_temp": 28,
+    "min_humidity": 60,
+    "habitat": [
+      "lisière",
+      "prairie"
+    ],
+    "notes": "Comestible jeune, très gros champignon."
+  },
+  {
+    "scientific_name": "Lactarius deliciosus",
+    "common_name": "Lactaire délicieux",
+    "edibility": "edible",
+    "season": [
+      "autumn"
+    ],
+    "min_temp": 12,
+    "max_temp": 22,
+    "min_humidity": 70,
+    "habitat": [
+      "forêt de conifères"
+    ],
+    "notes": "Comestible de qualité, couleur orange caractéristique."
+  },
+  {
+    "scientific_name": "Russula vesca",
+    "common_name": "Russule comestible",
+    "edibility": "edible",
+    "season": [
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 10,
+    "max_temp": 24,
+    "min_humidity": 60,
+    "habitat": [
+      "forêt mixte",
+      "lisière"
+    ],
+    "notes": "Petite russule comestible, goût agréable."
+  },
+  {
+    "scientific_name": "Boletus pinophilus",
+    "common_name": "Cèpe des pins",
+    "edibility": "edible",
+    "season": [
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 15,
+    "max_temp": 28,
+    "min_humidity": 65,
+    "habitat": [
+      "forêt de conifères"
+    ],
+    "notes": "Très bon comestible, sous pins."
+  },
+  {
+    "scientific_name": "Flammulina velutipes",
+    "common_name": "Enokitake / Pholiote du peuplier / Collybie à pied velouté",
+    "edibility": "edible",
+    "season": [
+      "winter"
+    ],
+    "min_temp": 0,
+    "max_temp": 12,
+    "min_humidity": 75,
+    "habitat": [
+      "bois mort",
+      "lisière"
+    ],
+    "notes": "Pousse en hiver sur bois de feuillus morts. Espèce connue sous le nom d’enoki en culture."
+  },
+  {
+    "scientific_name": "Hypholoma capnoides",
+    "common_name": "Hypholome en touffe",
+    "edibility": "edible",
+    "season": [
+      "winter"
+    ],
+    "min_temp": 2,
+    "max_temp": 12,
+    "min_humidity": 80,
+    "habitat": [
+      "bois mort",
+      "lisière"
+    ],
+    "notes": "Petit champignon en touffes sur bois morts, hiver."
+  },
+  {
+    "scientific_name": "Panellus stipticus",
+    "common_name": "Panellus visqueux",
+    "edibility": "poisonous",
+    "season": [
+      "winter"
+    ],
+    "min_temp": 0,
+    "max_temp": 10,
+    "min_humidity": 85,
+    "habitat": [
+      "bois mort",
+      "lisière"
+    ],
+    "notes": "Rare, pousse en hiver sur bois humide."
+  },
+  {
+    "scientific_name": "Craterellus cornucopioides",
+    "common_name": "Trompette de la mort",
+    "edibility": "edible",
+    "season": [
+      "autumn"
+    ],
+    "min_temp": 10,
+    "max_temp": 22,
+    "min_humidity": 70,
+    "habitat": [
+      "forêt de feuillus"
+    ],
+    "notes": "Excellent comestible, très recherché."
+  },
+  {
+    "scientific_name": "Hydnum repandum",
+    "common_name": "Pied-de-mouton",
+    "edibility": "edible",
+    "season": [
+      "autumn"
+    ],
+    "min_temp": 10,
+    "max_temp": 22,
+    "min_humidity": 65,
+    "habitat": [
+      "forêt de feuillus",
+      "forêt mixte"
+    ],
+    "notes": "Chair ferme, aiguillons sous le chapeau."
+  },
+  {
+    "scientific_name": "Lepista personata",
+    "common_name": "Pied bleu",
+    "edibility": "edible",
+    "season": [
+      "autumn",
+      "winter"
+    ],
+    "min_temp": 5,
+    "max_temp": 18,
+    "min_humidity": 70,
+    "habitat": [
+      "prairie"
+    ],
+    "notes": "Comestible tardif, très commun."
+  },
+  {
+    "scientific_name": "Sparassis crispa",
+    "common_name": "Sparassis crépu",
+    "edibility": "edible",
+    "season": [
+      "autumn"
+    ],
+    "min_temp": 10,
+    "max_temp": 22,
+    "min_humidity": 70,
+    "habitat": [
+      "forêt de conifères"
+    ],
+    "notes": "Excellent comestible, aspect de chou-fleur."
+  },
+  {
+    "scientific_name": "Inonotus obliquus",
+    "common_name": "Chaga",
+    "edibility": "inedible",
+    "season": [
+      "spring",
+      "summer",
+      "autumn",
+      "winter"
+    ],
+    "min_temp": -20,
+    "max_temp": 20,
+    "min_humidity": 60,
+    "habitat": [
+      "bois mort",
+      "forêt de feuillus"
+    ],
+    "notes": "Champignon médicinal, non comestible cru."
+  },
+  {
+    "scientific_name": "Hericium erinaceus",
+    "common_name": "Hydne hérisson",
+    "edibility": "edible",
+    "season": [
+      "autumn"
+    ],
+    "min_temp": 10,
+    "max_temp": 22,
+    "min_humidity": 70,
+    "habitat": [
+      "bois mort",
+      "forêt de feuillus"
+    ],
+    "notes": "Lion’s Mane, comestible et médicinal."
+  },
+  {
+    "scientific_name": "Ganoderma lucidum",
+    "common_name": "Reishi",
+    "edibility": "inedible",
+    "season": [
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 15,
+    "max_temp": 30,
+    "min_humidity": 70,
+    "habitat": [
+      "bois mort"
+    ],
+    "notes": "Champignon médicinal, très dur."
+  },
+  {
+    "scientific_name": "Galerina marginata",
+    "common_name": "Galère marginée",
+    "edibility": "deadly",
+    "season": [
+      "autumn"
+    ],
+    "min_temp": 8,
+    "max_temp": 20,
+    "min_humidity": 75,
+    "habitat": [
+      "bois mort"
+    ],
+    "notes": "Mortelle, contient des amatoxines."
+  },
+  {
+    "scientific_name": "Cortinarius orellanus",
+    "common_name": "Cortinaire couleur de rocou",
+    "edibility": "deadly",
+    "season": [
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 12,
+    "max_temp": 25,
+    "min_humidity": 60,
+    "habitat": [
+      "forêt de feuillus"
+    ],
+    "notes": "Toxique mortel à effet retardé."
+  },
+  {
+    "scientific_name": "Entoloma sinuatum",
+    "common_name": "Entolome livide",
+    "edibility": "poisonous",
+    "season": [
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 15,
+    "max_temp": 25,
+    "min_humidity": 60,
+    "habitat": [
+      "forêt de feuillus",
+      "lisière"
+    ],
+    "notes": "Responsable d’intoxications sévères."
+  },
+  {
+    "scientific_name": "Amanita citrina",
+    "common_name": "Amanite citrine",
+    "edibility": "toxic",
+    "season": [
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 12,
+    "max_temp": 25,
+    "min_humidity": 60,
+    "habitat": [
+      "forêt de feuillus",
+      "forêt mixte"
+    ],
+    "notes": "Souvent confondue avec des amanites comestibles."
+  },
+  {
+    "scientific_name": "Boletus luridus",
+    "common_name": "Bolet blafard",
+    "edibility": "toxic",
+    "season": [
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 15,
+    "max_temp": 28,
+    "min_humidity": 60,
+    "habitat": [
+      "forêt de feuillus"
+    ],
+    "notes": "Toxique cru, bleuit fortement à la coupe."
+  },
+  {
+    "scientific_name": "Mycena rosea",
+    "common_name": "Mycène rose",
+    "edibility": "toxic",
+    "season": [
+      "autumn"
+    ],
+    "min_temp": 8,
+    "max_temp": 18,
+    "min_humidity": 75,
+    "habitat": [
+      "forêt de feuillus",
+      "sol"
+    ],
+    "notes": "Petit champignon rose toxique."
+  },
+  {
+    "scientific_name": "Clavulina cristata",
+    "common_name": "Clavaire crêtée",
+    "edibility": "edible",
+    "season": [
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 12,
+    "max_temp": 22,
+    "min_humidity": 65,
+    "habitat": [
+      "forêt",
+      "forêt de feuillus"
+    ],
+    "notes": "Champignon en forme de corail."
+  },
+  {
+    "scientific_name": "Fistulina hepatica",
+    "common_name": "Foie de bœuf",
+    "edibility": "edible",
+    "season": [
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 15,
+    "max_temp": 28,
+    "min_humidity": 60,
+    "habitat": [
+      "bois mort",
+      "forêt de feuillus"
+    ],
+    "notes": "Chair rouge rappelant le foie, comestible jeune."
+  },
+  {
+    "scientific_name": "Hygrophorus eburneus",
+    "common_name": "Hygrophore ivoire",
+    "edibility": "edible",
+    "season": [
+      "autumn"
+    ],
+    "min_temp": 8,
+    "max_temp": 18,
+    "min_humidity": 70,
+    "habitat": [
+      "forêt de feuillus"
+    ],
+    "notes": "Glissant par temps humide."
+  },
+  {
+    "scientific_name": "Paxillus involutus",
+    "common_name": "Paxille enroulé",
+    "edibility": "toxic",
+    "season": [
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 12,
+    "max_temp": 25,
+    "min_humidity": 65,
+    "habitat": [
+      "forêt",
+      "forêt de conifères",
+      "forêt de feuillus"
+    ],
+    "notes": "Longtemps cru comestible, toxique cumulatif."
+  },
+  {
+    "scientific_name": "Suillus luteus",
+    "common_name": "Bolet jaune",
+    "edibility": "edible",
+    "season": [
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 12,
+    "max_temp": 25,
+    "min_humidity": 65,
+    "habitat": [
+      "forêt de conifères"
+    ],
+    "notes": "Comestible après retrait de la cuticule."
+  },
+  {
+    "scientific_name": "Amanita rubescens",
+    "common_name": "Amanite rougissante",
+    "edibility": "edible",
+    "season": [
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 14,
+    "max_temp": 26,
+    "min_humidity": 60,
+    "habitat": [
+      "forêt de feuillus",
+      "forêt mixte"
+    ],
+    "notes": "Comestible bien cuite, rougit à la coupe."
+  },
+  {
+    "scientific_name": "Gyromitra esculenta",
+    "common_name": "Gyromitre",
+    "edibility": "deadly",
+    "season": [
+      "spring"
+    ],
+    "min_temp": 8,
+    "max_temp": 18,
+    "min_humidity": 60,
+    "habitat": [
+      "forêt de conifères",
+      "sol"
+    ],
+    "notes": "Champignon mortel malgré des usages anciens."
+  },
+  {
+    "scientific_name": "Hygrocybe coccinea",
+    "common_name": "Hygrocybe écarlate",
+    "edibility": "edible",
+    "season": [
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 12,
+    "max_temp": 22,
+    "min_humidity": 65,
+    "habitat": [
+      "prairie"
+    ],
+    "notes": "Petit champignon rouge vif."
+  },
+  {
+    "scientific_name": "Marasmius oreades",
+    "common_name": "Faux mousseron",
+    "edibility": "edible",
+    "season": [
+      "spring",
+      "summer",
+      "autumn"
+    ],
+    "min_temp": 10,
+    "max_temp": 25,
+    "min_humidity": 55,
+    "habitat": [
+      "prairie"
+    ],
+    "notes": "Pousse en ronds de sorcières."
+  },
+  {
+    "scientific_name": "Inocybe erubescens",
+    "common_name": "Inocybe de Patouillard",
+    "edibility": "deadly",
+    "season": [
+      "spring",
+      "summer"
+    ],
+    "min_temp": 12,
+    "max_temp": 22,
+    "min_humidity": 60,
+    "habitat": [
+      "forêt de feuillus"
+    ],
+    "notes": "Très toxique, contient de la muscarine."
+  },
+  {
+    "scientific_name": "Coprinopsis atramentaria",
+    "common_name": "Coprin noir d'encre",
+    "edibility": "toxic",
+    "season": [
+      "spring",
+      "autumn"
+    ],
+    "min_temp": 8,
+    "max_temp": 20,
+    "min_humidity": 70,
+    "habitat": [
+      "prairie",
+      "zones urbaines"
+    ],
+    "notes": "Toxique avec l’alcool."
+  },
+  {
+    "scientific_name": "Trametes versicolor",
+    "common_name": "Polypore versicolore",
+    "edibility": "non-edible",
+    "season": [
+      "spring",
+      "summer",
+      "autumn",
+      "winter"
+    ],
+    "min_temp": 0,
+    "max_temp": 25,
+    "min_humidity": 70,
+    "habitat": [
+      "bois mort"
+    ],
+    "notes": "Champignon coriace utilisé en médecine traditionnelle."
+  }
+]
