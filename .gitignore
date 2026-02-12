@@ -35,3 +35,6 @@ google-services.json
 
 # VS Code
 .vscode/
+
+# gradle.properties 
+gradle.properties
