@@ -16,11 +16,11 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MushroomRepository {
+public class ShroomLocService {
 
     private List<MushroomEntity> mushrooms;
 
-    public MushroomRepository(Context context) throws IOException {
+    public ShroomLocService(Context context) throws IOException {
         super();
         String json = readJsonFromRaw(context);
 
