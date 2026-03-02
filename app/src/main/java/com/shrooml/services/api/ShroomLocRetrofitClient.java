@@ -11,14 +11,21 @@ public class ShroomLocRetrofitClient {
     private static final String BASE_URL = "https://api.shrooml.duckdns.org/"; // URL
     private static Retrofit retrofit;
 
-    public static ShroomLocApi getApi(String username, String password) {
+    private static String authToken;
+
+    public static void setToken(String token) {
+        authToken = token;
+    }
+    public static ShroomLocApi getApi() {
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(chain -> {
-                    String credentials = Credentials.basic(username, password);
-                    Request request = chain.request().newBuilder()
-                            .header("Authorization", credentials)
-                            .build();
-                    return chain.proceed(request);
+                    Request.Builder requestBuilder = chain.request().newBuilder();
+
+                    if (authToken != null) {
+                        requestBuilder.header("Authorization", "Bearer " + authToken);
+                    }
+
+                    return chain.proceed(requestBuilder.build());
                 })
                 .build();
 

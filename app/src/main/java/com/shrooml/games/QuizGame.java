@@ -30,8 +30,8 @@ public class QuizGame {
         void onError(String errorMessage);
     }
 
-    public QuizGame(Context context, String username, String password, QuizCallback callback){
-        ShroomLocService repo = new ShroomLocService(username, password);
+    public QuizGame(Context context, QuizCallback callback){
+        ShroomLocService repo = new ShroomLocService();
 
         repo.getAll(new ShroomLocService.MushroomsCallback() {
             @Override

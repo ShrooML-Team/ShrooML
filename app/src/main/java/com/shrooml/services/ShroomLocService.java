@@ -25,13 +25,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ShroomLocService {
-
     private List<MushroomEntity> mushrooms;
 
     private final ShroomLocApi api;
 
-    public ShroomLocService(String username, String password) {
-        api = ShroomLocRetrofitClient.getApi(username,password);
+    public ShroomLocService() {
+        api = ShroomLocRetrofitClient.getApi();
     }
 
     public interface MushroomsCallback {
@@ -49,7 +48,7 @@ public class ShroomLocService {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.onSuccess(response.body());
                 } else {
-                    callback.onError("Erreur serveur : " + response.code());
+                        callback.onError("Erreur serveur : " + response.code());
                 }
             }
 
