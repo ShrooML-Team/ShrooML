@@ -4,9 +4,13 @@ import android.content.Context;
 import android.content.res.Resources;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.shrooml.models.MushroomEntity;
 import com.shrooml.R;
+import com.shrooml.services.api.ShroomLocApi;
+import com.shrooml.services.api.ShroomLocRetrofitClient;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,44 +20,43 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ShroomLocService {
 
     private List<MushroomEntity> mushrooms;
 
-    public ShroomLocService(Context context) throws IOException {
-        super();
-        String json = readJsonFromRaw(context);
+    private final ShroomLocApi api;
 
-        Gson gson = new Gson();
-        Type listType = new TypeToken<List<MushroomEntity>>() {}.getType();
-        mushrooms = gson.fromJson(json, listType);
-        if (mushrooms == null) {
-            mushrooms = new ArrayList<>();
-        }
+    public ShroomLocService(String username, String password) {
+        api = ShroomLocRetrofitClient.getApi(username,password);
     }
 
-    private String readJsonFromRaw(Context context) throws IOException {
-        Resources res = context.getResources();
-        InputStream is = res.openRawResource(R.raw.mushrooms_cleaned); // fichier dans res/raw/
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder sb = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            sb.append(line);
-        }
-        reader.close();
-        return sb.toString();
+    public interface MushroomsCallback {
+        void onSuccess(List<MushroomEntity> mushrooms);
+        void onError(String errorMessage);
     }
 
-    public int size() {
-        return mushrooms.size();
-    }
+    public void getAll(MushroomsCallback callback) {
 
-    public MushroomEntity getByIndex(int index) {
-        return mushrooms.get(index);
-    }
+        Call<List<MushroomEntity>> call = api.getall(); // ton endpoint Retrofit
 
-    public List<MushroomEntity> getAll() {
-        return mushrooms;
+        call.enqueue(new Callback<List<MushroomEntity>>() {
+            @Override
+            public void onResponse(Call<List<MushroomEntity>> call, Response<List<MushroomEntity>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onError("Erreur serveur : " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure( Call<List<MushroomEntity>> call,  Throwable t) {
+                callback.onError("Erreur réseau : " + t.getMessage());
+            }
+        });
     }
 }

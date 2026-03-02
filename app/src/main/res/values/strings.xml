@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">ShrooML APP</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="hello_world">Hello The world !</string>
     <string name="menu_settings">Settings</string>
     <string name="quizz_question_1">What is the scientific name of the %1$s ?</string>
     <string name="quizz_question_2">Is the %1$s edible ?</string>

@@ -8,12 +8,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ShroomLocRetrofitClient {
 
-    private static final String BASE_URL = "https://api.shrooml.duckdns.org/"; // ← ton URL
-
+    private static final String BASE_URL = "https://api.shrooml.duckdns.org/"; // URL
     private static Retrofit retrofit;
 
     public static ShroomLocApi getApi(String username, String password) {
-
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(chain -> {
                     String credentials = Credentials.basic(username, password);

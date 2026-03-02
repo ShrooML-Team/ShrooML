@@ -19,7 +19,7 @@ public class MushroomHistoryService {
     public static void saveUsedIndices(Context context, Set<Integer> used) {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
 
-        Set<String> stringSet = new HashSet<>();
+        Set<String> stringSet = new HashSet<>(prefs.getStringSet(KEY_USED, new HashSet<>()));
         for (Integer i : used) {
             stringSet.add(String.valueOf(i));
         }

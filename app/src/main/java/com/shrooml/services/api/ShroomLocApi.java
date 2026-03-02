@@ -19,7 +19,6 @@ public interface ShroomLocApi {
                                             @Query("latitude") int latitude,
                                             @Query("longitude") int longitude
     );
-
     @GET("mushrooms/{name}")
     Call<List<MushroomEntity>> getMushroomsByName(
                                             @Path("name") String name
