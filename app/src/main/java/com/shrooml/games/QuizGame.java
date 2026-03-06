@@ -10,7 +10,7 @@ import com.shrooml.R;
 import com.shrooml.models.MushroomEntity;
 import com.shrooml.services.Inaturalist;
 import com.shrooml.services.MushroomHistoryService;
-import com.shrooml.services.MushroomRepository;
+import com.shrooml.services.ShroomLocService;
 
 public class QuizGame {
     private static final Inaturalist api_img = new Inaturalist();
@@ -21,10 +21,10 @@ public class QuizGame {
 
     QuizGame(Context context){
         super();
-        MushroomRepository repo = null;
+        ShroomLocService repo = null;
 
         try {
-            repo = new MushroomRepository(context);
+            repo = new ShroomLocService(context);
         } catch(IOException err){}
 
         Set<Integer> shroom_used = null;
