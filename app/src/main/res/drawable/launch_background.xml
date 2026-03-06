@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Fond -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#db9b71"/>
+        </shape>
+    </item>
+
+    <!-- Logo positionné en bas -->
+    <item android:gravity="bottom|center_horizontal">
+        <bitmap
+            android:src="@drawable/ic_launcher"
+            android:gravity="bottom|center_horizontal"/>
+    </item>
+
+</layer-list>
