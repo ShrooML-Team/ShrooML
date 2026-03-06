@@ -21,10 +21,22 @@
             </intent-filter>
         </activity>
 
+        <!-- LoginActivity pour l'authentification -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <!-- RegisterActivity pour l'inscription -->
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
         <!-- QuizActivity avec thème normal -->
         <activity
             android:name=".QuizActivity"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
     </application>
 </manifest>
