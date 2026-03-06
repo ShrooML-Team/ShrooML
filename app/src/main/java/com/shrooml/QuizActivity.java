@@ -12,10 +12,7 @@ import com.bumptech.glide.Glide;
 import com.shrooml.games.QuizGame;
 import com.shrooml.services.InaturalistService;
 import com.shrooml.services.OAuthService;
-import com.shrooml.services.api.OAuthApi;
-import com.shrooml.services.api.OAuthRetrofitClient;
 import com.shrooml.services.api.ShroomLocRetrofitClient;
-import com.shrooml.services.api.TokenResponse;
 
 public class QuizActivity extends Activity {
 

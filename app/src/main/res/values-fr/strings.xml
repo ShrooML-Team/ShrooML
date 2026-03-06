@@ -5,10 +5,10 @@
     <string name="hello_world">Bonjour le monde !</string>
     <string name="menu_settings">Paramètre</string>
 
-    <string name="quizz_question_1">Quel est le nom scientifique du %1$s ?</string>
-    <string name="quizz_question_2">Le champignon %1$s est-il comestible ?</string>
-    <string name="quizz_question_3">Dans qu\'elle habitat pousse le %1$s ?</string>
+    <string name="quizz_question_1">Comment s\'appelle ce champignon ?</string>
+    <string name="quizz_question_2">Quel est le nom scientifique du %1$s ?</string>
+    <string name="quizz_question_3">Le champignon %1$s est-il comestible ?</string>
     <string name="quizz_question_4">Dans qu\'elle habitat pousse le %1$s ?</string>
-    <string name="quizz_question_5">Comment s\'appelle ce champignon ?</string>
+    <string name="quizz_question_5">En qu\'elle saison pousse le %1$s ?</string>
 
 </resources>

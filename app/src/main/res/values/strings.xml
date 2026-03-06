@@ -4,10 +4,11 @@
     <string name="app_name">ShrooML APP</string>
     <string name="hello_world">Hello The world !</string>
     <string name="menu_settings">Settings</string>
-    <string name="quizz_question_1">What is the scientific name of the %1$s ?</string>
-    <string name="quizz_question_2">Is the %1$s edible ?</string>
-    <string name="quizz_question_3">In which habitat does the %1$s grow ?</string>
-    <string name="quizz_question_4">In which season does the %1$s grow ?</string>
-    <string name="quizz_question_5">What is the name of this mushroom ?</string>
+
+    <string name="quizz_question_1">What is the name of this mushroom ?</string>
+    <string name="quizz_question_2">What is the scientific name of the %1$s ?</string>
+    <string name="quizz_question_3">Is the %1$s edible ?</string>
+    <string name="quizz_question_4">In which habitat does the %1$s grow ?</string>
+    <string name="quizz_question_5">In which season does the %1$s grow ?</string>
 
 </resources>
