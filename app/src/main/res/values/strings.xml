@@ -10,5 +10,8 @@
     <string name="quizz_question_3">Is the %1$s edible ?</string>
     <string name="quizz_question_4">In which habitat does the %1$s grow ?</string>
     <string name="quizz_question_5">In which season does the %1$s grow ?</string>
-
+    <string name="summer">summer</string>
+    <string name="winter">winter</string>
+    <string name="spring">spring</string>
+    <string name="autumn">autumn</string>
 </resources>

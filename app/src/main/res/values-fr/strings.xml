@@ -10,5 +10,8 @@
     <string name="quizz_question_3">Le champignon %1$s est-il comestible ?</string>
     <string name="quizz_question_4">Dans qu\'elle habitat pousse le %1$s ?</string>
     <string name="quizz_question_5">En qu\'elle saison pousse le %1$s ?</string>
-
+    <string name="summer">été</string>
+    <string name="winter">hiver</string>
+    <string name="spring">printemps</string>
+    <string name="autumn">automne</string>
 </resources>
