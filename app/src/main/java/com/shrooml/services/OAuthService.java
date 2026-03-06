@@ -3,8 +3,6 @@ package com.shrooml.services;
 import com.shrooml.models.MushroomEntity;
 import com.shrooml.services.api.OAuthApi;
 import com.shrooml.services.api.OAuthRetrofitClient;
-import com.shrooml.services.api.ShroomLocApi;
-import com.shrooml.services.api.ShroomLocRetrofitClient;
 import com.shrooml.services.api.TokenResponse;
 
 import java.util.List;
