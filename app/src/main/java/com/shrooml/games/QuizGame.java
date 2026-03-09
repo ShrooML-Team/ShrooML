@@ -12,7 +12,7 @@ import com.shrooml.services.Inaturalist;
 import com.shrooml.services.MushroomHistoryService;
 import com.shrooml.services.ShroomLocService;
 
-public class QuizGame {
+public class QuizGame {/**
     private static final Inaturalist api_img = new Inaturalist();
 
     private static MushroomEntity mushroom;
@@ -62,5 +62,5 @@ public class QuizGame {
 
     public static String getImg(int index){
         return mushroom.getImage();
-    }
+    }**/
 }
