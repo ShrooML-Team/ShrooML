@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="🧪 API Test Suite"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Boutons de test -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:spacing="8dp"
+        android:layout_marginBottom="16dp">
+
+        <Button
+            android:id="@+id/btn_test_login"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Test Login"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/btn_test_fit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Test Fit"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/btn_test_predict"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Test Predict"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_clear_logs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Clear Logs"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Résultats des tests -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Test Results:"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/darker_gray">
+
+        <TextView
+            android:id="@+id/textView_results"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="12sp"
+            android:textColor="@android:color/white"
+            android:padding="8dp"
+            android:fontFamily="monospace" />
+
+    </ScrollView>
+
+</LinearLayout>

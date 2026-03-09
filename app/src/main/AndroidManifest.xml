@@ -1,23 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="1"
-    android:versionName="1.0" >
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+
+        <!-- SplashActivity - Activité de démarrage -->
         <activity
-            android:name="com.shrooml.QuizActivity"
-            android:label="@string/app_name"
-            android:exported="true" >
+            android:name=".activities.CustomerHomeActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- LoginActivity - Écran de connexion -->
+        <activity
+            android:name=".activities.LoginActivity"
+            android:exported="false" />
+
+        <!-- RegisterActivity - Écran d'inscription -->
+        <activity
+            android:name=".activities.RegisterActivity"
+            android:exported="false" />
+
+        <!-- CustomerHomeActivity - Accueil client -->
+        <activity
+            android:name=".activities.CustomerHomeActivity"
+            android:exported="false" />
+
+        <!-- NewSimulationActivity - Nouvelle simulation -->
+        <activity
+            android:name=".activities.NewSimulationActivity"
+            android:exported="false" />
+
+        <!-- SimulationResultActivity - Résultat de simulation -->
+        <activity
+            android:name=".activities.SimulationResultActivity"
+            android:exported="false" />
+
+        <!-- TestActivity - Pour tester l'API -->
+        <activity
+            android:name=".activities.TestActivity"
+            android:exported="true" />
+
     </application>
 
 </manifest>

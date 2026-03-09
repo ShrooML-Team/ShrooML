@@ -14,10 +14,10 @@ public interface AutoMLApi {
     @POST("/fit")
     Call<FitResponse> fit(@Body FitRequest fitRequest);
     @POST("/predict")
-    Call<EvalResponse> evaluate(@Body EvalRequest evalRequest);
+    Call<PredictResponse> predict(@Body PredictRequest PredictRequest);
 
     @POST("/eval")
-    Call<PredictResponse> predict(@Body PredictRequest predictRequest);
+    Call<EvalResponse> evaluate(@Body EvalRequest EvalRequest);
 
 
 }
