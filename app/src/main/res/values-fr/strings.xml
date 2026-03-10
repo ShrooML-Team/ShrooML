@@ -10,8 +10,16 @@
     <string name="quizz_question_3">Le champignon %1$s est-il comestible ?</string>
     <string name="quizz_question_4">Dans qu\'elle habitat pousse le %1$s ?</string>
     <string name="quizz_question_5">En qu\'elle saison pousse le %1$s ?</string>
+
     <string name="summer">été</string>
     <string name="winter">hiver</string>
     <string name="spring">printemps</string>
     <string name="autumn">automne</string>
+
+    <string name="title_1">Vous êtes un champignon Noobs</string>
+    <string name="title_2">Vous êtes un champignon novice</string>
+    <string name="title_3">Vous êtes un champignon débutant</string>
+    <string name="title_4">Vous êtes un champignon confirmé</string>
+    <string name="title_5">Vous êtes un champignon expert</string>
+    <string name="title_6">Vous êtes un champiRoi</string>
 </resources>

@@ -2,6 +2,7 @@ package com.shrooml;
 
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -43,12 +45,24 @@ public class QuizActivity extends Activity {
         OAuthService auth_api = new OAuthService();
 
         imageView = findViewById(R.id.imageView); // id à adapter
-        imageView = findViewById(R.id.imageView); // déjà fait
         nextButton = findViewById(R.id.nextButton); // <-- ajouter
         progressBar = findViewById(R.id.progressBar); // <-- ajouter
         progressText = findViewById(R.id.progressText); // <-- ajouter
         answerInput = findViewById(R.id.answerInput); // <-- ajouter
         edibleGroup = findViewById(R.id.edibleGroup);
+
+        answerInput.setOnItemClickListener((parent, view, position, id) -> {
+            checkAnswer();
+        });
+
+        answerInput.setOnEditorActionListener((v, actionId, event) -> {
+            checkAnswer();
+            return true;
+        });
+
+        edibleGroup.setOnCheckedChangeListener((group,id)->{
+            checkAnswer();
+        });
 
         auth_api.login("admin", "password123", new OAuthService.OAuthCallback(){
             @Override
@@ -69,34 +83,50 @@ public class QuizActivity extends Activity {
 
                         updateQuestion();
                         nextButton.setOnClickListener(v -> {
-
                             currentQuestion++;
                             answerInput.setText("");
+                            edibleGroup.clearCheck();
                             ArrayAdapter<String> adapt = null;
                             switch (currentQuestion){
                                 case 1:adapt = new ArrayAdapter<>(QuizActivity.this,
                                         android.R.layout.simple_dropdown_item_1line,
                                         quizGame.getAllScientName());break;
-
-                                case 3:adapt = new ArrayAdapter<>(QuizActivity.this,
+                                case 3: adapt = new ArrayAdapter<>(QuizActivity.this,
                                         android.R.layout.simple_dropdown_item_1line,
                                         quizGame.getAllHabitat());break;
                                 case 4:adapt = new ArrayAdapter<>(QuizActivity.this,
                                         android.R.layout.simple_dropdown_item_1line,
-                                        quizGame.getAllSeason());break;
+                                        quizGame.getAllSeason());
+                                        nextButton.setText("Terminer le quiz");break;
+
                             }
                             answerInput.setAdapter(adapt);
 
                             if(currentQuestion < 5){
                                 updateQuestion();
                             } else {
-                                Toast.makeText(QuizActivity.this,"Quiz terminé !",Toast.LENGTH_LONG).show();
+                                answerInput.setVisibility(View.GONE);
+                                edibleGroup.setVisibility(View.GONE);
+                                nextButton.setVisibility(View.GONE);
+                                progressBar.setVisibility(View.GONE);
+                                progressText.setVisibility(View.GONE);
+                                imageView.setVisibility(View.GONE);
+                                findViewById(R.id.questionTextView).setVisibility(View.GONE);
+
+                                // afficher le layout de fin
+                                LinearLayout quizEndLayout = findViewById(R.id.quizEndLayout);
+                                LinearLayout questionCard = findViewById(R.id.questionCard);
+                                questionCard.setVisibility(View.GONE);
+
+                                quizEndLayout.setVisibility(View.VISIBLE);
+
+                                TextView titleEnd = findViewById(R.id.quizTitleEnd);
+                                TextView scoreEnd = findViewById(R.id.quizScoreEnd);
+                                int score = quizGame.getScore();
+                                titleEnd.setText(quizGame.getTitre(score));
+                                scoreEnd.setText("Score : " + score);
                             }
-
-                        });
-
-                        edibleGroup.setOnCheckedChangeListener((group,id)->{
-                            nextButton.setEnabled(true);
+                            answerInput.setBackgroundColor(Color.parseColor("#FFFFFF"));
                         });
 
                         answerInput.addTextChangedListener(new TextWatcher() {
@@ -156,6 +186,57 @@ public class QuizActivity extends Activity {
             imageView.setVisibility(View.GONE);
         }
 
+        if(currentQuestion == 2){
+            edibleGroup.setVisibility(View.VISIBLE);
+            answerInput.setVisibility(View.GONE);
+            answerInput.setEnabled(false);
+            edibleGroup.setEnabled(true);
+            for (int i = 0; i < edibleGroup.getChildCount(); i++) {
+                edibleGroup.getChildAt(i).setEnabled(true);
+                edibleGroup.getChildAt(i).setVisibility(View.VISIBLE);
+                ((android.widget.RadioButton) edibleGroup.getChildAt(i)).setTextColor(Color.BLACK);
+            }
+        } else {
+            edibleGroup.setVisibility(View.GONE);
+            answerInput.setVisibility(View.VISIBLE);
+            answerInput.setEnabled(true);
+            edibleGroup.setEnabled(false);
+            for (int i = 0; i < edibleGroup.getChildCount(); i++) {
+                edibleGroup.getChildAt(i).setEnabled(false);
+                edibleGroup.getChildAt(i).setVisibility(View.GONE);
+                ((android.widget.RadioButton) edibleGroup.getChildAt(i)).setTextColor(Color.BLACK);
+            }
+        }
+
         nextButton.setEnabled(false);
+    }
+
+    private void checkAnswer() {
+
+        String answer;
+
+        if(currentQuestion == 2){ // question comestible
+            int selectedId = edibleGroup.getCheckedRadioButtonId();
+
+            if(selectedId == R.id.trueButton){
+                answer = "true";
+            } else {
+                answer = "false";
+            }
+
+        } else {
+            answer = answerInput.getText().toString().trim();
+        }
+
+        boolean result = quizGame.checkAnswer(currentQuestion, answer);
+
+        if(result){
+            answerInput.setBackgroundColor(Color.parseColor("#A5D6A7")); // vert
+            quizGame.upScore();
+        } else {
+            answerInput.setBackgroundColor(Color.parseColor("#EF9A9A")); // rouge
+        }
+
+        nextButton.setEnabled(true);
     }
 }

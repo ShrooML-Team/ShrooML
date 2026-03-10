@@ -34,6 +34,10 @@ public class QuizGame {
 
     private final String[] questions = new String[5];
 
+    private final String[] titres = new String[6];
+
+    private int score =0;
+
     public interface QuizCallback {
         void onQuizReady();
         void onError(String errorMessage);
@@ -89,6 +93,7 @@ public class QuizGame {
                     @Override
                     public void onSuccess(String imageUrl) {
                         mushroom.setImage(imageUrl);
+                        initTitres(context);
                         initQuestions(context);
                         callback.onQuizReady();
                     }
@@ -96,6 +101,7 @@ public class QuizGame {
                     @Override
                     public void onError(String errorMessage) {
                         mushroom.setImage("");
+                        initTitres(context);
                         initQuestions(context);
                         callback.onQuizReady();
                     }
@@ -117,6 +123,15 @@ public class QuizGame {
         questions[2] = context.getString(R.string.quizz_question_3, mushroom.getCommon_name());
         questions[3] = context.getString(R.string.quizz_question_4, mushroom.getCommon_name());
         questions[4] = context.getString(R.string.quizz_question_5, mushroom.getCommon_name());
+    }
+
+    private void initTitres(Context context){
+        titres[0] = context.getString(R.string.title_1);
+        titres[1] = context.getString(R.string.title_2);
+        titres[2] = context.getString(R.string.title_3);
+        titres[3] = context.getString(R.string.title_4);
+        titres[4] = context.getString(R.string.title_5);
+        titres[5] = context.getString(R.string.title_6);
     }
     public String getQuestion(int index){
         return this.questions[index];
@@ -153,7 +168,8 @@ public class QuizGame {
                 return answer.equalsIgnoreCase(mushroom.getScientific_name());
 
             case 2:
-                return answer.equalsIgnoreCase("vrai") && mushroom.getEdibility().equals("edible");
+                return (answer.equalsIgnoreCase("true") && mushroom.getEdibility().equals("edible")) ||
+                        (answer.equalsIgnoreCase("false") && !mushroom.getEdibility().equals("edible")) ;
 
             case 3:
                 for(String h : mushroom.getHabitat()){
@@ -169,5 +185,17 @@ public class QuizGame {
         }
 
         return false;
+    }
+
+    public void upScore(){
+        score++;
+    }
+
+    public int getScore(){
+        return score;
+    }
+
+    public String getTitre(int sco){
+        return titres[sco];
     }
 }

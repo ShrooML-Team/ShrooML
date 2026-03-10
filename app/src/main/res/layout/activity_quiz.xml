@@ -29,6 +29,7 @@
 
     <!-- Carte -->
     <LinearLayout
+        android:id="@+id/questionCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -80,14 +81,18 @@
                 android:id="@+id/trueButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Vrai"/>
+                android:text="Vrai"
+                android:textSize="18sp"
+                android:padding="8dp" />
 
             <RadioButton
                 android:id="@+id/falseButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Faux"
-                android:layout_marginStart="20dp"/>
+                android:textSize="18sp"
+                android:padding="8dp"
+                android:layout_marginStart="20dp" />
         </RadioGroup>
 
     </LinearLayout>
@@ -103,5 +108,35 @@
         android:textColor="#D19364"
         android:textStyle="bold"
         android:padding="12dp"/>
+
+    <LinearLayout
+        android:id="@+id/quizEndLayout"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/quizTitleEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Titre du quiz"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/quizScoreEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Score : 0"
+            android:textSize="20sp"
+            android:textColor="#FFFFFF"
+            android:gravity="center"/>
+    </LinearLayout>
 
 </LinearLayout>
