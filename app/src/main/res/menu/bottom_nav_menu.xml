@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_locate"
+        android:icon="@drawable/ic_mushroom"
+        android:title="Locate" />
+
+    <item
+        android:id="@+id/nav_quiz"
+        android:icon="@drawable/ic_quiz"
+        android:title="Quiz" />
+
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home"
+        android:title="Home" />
+
+</menu>

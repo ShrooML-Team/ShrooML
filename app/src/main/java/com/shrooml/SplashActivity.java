@@ -42,7 +42,7 @@ public class SplashActivity extends Activity {
                 .start();
 
         new android.os.Handler().postDelayed(() -> {
-            startActivity(new Intent(SplashActivity.this, QuizActivity.class));
+            startActivity(new Intent(SplashActivity.this, ShroomLocateActivity.class));
             finish();
         }, 6000);
     }

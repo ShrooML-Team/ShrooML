@@ -2,11 +2,13 @@ package com.shrooml.services;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.shrooml.models.MushroomCompleteEntity;
 import com.shrooml.models.MushroomEntity;
 import com.shrooml.R;
 import com.shrooml.services.api.ShroomLocApi;
@@ -38,6 +40,12 @@ public class ShroomLocService {
         void onError(String errorMessage);
     }
 
+    public interface MushroomsLocationCallBack {
+        void onSucces(List<MushroomCompleteEntity> mushrooms);
+
+        void onError(String errorMessage);
+    }
+
     public void getAll(MushroomsCallback callback) {
 
         Call<List<MushroomEntity>> call = api.getall(); // ton endpoint Retrofit
@@ -55,6 +63,37 @@ public class ShroomLocService {
             @Override
             public void onFailure( Call<List<MushroomEntity>> call,  Throwable t) {
                 callback.onError("Erreur réseau : " + t.getMessage());
+            }
+        });
+    }
+
+    public void getMushroomsByLocation(double latitude, double longitude,MushroomsLocationCallBack callBack){
+        Call<List<MushroomCompleteEntity>> call = api.getMushroomsByLatiLong(latitude,longitude);
+
+        call.enqueue(new Callback<List<MushroomCompleteEntity>>() {
+            @Override
+            public void onResponse(Call<List<MushroomCompleteEntity>> call, Response<List<MushroomCompleteEntity>> response) {
+                Log.d("API_JSON", new Gson().toJson(response.body()));
+
+                if(response.isSuccessful() && response.body() != null) {
+                    callBack.onSucces(response.body());
+                    String json = new Gson().toJson(response.body());
+
+                    int maxLogSize = 1000;
+                    for (int i = 0; i <= json.length() / maxLogSize; i++) {
+                        int start = i * maxLogSize;
+                        int end = Math.min((i + 1) * maxLogSize, json.length());
+                        Log.d("API_JSON", json.substring(start, end));
+                    }
+
+                } else {
+                    callBack.onError("erreur status : " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<MushroomCompleteEntity>> call, Throwable t) {
+                callBack.onError("Erreur réseaux" + t.getMessage());
             }
         });
     }

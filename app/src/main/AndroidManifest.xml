@@ -2,6 +2,7 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -9,7 +10,7 @@
         android:theme="@null"
         android:icon="@mipmap/ic_launcher">
 
-    <!-- SplashActivity avec fond uni -->
+        <!-- Lancement de l'application : SplashActivity -->
         <activity
             android:name=".SplashActivity"
             android:exported="true"
@@ -20,6 +21,16 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <!-- TODO Connection / Register activity register et activity login -->
+
+        <!-- TODO Page d'accueil reconnaissance de champignon activity -->
+
+        <!-- ShroomLocateActivity -->
+
+        <activity
+            android:name=".ShroomLocateActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <!-- QuizActivity avec thème normal -->
         <activity
