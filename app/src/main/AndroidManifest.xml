@@ -44,7 +44,7 @@
         <!-- QuizActivity -->
         <activity
             android:name=".QuizActivity"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
     </application>
 </manifest>

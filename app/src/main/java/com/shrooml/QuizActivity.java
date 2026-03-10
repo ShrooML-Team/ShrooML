@@ -2,11 +2,13 @@ package com.shrooml;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -18,7 +20,10 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.shrooml.games.QuizGame;
 import com.shrooml.services.InaturalistService;
 import com.shrooml.services.OAuthService;
@@ -50,6 +55,29 @@ public class QuizActivity extends Activity {
         progressText = findViewById(R.id.progressText); // <-- ajouter
         answerInput = findViewById(R.id.answerInput); // <-- ajouter
         edibleGroup = findViewById(R.id.edibleGroup);
+        BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
+        bottomNav.setSelectedItemId(R.id.nav_locate);
+        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                int id = item.getItemId();
+
+                if (id == R.id.nav_quiz) {
+                    return true;
+                }
+                if (id == R.id.nav_locate) {
+                    startActivity(new Intent(QuizActivity.this, ShroomLocateActivity.class));
+                    return true;
+                }
+                if (id == R.id.nav_home) {
+                    startActivity(new Intent(QuizActivity.this, SplashActivity.class));
+                    return true;
+                }
+
+                return false;
+            }
+        });
 
         answerInput.setOnItemClickListener((parent, view, position, id) -> {
             checkAnswer();
