@@ -1,6 +1,7 @@
 package com.shrooml;
 
 import android.Manifest;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -8,6 +9,8 @@ import com.google.android.gms.location.LocationRequest;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +48,12 @@ public class ShroomLocateActivity extends AppCompatActivity {
     private ShroomLocService api;
     private TextView mushroomListText;
 
+    private ImageView refreshButton;
+
+    private double lastLat = 0;
+    private double lastLon = 0;
+
+    private ObjectAnimator refreshAnimator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,11 +70,7 @@ public class ShroomLocateActivity extends AppCompatActivity {
             public void onSuccess(String token) {
                 ShroomLocRetrofitClient.setToken(token);
                 api = new ShroomLocService();
-                Toast.makeText(ShroomLocateActivity.this, "IDENTIFIER", Toast.LENGTH_SHORT).show();
-
-                getLocation();   // ✔️ D’ABORD
-                Toast.makeText(ShroomLocateActivity.this, "IDENTIFIER APRES LOCATION", Toast.LENGTH_SHORT).show();
-
+                getLocation();
             }
 
             @Override
@@ -74,6 +79,27 @@ public class ShroomLocateActivity extends AppCompatActivity {
                         + errorMessage, Toast.LENGTH_LONG).show();
             }
         });
+
+        refreshButton = findViewById(R.id.refreshButton);
+        refreshAnimator = ObjectAnimator.ofFloat(refreshButton, "rotation", 0f, 360f);
+        refreshAnimator.setDuration(800);
+        refreshAnimator.setRepeatCount(ObjectAnimator.INFINITE);
+        refreshAnimator.setInterpolator(new LinearInterpolator());
+
+
+        refreshButton.setOnClickListener(v -> {
+            if (!refreshAnimator.isRunning()) {
+                refreshAnimator.start();
+            }
+
+            if (lastLat != 0 && lastLon != 0) {
+                callApi(lastLat, lastLon);
+            } else {
+                Toast.makeText(this, "Location not ready yet", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
 
         BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
         bottomNav.setSelectedItemId(R.id.nav_locate);
@@ -119,8 +145,6 @@ public class ShroomLocateActivity extends AppCompatActivity {
     }
 
     private void getLocation() {
-        Toast.makeText(this, "ICI LOCATION ", Toast.LENGTH_SHORT).show();
-
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             return;
@@ -171,23 +195,16 @@ public class ShroomLocateActivity extends AppCompatActivity {
 
 
     private void callApi(double lat, double lon) {
-        Toast.makeText(this, "lat = " + lat + ", lon = " + lon, Toast.LENGTH_SHORT).show();
+        lastLat = lat;
+        lastLon = lon;
         api.getMushroomsByLocation(lat, lon, new ShroomLocService.MushroomsLocationCallBack() {
             @Override
             public void onSucces(List<MushroomCompleteEntity> mushrooms) {
                 if (mushrooms == null || mushrooms.isEmpty()) {
-                    Toast.makeText(ShroomLocateActivity.this, "Aucun champignon trouvé ici", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 StringBuilder sb = new StringBuilder();
-
-                MushroomCompleteEntity first = mushrooms.get(0);
-                Toast.makeText(
-                        ShroomLocateActivity.this,
-                        "Premier champignon : " + first.getCommonName(),
-                        Toast.LENGTH_LONG
-                ).show();
 
                 for (MushroomCompleteEntity m : mushrooms) {
                     sb.append(m.getCommonName())
@@ -200,12 +217,22 @@ public class ShroomLocateActivity extends AppCompatActivity {
                 recycler.setLayoutManager(new LinearLayoutManager(ShroomLocateActivity.this));
                 recycler.setAdapter(new MushroomAdapter(ShroomLocateActivity.this, mushrooms));
 
+                if (refreshAnimator != null && refreshAnimator.isRunning()) {
+                    refreshAnimator.end();
+                    refreshButton.setRotation(0f); // remet l’icône droite
+                }
+
 
             }
 
             @Override
             public void onError(String errorMessage) {
                 Toast.makeText(ShroomLocateActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                if (refreshAnimator != null && refreshAnimator.isRunning()) {
+                    refreshAnimator.end();
+                    refreshButton.setRotation(0f); // remet l’icône droite
+                }
+
             }
         });
     }

@@ -7,14 +7,27 @@
     android:background="@drawable/item_bg"
     android:layout_marginBottom="12dp">
 
-    <ImageView
-        android:id="@+id/mushroomImage"
+    <FrameLayout
+        android:id="@+id/mushroomImageContainer"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:scaleType="centerCrop"
+        android:background="@drawable/mushroom_image_bg"
+        android:padding="2dp"
+        android:clipToPadding="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:id="@+id/mushroomImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/mushroom_image_bg"
+            android:scaleType="centerCrop"
+            android:clipToOutline="true"/>
+    </FrameLayout>
+
+
 
     <TextView
         android:id="@+id/commonName"
@@ -23,8 +36,8 @@
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/mushroomImage"
-        app:layout_constraintTop_toTopOf="@id/mushroomImage"
+        app:layout_constraintStart_toEndOf="@+id/mushroomImageContainer"
+        app:layout_constraintTop_toTopOf="@+id/mushroomImageContainer"
         app:layout_constraintEnd_toStartOf="@id/statusIcon"
         android:layout_marginStart="12dp"/>
 
