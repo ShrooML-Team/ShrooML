@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ShroomLocRetrofitClient {
 
-    private static final String BASE_URL = "https://api.shrooml.duckdns.org/";
+    private static final String BASE_URL = "https://shroomloc.shrooml.duckdns.org/";
     private static Retrofit retrofit;
 
     private static String authToken;

@@ -70,7 +70,7 @@ public class ShroomLocateActivity extends AppCompatActivity {
             public void onSuccess(String token) {
                 ShroomLocRetrofitClient.setToken(token);
                 api = new ShroomLocService();
-                getLocation();
+                requestLocationPermission();
             }
 
             @Override
@@ -131,16 +131,36 @@ public class ShroomLocateActivity extends AppCompatActivity {
 
 
     private void requestLocationPermission() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) { // Android 12+
+            // demander ACCESS_FINE_LOCATION + ACCESS_COARSE_LOCATION
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED ||
+                    ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                            != PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions(
-                    this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_LOCATION
-            );
-        } else {
-            getLocation();
+                ActivityCompat.requestPermissions(
+                        this,
+                        new String[]{
+                                Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_COARSE_LOCATION
+                        },
+                        REQUEST_LOCATION
+                );
+            } else {
+                getLocation();
+            }
+        } else { // Android < 12
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(
+                        this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        REQUEST_LOCATION
+                );
+            } else {
+                getLocation();
+            }
         }
     }
 
@@ -238,11 +258,22 @@ public class ShroomLocateActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == REQUEST_LOCATION) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            boolean granted = false;
+            for (int i = 0; i < permissions.length; i++) {
+                if ((permissions[i].equals(Manifest.permission.ACCESS_FINE_LOCATION) ||
+                        permissions[i].equals(Manifest.permission.ACCESS_COARSE_LOCATION))
+                        && grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                    granted = true;
+                    break;
+                }
+            }
+
+            if (granted) {
                 getLocation();
             } else {
                 Toast.makeText(this, "Permission localisation refusée", Toast.LENGTH_SHORT).show();
