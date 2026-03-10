@@ -3,35 +3,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:gravity="center">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Simulation Result"
+        android:text="Classification Result"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:gravity="center"
         android:layout_marginBottom="32dp" />
 
+    <!-- Image -->
+    <ImageView
+        android:id="@+id/iv_result_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="32dp"
+        android:scaleType="centerInside" />
+
+    <!-- Résultat -->
     <TextView
         android:id="@+id/tv_result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="APPROVED"
-        android:textSize="32sp"
+        android:text="EDIBLE"
+        android:textSize="48sp"
         android:textStyle="bold"
         android:gravity="center"
         android:layout_marginBottom="32dp" />
 
+    <!-- Label -->
     <TextView
-        android:id="@+id/tv_probability"
+        android:id="@+id/tv_result_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Probability: 85%"
+        android:text="This mushroom is SAFE to eat!"
         android:textSize="18sp"
         android:gravity="center"
-        android:layout_marginBottom="32dp" />
+        android:layout_marginBottom="64dp" />
 
+    <!-- Bouton Back -->
     <Button
         android:id="@+id/btn_back"
         android:layout_width="match_parent"

@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.shrooml.NewSimulationActivity;
+import com.shrooml.activities.NewSimulationActivity;
 import com.shrooml.R;
 
 /**

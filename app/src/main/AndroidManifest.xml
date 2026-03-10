@@ -12,7 +12,7 @@
 
         <!-- SplashActivity - Activité de démarrage -->
         <activity
-            android:name=".activities.CustomerHomeActivity"
+            android:name=".activities.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

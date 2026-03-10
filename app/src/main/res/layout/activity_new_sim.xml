@@ -3,57 +3,308 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:gravity="center_horizontal">
+    android:padding="16dp">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nouvelle Analyse AutoML"
+        android:text="Mushroom Classification"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="16dp" />
 
-    <!-- Aperçu de l'image -->
-    <ImageView
-        android:id="@+id/ivPreview"
+    <ScrollView
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:background="#EEEEEE"
-        android:scaleType="centerInside"
-        android:layout_marginBottom="20dp"
-        android:src="@android:drawable/ic_menu_camera" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Cap Shape -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cap Shape:"
+                android:textStyle="bold"
+                android:layout_marginTop="8dp" />
+            <Spinner
+                android:id="@+id/spin_cap_shape"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Cap Surface -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cap Surface:"
+                android:textStyle="bold" />
+            <Spinner
+                android:id="@+id/spin_cap_surface"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Cap Color -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cap Color:"
+                android:textStyle="bold" />
+            <Spinner
+                android:id="@+id/spin_cap_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Bruises -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Bruises:"
+                android:textStyle="bold" />
+            <Spinner
+                android:id="@+id/spin_bruises"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Odor -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Odor:"
+                android:textStyle="bold" />
+            <Spinner
+                android:id="@+id/spin_odor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Gill Attachment -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Gill Attachment:"
+                android:textStyle="bold" />
+            <Spinner
+                android:id="@+id/spin_gill_attachment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Gill Spacing -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Gill Spacing:"
+                android:textStyle="bold" />
+            <Spinner
+                android:id="@+id/spin_gill_spacing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Gill Size -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Gill Size:"
+                android:textStyle="bold" />
+            <Spinner
+                android:id="@+id/spin_gill_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Gill Color -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Gill Color:"
+                android:textStyle="bold" />
+            <Spinner
+                android:id="@+id/spin_gill_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Stalk Shape -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Stalk Shape:"
+                android:textStyle="bold" />
+            <Spinner
+                android:id="@+id/spin_stalk_shape"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Stalk Root -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Stalk Root:"
+                android:textStyle="bold" />
+            <Spinner
+                android:id="@+id/spin_stalk_root"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Stalk Surface Above Ring -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Stalk Surface Above Ring:"
+                android:textStyle="bold" />
+            <Spinner
+                android:id="@+id/spin_stalk_surface_above_ring"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Stalk Surface Below Ring -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Stalk Surface Below Ring:"
+                android:textStyle="bold" />
+            <Spinner
+                android:id="@+id/spin_stalk_surface_below_ring"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Stalk Color Above Ring -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Stalk Color Above Ring:"
+                android:textStyle="bold" />
+            <Spinner
+                android:id="@+id/spin_stalk_color_above_ring"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Stalk Color Below Ring -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Stalk Color Below Ring:"
+                android:textStyle="bold" />
+            <Spinner
+                android:id="@+id/spin_stalk_color_below_ring"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Veil Type -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Veil Type:"
+                android:textStyle="bold" />
+            <Spinner
+                android:id="@+id/spin_veil_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Veil Color -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Veil Color:"
+                android:textStyle="bold" />
+            <Spinner
+                android:id="@+id/spin_veil_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Ring Number -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ring Number:"
+                android:textStyle="bold" />
+            <Spinner
+                android:id="@+id/spin_ring_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Ring Type -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ring Type:"
+                android:textStyle="bold" />
+            <Spinner
+                android:id="@+id/spin_ring_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Spore Print Color -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Spore Print Color:"
+                android:textStyle="bold" />
+            <Spinner
+                android:id="@+id/spin_spore_print_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Population -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Population:"
+                android:textStyle="bold" />
+            <Spinner
+                android:id="@+id/spin_population"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Habitat -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Habitat:"
+                android:textStyle="bold" />
+            <Spinner
+                android:id="@+id/spin_habitat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Buttons -->
+    <Button
+        android:id="@+id/btn_predict"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Predict"
+        android:layout_marginBottom="8dp" />
 
     <Button
-        android:id="@+id/btnSelectImage"
+        android:id="@+id/btn_cancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Choisir une photo"
-        android:layout_marginBottom="10dp"/>
-
-    <Button
-        android:id="@+id/btnAnalyze"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/design_default_color_primary"
-        android:text="Lancer l'analyse API"
-        android:textColor="@android:color/white"
-        android:visibility="gone" /> <!-- Caché tant qu'il n'y a pas d'image -->
-
-    <ProgressBar
-        android:id="@+id/pbLoader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/tvResult"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:textAlignment="center"
-        android:textSize="18sp"
-        android:textColor="#2E7D32" />
+        android:text="Cancel" />
 
 </LinearLayout>
