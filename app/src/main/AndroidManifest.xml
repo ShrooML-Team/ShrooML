@@ -3,6 +3,16 @@
     android:versionName="1.0" >
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- Permissions localisation -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- Permission localisation en arrière-plan (optionnelle, android 10+) -->
+    <uses-permission
+        android:name="android.permission.ACCESS_BACKGROUND_LOCATION"
+        android:required="false" />
+
+    <!-- Internet pour API -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -10,19 +20,28 @@
         android:theme="@null"
         android:icon="@mipmap/ic_launcher">
 
-    <!-- SplashActivity avec fond uni -->
+        <!-- Lancement de l'application : SplashActivity -->
         <activity
             android:name=".SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.SplashBackground"
             android:icon="@mipmap/ic_launcher">
-        <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
-        <!-- QuizActivity avec thème normal -->
+        <!-- TODO Connection / Register activity register et activity login -->
+
+        <!-- TODO Page d'accueil reconnaissance de champignon activity -->
+
+        <!-- ShroomLocateActivity -->
+        <activity
+            android:name=".ShroomLocateActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <!-- QuizActivity -->
         <activity
             android:name=".QuizActivity"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"/>
