@@ -4,7 +4,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class OAuthRetrofitClient {
-    private static final String BASE_URL = "https://api.shrooml.duckdns.org/";
+    private static final String BASE_URL = "https://shroomloc.shrooml.duckdns.org/";
     private static Retrofit retrofit;
 
     public static OAuthApi getApi() {

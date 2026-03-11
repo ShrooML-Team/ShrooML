@@ -47,5 +47,10 @@
             android:name=".QuizActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
+        <activity
+            android:name=".ShroomDetailsActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+
     </application>
 </manifest>
