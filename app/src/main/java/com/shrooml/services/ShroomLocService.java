@@ -46,6 +46,13 @@ public class ShroomLocService {
         void onError(String errorMessage);
     }
 
+    public interface MushroomDetailsCallback {
+        void onSuccess(MushroomCompleteEntity mushroom);
+        void onError(String errorMessage);
+    }
+
+
+
     public void getAll(MushroomsCallback callback) {
 
         Call<List<MushroomEntity>> call = api.getall(); // ton endpoint Retrofit
@@ -97,4 +104,28 @@ public class ShroomLocService {
             }
         });
     }
+
+    public void getMushroomDetailsByName(String name, MushroomDetailsCallback callback) {
+
+        Call<MushroomCompleteEntity> call = api.getMushroomsByName(name);
+        Log.d("API_DEBUG", "Nom envoyé à l’API = " + name);
+        Log.d("API_DEBUG", "URL = " + call.request().url());
+
+        call.enqueue(new Callback<MushroomCompleteEntity>() {
+            @Override
+            public void onResponse(Call<MushroomCompleteEntity> call, Response<MushroomCompleteEntity> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onError("Erreur serveur : " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MushroomCompleteEntity> call, Throwable t) {
+                callback.onError("Erreur réseau : " + t.getMessage());
+            }
+        });
+    }
+
 }

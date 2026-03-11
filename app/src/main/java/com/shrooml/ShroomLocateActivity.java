@@ -239,7 +239,15 @@ public class ShroomLocateActivity extends AppCompatActivity {
 
                 RecyclerView recycler = findViewById(R.id.mushroomRecycler);
                 recycler.setLayoutManager(new LinearLayoutManager(ShroomLocateActivity.this));
-                recycler.setAdapter(new MushroomAdapter(ShroomLocateActivity.this, mushrooms));
+
+                MushroomAdapter adapter = new MushroomAdapter(ShroomLocateActivity.this, mushrooms);
+                recycler.setAdapter(adapter);
+
+                adapter.setOnMushroomClickListener(m -> {
+                    Intent intent = new Intent(ShroomLocateActivity.this, ShroomDetailsActivity.class);
+                    intent.putExtra("scientificName", m.getScientificName());
+                    startActivity(intent);
+                });
 
                 if (refreshAnimator != null && refreshAnimator.isRunning()) {
                     refreshAnimator.end();

@@ -16,7 +16,6 @@
         android:name="android.permission.ACCESS_BACKGROUND_LOCATION"
         android:required="false" />
 
-
     <!-- Internet pour API -->
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -52,6 +51,11 @@
             android:name=".QuizActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
+        <activity
+            android:name=".ShroomDetailsActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+
         <!-- IdentifyActivity -->
         <activity
             android:name=".IdentifyActivity"
@@ -68,5 +72,4 @@
         </provider>
 
     </application>
-
 </manifest>

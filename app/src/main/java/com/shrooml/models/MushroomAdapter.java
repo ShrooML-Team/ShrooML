@@ -20,6 +20,16 @@ public class MushroomAdapter extends RecyclerView.Adapter<MushroomAdapter.ViewHo
     private final List<MushroomCompleteEntity> mushrooms;
     private final Context context;
 
+    private OnMushroomClickListener listener;
+
+    public void setOnMushroomClickListener(OnMushroomClickListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnMushroomClickListener {
+        void onMushroomClick(MushroomCompleteEntity mushroom);
+    }
+
     public MushroomAdapter(Context context, List<MushroomCompleteEntity> mushrooms) {
         this.context = context;
         this.mushrooms = mushrooms;
@@ -51,6 +61,13 @@ public class MushroomAdapter extends RecyclerView.Adapter<MushroomAdapter.ViewHo
         } else {
             holder.statusIcon.setImageResource(R.drawable.ic_check);
         }
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onMushroomClick(m);
+            }
+        });
+
     }
 
     @Override
