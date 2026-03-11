@@ -33,9 +33,17 @@
             </intent-filter>
         </activity>
 
-        <!-- TODO Connection / Register activity register et activity login -->
+        <!-- LoginActivity pour l'authentification -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
-        <!-- TODO Page d'accueil reconnaissance de champignon activity -->
+        <!-- RegisterActivity pour l'inscription -->
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <!-- ShroomLocateActivity -->
         <activity
