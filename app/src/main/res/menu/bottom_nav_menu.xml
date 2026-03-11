@@ -15,5 +15,9 @@
         android:id="@+id/nav_home"
         android:icon="@drawable/ic_home"
         android:title="Home" />
+    <item
+        android:id="@+id/nav_identify"
+        android:icon="@drawable/ic_identify"
+        android:title="Identify" />
 
 </menu>

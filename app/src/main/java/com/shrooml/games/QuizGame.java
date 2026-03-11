@@ -1,20 +1,13 @@
 package com.shrooml.games;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 import android.content.Context;
-import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
-import com.shrooml.QuizActivity;
 import com.shrooml.R;
 import com.shrooml.models.MushroomEntity;
-import com.shrooml.services.Inaturalist;
 import com.shrooml.services.InaturalistService;
 import com.shrooml.services.MushroomHistoryService;
 import com.shrooml.services.ShroomLocService;

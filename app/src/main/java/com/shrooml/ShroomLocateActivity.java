@@ -122,6 +122,10 @@ public class ShroomLocateActivity extends AppCompatActivity {
                     startActivity(new Intent(ShroomLocateActivity.this, SplashActivity.class));
                     return true;
                 }
+                if(id == R.id.nav_identify) {
+                    startActivity(new Intent(ShroomLocateActivity.this, IdentifyActivity.class));
+                    return true;
+                }
 
                 return false;
             }
