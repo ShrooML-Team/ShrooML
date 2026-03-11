@@ -15,7 +15,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText identifiantInput;
     private EditText emailInput;
     private EditText motDePasseInput;
-    private EditText champignonPrefereInput;
+    private EditText motDePasseConfirmInput;
     private Button registerButton;
     private Button backButton;
     private OAuthService oAuthService;
@@ -30,7 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
         identifiantInput = findViewById(R.id.identifiant_input);
         emailInput = findViewById(R.id.email_input);
         motDePasseInput = findViewById(R.id.mot_de_passe_input);
-        champignonPrefereInput = findViewById(R.id.champignon_prefere_input);
+        motDePasseConfirmInput = findViewById(R.id.champignon_prefere_input);
         registerButton = findViewById(R.id.register_button);
         backButton = findViewById(R.id.back_button);
 
@@ -54,7 +54,7 @@ public class RegisterActivity extends AppCompatActivity {
         String identifiant = identifiantInput.getText().toString().trim();
         String email = emailInput.getText().toString().trim();
         String motDePasse = motDePasseInput.getText().toString().trim();
-        String champignonPrefere = champignonPrefereInput.getText().toString().trim();
+        String motDePasseConfirm = motDePasseConfirmInput.getText().toString().trim();
 
         // Validation
         if (identifiant.isEmpty() || email.isEmpty() || motDePasse.isEmpty()) {
@@ -77,10 +77,15 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
+        if (!motDePasse.equals(motDePasseConfirm)) {
+            Toast.makeText(this, "Les mots de passe ne correspondent pas", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         registerButton.setEnabled(false);
         registerButton.setText("Inscription...");
 
-        oAuthService.register(identifiant, email, motDePasse, champignonPrefere.isEmpty() ? null : champignonPrefere, 
+        oAuthService.register(identifiant, email, motDePasse, null, 
             new OAuthService.OAuthUserCallback() {
             @Override
             public void onSuccess(com.shrooml.services.api.TokenResponseFull response) {

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.shrooml.services.OAuthService;
@@ -19,7 +20,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText motDePasseInput;
     private Button loginButton;
     private Button registerButton;
-    private Button googleSignInButton;
+    private ImageButton googleSignInButton;
     private OAuthService oAuthService;
     private TokenManager tokenManager;
     private GoogleSignInManager googleSignInManager;
@@ -70,7 +71,6 @@ public class LoginActivity extends AppCompatActivity {
             // Google Sign-In est maintenant activé
             Log.d(TAG, "Google Sign-In activé");
             googleSignInButton.setEnabled(true);
-            googleSignInButton.setText("Se connecter avec Google");
 
             // Set up login button click listener
             loginButton.setOnClickListener(v -> {
