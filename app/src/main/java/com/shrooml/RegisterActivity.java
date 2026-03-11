@@ -35,7 +35,7 @@ public class RegisterActivity extends AppCompatActivity {
         backButton = findViewById(R.id.back_button);
 
         // Initialize services
-        oAuthService = new OAuthService();
+        oAuthService = new OAuthService(true);
         try {
             tokenManager = TokenManager.getInstance(this);
         } catch (GeneralSecurityException | IOException e) {
