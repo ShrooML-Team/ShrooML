@@ -1,6 +1,7 @@
 package com.shrooml.services.api;
 
-import okhttp3.Credentials;
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;
@@ -8,19 +9,29 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ShroomLocRetrofitClient {
 
-    private static final String BASE_URL = "https://api.shrooml.duckdns.org/"; // ← ton URL
-
+    private static final String BASE_URL = "https://shroomloc.shrooml.duckdns.org/";
     private static Retrofit retrofit;
 
-    public static ShroomLocApi getApi(String username, String password) {
+    private static String authToken;
+
+    public static void setToken(String token) {
+        authToken = token;
+    }
+
+    public static ShroomLocApi getApi() {
 
         OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(60, TimeUnit.SECONDS)   // ⏱️ Temps pour établir la connexion
+                .readTimeout(60, TimeUnit.SECONDS)      // ⏱️ Temps pour lire la réponse
+                .writeTimeout(60, TimeUnit.SECONDS)     // ⏱️ Temps pour envoyer la requête
                 .addInterceptor(chain -> {
-                    String credentials = Credentials.basic(username, password);
-                    Request request = chain.request().newBuilder()
-                            .header("Authorization", credentials)
-                            .build();
-                    return chain.proceed(request);
+                    Request.Builder requestBuilder = chain.request().newBuilder();
+
+                    if (authToken != null) {
+                        requestBuilder.header("Authorization", "Bearer " + authToken);
+                    }
+
+                    return chain.proceed(requestBuilder.build());
                 })
                 .build();
 

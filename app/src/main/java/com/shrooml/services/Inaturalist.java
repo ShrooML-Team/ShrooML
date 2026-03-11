@@ -1,5 +1,7 @@
 package com.shrooml.services;
 
+import android.os.Build;
+
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -17,11 +19,14 @@ public class Inaturalist {
 
     private static final String url = "https://api.inaturalist.org/v1/observations";
     private final OkHttpClient client = new OkHttpClient();
-    private final Gson gson = new Gson();
-
     public String getMushroomImage(String specie_name) {
         try {
-            String encodedName = URLEncoder.encode(specie_name, StandardCharsets.UTF_8);
+            String encodedName = null;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                encodedName = URLEncoder.encode(specie_name, StandardCharsets.UTF_8);
+            } else {
+                encodedName = URLEncoder.encode(specie_name, "UTF-8");
+            }
 
             String requestUrl = url
                     + "?taxon_name=" + encodedName

@@ -1,5 +1,6 @@
 package com.shrooml.services.api;
 
+import com.shrooml.models.MushroomCompleteEntity;
 import com.shrooml.models.MushroomEntity;
 
 import java.util.List;
@@ -15,11 +16,10 @@ public interface ShroomLocApi {
     Call<List<MushroomEntity>> getall();
 
     @GET("mushrooms")
-    Call<List<MushroomEntity>> getMushroomsByLatiLong(
-                                            @Query("latitude") int latitude,
-                                            @Query("longitude") int longitude
+    Call<List<MushroomCompleteEntity>> getMushroomsByLatiLong(
+                                            @Query("latitude") double latitude,
+                                            @Query("longitude") double longitude
     );
-
     @GET("mushrooms/{name}")
     Call<List<MushroomEntity>> getMushroomsByName(
                                             @Path("name") String name

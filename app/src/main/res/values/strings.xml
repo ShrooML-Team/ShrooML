@@ -2,12 +2,24 @@
 <resources>
 
     <string name="app_name">ShrooML APP</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="hello_world">Hello The world !</string>
     <string name="menu_settings">Settings</string>
-    <string name="quizz_question_1">What is the scientific name of the %1$s ?</string>
-    <string name="quizz_question_2">Is the %1$s edible ?</string>
-    <string name="quizz_question_3">In which habitat does the %1$s grow ?</string>
-    <string name="quizz_question_4">In which season does the %1$s grow ?</string>
-    <string name="quizz_question_5">What is the name of this mushroom ?</string>
 
+    <string name="quizz_question_1">What is the name of this mushroom ?</string>
+    <string name="quizz_question_2">What is the scientific name of the %1$s ?</string>
+    <string name="quizz_question_3">Is the %1$s edible ?</string>
+    <string name="quizz_question_4">In which habitat does the %1$s grow ?</string>
+    <string name="quizz_question_5">In which season does the %1$s grow ?</string>
+
+    <string name="summer">summer</string>
+    <string name="winter">winter</string>
+    <string name="spring">spring</string>
+    <string name="autumn">autumn</string>
+
+    <string name="title_1">You are a mushroom Noobs</string>
+    <string name="title_2">You are a mushroom novice</string>
+    <string name="title_3">You are a mushroom beginner</string>
+    <string name="title_4">You are a mushroom confirmate</string>
+    <string name="title_5">You are a mushroom expert</string>
+    <string name="title_6">You are a mushroom king</string>
 </resources>
