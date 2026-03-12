@@ -17,19 +17,24 @@ import com.shrooml.services.api.AutoMLApi;
 import com.shrooml.services.api.AutoMLRetrofitClient;
 import com.shrooml.services.api.Requests.PredictRequest;
 import com.shrooml.services.api.Response.PredictResponse;
+import com.shrooml.services.encoding.MushroomEncoder;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * NewSimulationActivity - Refactorisée pour les champignons
  *
  * Permet à l'utilisateur de sélectionner les 22 caractéristiques d'un champignon
  * et envoie la requête à l'API AutoML pour obtenir la prédiction
+ *
+ * MODIFICATION: Ajout de MushroomEncoder pour convertir lettres → nombres
  */
 public class NewSimulationActivity extends AppCompatActivity {
 
@@ -185,33 +190,43 @@ public class NewSimulationActivity extends AppCompatActivity {
      * Collecter les données et faire une prédiction
      */
     private void predict() {
-        // Créer l'objet MushroomFeatures
-        mushroomFeatures = new MushroomFeatures();
-        mushroomFeatures.setCapShape(getSpinnerValue(spinCapShape));
-        mushroomFeatures.setCapSurface(getSpinnerValue(spinCapSurface));
-        mushroomFeatures.setCapColor(getSpinnerValue(spinCapColor));
-        mushroomFeatures.setBruises(getSpinnerValue(spinBruises));
-        mushroomFeatures.setOdor(getSpinnerValue(spinOdor));
-        mushroomFeatures.setGillAttachment(getSpinnerValue(spinGillAttachment));
-        mushroomFeatures.setGillSpacing(getSpinnerValue(spinGillSpacing));
-        mushroomFeatures.setGillSize(getSpinnerValue(spinGillSize));
-        mushroomFeatures.setGillColor(getSpinnerValue(spinGillColor));
-        mushroomFeatures.setStalkShape(getSpinnerValue(spinStalkShape));
-        mushroomFeatures.setStalkRoot(getSpinnerValue(spinStalkRoot));
-        mushroomFeatures.setStalkSurfaceAboveRing(getSpinnerValue(spinStalkSurfaceAboveRing));
-        mushroomFeatures.setStalkSurfaceBelowRing(getSpinnerValue(spinStalkSurfaceBelowRing));
-        mushroomFeatures.setStalkColorAboveRing(getSpinnerValue(spinStalkColorAboveRing));
-        mushroomFeatures.setStalkColorBelowRing(getSpinnerValue(spinStalkColorBelowRing));
-        mushroomFeatures.setVeilType(getSpinnerValue(spinVeilType));
-        mushroomFeatures.setVeilColor(getSpinnerValue(spinVeilColor));
-        mushroomFeatures.setRingNumber(getSpinnerValue(spinRingNumber));
-        mushroomFeatures.setRingType(getSpinnerValue(spinRingType));
-        mushroomFeatures.setSporePrintColor(getSpinnerValue(spinSporePrintColor));
-        mushroomFeatures.setPopulation(getSpinnerValue(spinPopulation));
-        mushroomFeatures.setHabitat(getSpinnerValue(spinHabitat));
+        // Récupérer les valeurs des spinners (les lettres)
+        String capShape = getSpinnerValue(spinCapShape);
+        String capSurface = getSpinnerValue(spinCapSurface);
+        String capColor = getSpinnerValue(spinCapColor);
+        String bruises = getSpinnerValue(spinBruises);
+        String odor = getSpinnerValue(spinOdor);
+        String gillAttachment = getSpinnerValue(spinGillAttachment);
+        String gillSpacing = getSpinnerValue(spinGillSpacing);
+        String gillSize = getSpinnerValue(spinGillSize);
+        String gillColor = getSpinnerValue(spinGillColor);
+        String stalkShape = getSpinnerValue(spinStalkShape);
+        String stalkRoot = getSpinnerValue(spinStalkRoot);
+        String stalkSurfaceAboveRing = getSpinnerValue(spinStalkSurfaceAboveRing);
+        String stalkSurfaceBelowRing = getSpinnerValue(spinStalkSurfaceBelowRing);
+        String stalkColorAboveRing = getSpinnerValue(spinStalkColorAboveRing);
+        String stalkColorBelowRing = getSpinnerValue(spinStalkColorBelowRing);
+        String veilType = getSpinnerValue(spinVeilType);
+        String veilColor = getSpinnerValue(spinVeilColor);
+        String ringNumber = getSpinnerValue(spinRingNumber);
+        String ringType = getSpinnerValue(spinRingType);
+        String sporePrintColor = getSpinnerValue(spinSporePrintColor);
+        String population = getSpinnerValue(spinPopulation);
+        String habitat = getSpinnerValue(spinHabitat);
+
+        // Créer une liste de valeurs pour vérification
+        List<String> values = new ArrayList<>();
+        values.add(capShape); values.add(capSurface); values.add(capColor);
+        values.add(bruises); values.add(odor); values.add(gillAttachment);
+        values.add(gillSpacing); values.add(gillSize); values.add(gillColor);
+        values.add(stalkShape); values.add(stalkRoot); values.add(stalkSurfaceAboveRing);
+        values.add(stalkSurfaceBelowRing); values.add(stalkColorAboveRing); values.add(stalkColorBelowRing);
+        values.add(veilType); values.add(veilColor); values.add(ringNumber);
+        values.add(ringType); values.add(sporePrintColor); values.add(population);
+        values.add(habitat);
 
         // Vérifier que tous les champs sont remplis
-        if (!isMushroomFeaturesValid(mushroomFeatures)) {
+        if (values.contains("Select...")) {
             Toast.makeText(this, "Veuillez remplir tous les champs", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -219,11 +234,37 @@ public class NewSimulationActivity extends AppCompatActivity {
         // Afficher un toast de chargement
         Toast.makeText(this, "Prédiction en cours...", Toast.LENGTH_SHORT).show();
 
-        // Créer la liste de features pour l'API
-        List<java.util.Map<String, Object>> X = new ArrayList<>();
-        X.add(mushroomFeatures.toMap());
+        // 🔧 CRÉER UN MAP AVEC LES ENCODAGES (LETTRES → NOMBRES)
+        Map<String, Object> sample = new HashMap<>();
 
-        // Faire l'appel à l'API
+        sample.put("cap-shape", MushroomEncoder.encodeCapShape(capShape));
+        sample.put("cap-surface", MushroomEncoder.encodeCapSurface(capSurface));
+        sample.put("cap-color", MushroomEncoder.encodeCapColor(capColor));
+        sample.put("bruises", MushroomEncoder.encodeBruises(bruises));
+        sample.put("odor", MushroomEncoder.encodeOdor(odor));
+        sample.put("gill-attachment", MushroomEncoder.encodeGillAttachment(gillAttachment));
+        sample.put("gill-spacing", MushroomEncoder.encodeGillSpacing(gillSpacing));
+        sample.put("gill-size", MushroomEncoder.encodeGillSize(gillSize));
+        sample.put("gill-color", MushroomEncoder.encodeGillColor(gillColor));
+        sample.put("stalk-shape", MushroomEncoder.encodeStalkShape(stalkShape));
+        sample.put("stalk-root", MushroomEncoder.encodeStalkRoot(stalkRoot));
+        sample.put("stalk-surface-above-ring", MushroomEncoder.encodeStalkSurfaceAboveRing(stalkSurfaceAboveRing));
+        sample.put("stalk-surface-below-ring", MushroomEncoder.encodeStalkSurfaceBelowRing(stalkSurfaceBelowRing));
+        sample.put("stalk-color-above-ring", MushroomEncoder.encodeStalkColorAboveRing(stalkColorAboveRing));
+        sample.put("stalk-color-below-ring", MushroomEncoder.encodeStalkColorBelowRing(stalkColorBelowRing));
+        sample.put("veil-type", MushroomEncoder.encodeVeilType(veilType));
+        sample.put("veil-color", MushroomEncoder.encodeVeilColor(veilColor));
+        sample.put("ring-number", MushroomEncoder.encodeRingNumber(ringNumber));
+        sample.put("ring-type", MushroomEncoder.encodeRingType(ringType));
+        sample.put("spore-print-color", MushroomEncoder.encodeSporeColor(sporePrintColor));
+        sample.put("population", MushroomEncoder.encodePopulation(population));
+        sample.put("habitat", MushroomEncoder.encodeHabitat(habitat));
+
+        // Créer la liste de features pour l'API
+        List<Map<String, Object>> X = new ArrayList<>();
+        X.add(sample);
+
+        // Faire l'appel à l'API avec les données encodées
         PredictRequest request = new PredictRequest(X);
 
         api.predict(request).enqueue(new Callback<PredictResponse>() {
@@ -264,33 +305,5 @@ public class NewSimulationActivity extends AppCompatActivity {
      */
     private String getSpinnerValue(Spinner spinner) {
         return spinner.getSelectedItem().toString();
-    }
-
-    /**
-     * Vérifier que tous les champs sont remplis (pas "Select...")
-     */
-    private boolean isMushroomFeaturesValid(MushroomFeatures features) {
-        return !features.getCapShape().equals("Select...") &&
-                !features.getCapSurface().equals("Select...") &&
-                !features.getCapColor().equals("Select...") &&
-                !features.getBruises().equals("Select...") &&
-                !features.getOdor().equals("Select...") &&
-                !features.getGillAttachment().equals("Select...") &&
-                !features.getGillSpacing().equals("Select...") &&
-                !features.getGillSize().equals("Select...") &&
-                !features.getGillColor().equals("Select...") &&
-                !features.getStalkShape().equals("Select...") &&
-                !features.getStalkRoot().equals("Select...") &&
-                !features.getStalkSurfaceAboveRing().equals("Select...") &&
-                !features.getStalkSurfaceBelowRing().equals("Select...") &&
-                !features.getStalkColorAboveRing().equals("Select...") &&
-                !features.getStalkColorBelowRing().equals("Select...") &&
-                !features.getVeilType().equals("Select...") &&
-                !features.getVeilColor().equals("Select...") &&
-                !features.getRingNumber().equals("Select...") &&
-                !features.getRingType().equals("Select...") &&
-                !features.getSporePrintColor().equals("Select...") &&
-                !features.getPopulation().equals("Select...") &&
-                !features.getHabitat().equals("Select...");
     }
 }

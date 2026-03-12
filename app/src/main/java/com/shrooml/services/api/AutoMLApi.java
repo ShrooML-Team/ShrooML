@@ -10,7 +10,7 @@ import retrofit2.http.*;
 import retrofit2.http.Query;
 public interface AutoMLApi {
     @POST("/login")
-    Call<String> login(@Body LoginRequest loginRequest);
+    Call<LoginResponse> login(@Body LoginRequest loginRequest);
     @POST("/fit")
     Call<FitResponse> fit(@Body FitRequest fitRequest);
     @POST("/predict")

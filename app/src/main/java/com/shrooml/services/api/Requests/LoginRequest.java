@@ -1,12 +1,19 @@
 package com.shrooml.services.api.Requests;
 
+import com.google.gson.annotations.SerializedName;
+
+
 public class LoginRequest {
+
+    @SerializedName("username")
     private String username;
+
+    @SerializedName("password")
     private String password;
 
-    public LoginRequest(String user, String pass){
-        this.username = user;
-        this.password = pass;
+    public LoginRequest(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     public String getUsername() {
@@ -17,11 +24,19 @@ public class LoginRequest {
         this.username = username;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getPassword() {
-        return password;
+    @Override
+    public String toString() {
+        return "LoginRequest{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

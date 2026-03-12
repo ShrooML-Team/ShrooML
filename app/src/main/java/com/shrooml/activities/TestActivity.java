@@ -1,339 +1,307 @@
 package com.shrooml.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.shrooml.R;
-import com.shrooml.services.api.AutoMLApi;
 import com.shrooml.services.api.AutoMLRetrofitClient;
-import com.shrooml.services.api.Requests.FitRequest;
-import com.shrooml.services.api.Requests.LoginRequest;
 import com.shrooml.services.api.Requests.PredictRequest;
-import com.shrooml.services.api.Response.FitResponse;
 import com.shrooml.services.api.Response.PredictResponse;
-import com.shrooml.services.api.ValidationError;
+import com.shrooml.services.encoding.MushroomEncoder;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import com.google.gson.Gson;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * TestActivity
+ * TestActivity_PREDICT_AVEC_LOGIN - Test /predict rapidement
  *
- * Activity pour tester manuellement tous les endpoints de l'API AutoML
- * Affiche les résultats en temps réel dans un TextView
+ * ✅ Avec bouton LOGIN intégré!
  *
- * À utiliser pendant le développement pour vérifier que l'API fonctionne correctement
+ * Flux:
+ * 1. Si pas authentifié → Affiche "Go to Login"
+ * 2. Si authentifié → Affiche "Test Predict 1" et "Test Predict 2"
  */
 public class TestActivity extends AppCompatActivity {
 
-    private static final String TAG = "TestActivity";
-
-    private TextView textViewResults;
-    private ScrollView scrollView;
-    private AutoMLApi api;
-    private Gson gson = new Gson();
+    private Button btnLogin;
+    private Button btnTestPredict1;
+    private Button btnTestPredict2;
+    private Button btnCheckAuth;
+    private Button btnClearLogs;
+    private TextView resultTextView;
+    private static final String TAG = "TestActivity_PREDICT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
 
-        // Initialiser les vues
-        textViewResults = findViewById(R.id.textView_results);
-        scrollView = findViewById(R.id.scrollView);
+        btnLogin = findViewById(R.id.btn_test_login);
+        btnTestPredict1 = findViewById(R.id.btn_test_fit);
+        btnTestPredict2 = findViewById(R.id.btn_test_predict);
+        btnClearLogs = findViewById(R.id.btn_clear_logs);
+        resultTextView = findViewById(R.id.textView_results);
 
-        Button btnLogin = findViewById(R.id.btn_test_login);
-        Button btnFit = findViewById(R.id.btn_test_fit);
-        Button btnPredict = findViewById(R.id.btn_test_predict);
-        Button btnClear = findViewById(R.id.btn_clear_logs);
+        // Initialiser
+        initializeUI();
 
-        // Initialiser l'API
-        api = AutoMLRetrofitClient.getInstance().getAutoMLApi();
+        resultTextView.setText("🍄 TEST PREDICT RAPIDE\n");
+        resultTextView.append("═════════════════════\n\n");
+        resultTextView.append("Vérification de l'authentification...\n");
 
-        addLog("=== TEST ACTIVITY DÉMARRÉE ===");
-        addLog("Base URL: " + AutoMLRetrofitClient.getInstance().getBaseUrl());
-        addLog("Authentifié: " + AutoMLRetrofitClient.getInstance().isAuthenticated());
-        addLog("");
-
-        // Listeners des boutons
-        btnLogin.setOnClickListener(v -> testLogin());
-        btnFit.setOnClickListener(v -> testFit());
-        btnPredict.setOnClickListener(v -> testPredict());
-        btnClear.setOnClickListener(v -> clearLogs());
+        checkAuthentication();
     }
 
     /**
-     * TEST 1: Login
+     * Vérifier l'authentification et ajuster l'UI
      */
-    private void testLogin() {
-        addLog("\n>>> TEST LOGIN");
-        addLog("Envoi: POST /login");
+    private void checkAuthentication() {
+        boolean isAuth = AutoMLRetrofitClient.getInstance().isAuthenticated();
+        String token = AutoMLRetrofitClient.getInstance().getAuthToken();
 
-        LoginRequest request = new LoginRequest("admin", "admin123");
-        addLog("  username: admin");
-        addLog("  password: admin123");
+        Log.d(TAG, "isAuthenticated: " + isAuth);
+        Log.d(TAG, "token: " + (token != null ? token.substring(0, Math.min(50, token.length())) + "..." : "NULL"));
 
-        api.login(request).enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                addLog("✓ Réponse reçue - Code: " + response.code());
+        if (!isAuth || token == null) {
+            // ❌ Pas authentifié
+            resultTextView.setText("🍄 TEST PREDICT RAPIDE\n");
+            resultTextView.append("═════════════════════\n\n");
+            resultTextView.append("❌ STATUT: PAS AUTHENTIFIÉ\n");
+            resultTextView.append("\n");
+            resultTextView.append("SOLUTION:\n");
+            resultTextView.append("1. Clique 'Go to Login'\n");
+            resultTextView.append("2. Login avec admin/admin123\n");
+            resultTextView.append("3. Reviens ici\n");
+            resultTextView.append("4. Clique 'Test Predict 1' ou 2\n");
 
-                if (response.isSuccessful() && response.body() != null) {
-                    String token = response.body();
-                    addLog("✓ Login RÉUSSI!");
-                    addLog("  Token: " + token.substring(0, Math.min(50, token.length())) + "...");
+            // Afficher le bouton Login
+            btnLogin.setText("Go to Login");
+            btnLogin.setEnabled(true);
 
-                    // Sauvegarder le token
-                    AutoMLRetrofitClient.getInstance().setAuthToken(token);
-                    addLog("  Token sauvegardé pour les requêtes futures");
+            // Masquer les boutons de test
+            btnTestPredict1.setEnabled(false);
+            btnTestPredict2.setEnabled(false);
+            btnTestPredict1.setAlpha(0.5f);
+            btnTestPredict2.setAlpha(0.5f);
 
-                    showToast("Login réussi!");
-                } else {
-                    addLog("✗ Login ÉCHOUÉ");
-                    handleErrorResponse(response);
-                }
-            }
+        } else {
+            // ✅ Authentifié
+            resultTextView.setText("🍄 TEST PREDICT RAPIDE\n");
+            resultTextView.append("═════════════════════\n\n");
+            resultTextView.append("✅ STATUT: AUTHENTIFIÉ\n");
+            resultTextView.append("\n");
+            resultTextView.append("Token: " + token.substring(0, 50) + "...\n");
+            resultTextView.append("\n");
+            resultTextView.append("Clique sur un bouton de test:\n");
+            resultTextView.append("• Test Predict 1 (EDIBLE)\n");
+            resultTextView.append("• Test Predict 2 (POISONOUS)\n");
+            resultTextView.append("\n");
 
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                addLog("✗ Login ERREUR RÉSEAU");
-                addLog("  " + t.getMessage());
-                showToast("Erreur réseau: " + t.getMessage());
-            }
+            // Afficher les boutons de test
+            btnLogin.setText("Already Logged In");
+            btnLogin.setEnabled(false);
+
+            btnTestPredict1.setEnabled(true);
+            btnTestPredict2.setEnabled(true);
+            btnTestPredict1.setAlpha(1.0f);
+            btnTestPredict2.setAlpha(1.0f);
+        }
+    }
+
+    /**
+     * Initialiser les boutons
+     */
+    private void initializeUI() {
+        btnLogin.setOnClickListener(v -> goToLoginActivity());
+        btnTestPredict1.setText("Test Predict 1 (EDIBLE)");
+        btnTestPredict1.setOnClickListener(v -> testPredictSerie1());
+
+        btnTestPredict2.setText("Test Predict 2 (POISONOUS)");
+        btnTestPredict2.setOnClickListener(v -> testPredictSerie2());
+
+        btnClearLogs.setOnClickListener(v -> {
+            resultTextView.setText("Logs effacés.\n");
+            checkAuthentication();
         });
     }
 
     /**
-     * TEST 2: Fit (Entraînement)
+     * Aller à LoginActivity
      */
-    private void testFit() {
-        addLog("\n>>> TEST FIT");
-
-        if (!AutoMLRetrofitClient.getInstance().isAuthenticated()) {
-            addLog("✗ Pas authentifié! Faites le login d'abord.");
-            showToast("Faites le login d'abord!");
-            return;
-        }
-
-        addLog("Envoi: POST /fit");
-
-        // Préparer les données
-        List<Map<String, Object>> X = new ArrayList<>();
-        X.add(createMushroomFeatures("convex", "brown", "narrow", "fishy"));
-        X.add(createMushroomFeatures("bell", "white", "broad", "almond"));
-        X.add(createMushroomFeatures("flat", "brown", "narrow", "none"));
-        X.add(createMushroomFeatures("convex", "red", "broad", "anise"));
-        X.add(createMushroomFeatures("bell", "yellow", "narrow", "fishy"));
-
-        List<String> y = new ArrayList<>();
-        y.add("poisonous");
-        y.add("edible");
-        y.add("poisonous");
-        y.add("edible");
-        y.add("poisonous");
-
-        Map<String, Object> params = new HashMap<>();
-        params.put("time_budget", 60);
-        params.put("metric", "accuracy");
-
-        addLog("  Samples: " + X.size());
-        addLog("  Labels: " + String.join(", ", y));
-        addLog("  Params: time_budget=60, metric=accuracy");
-
-        FitRequest fitRequest = new FitRequest(X, y, params);
-
-        api.fit(fitRequest).enqueue(new Callback<FitResponse>() {
-            @Override
-            public void onResponse(Call<FitResponse> call, Response<FitResponse> response) {
-                addLog("✓ Réponse reçue - Code: " + response.code());
-
-                if (response.isSuccessful() && response.body() != null) {
-                    String status = response.body().getStatus();
-                    addLog("✓ Fit RÉUSSI!");
-                    addLog("  Status: " + status);
-                    showToast("Fit réussi! Status: " + status);
-                } else if (response.code() == 422) {
-                    addLog("✗ Fit ÉCHOUÉ - Erreur de validation");
-                    handleValidationError(response);
-                } else if (response.code() == 401) {
-                    addLog("✗ Fit ÉCHOUÉ - Authentification requise");
-                    addLog("  Token expiré ou invalide");
-                    AutoMLRetrofitClient.getInstance().clearAuthToken();
-                } else {
-                    addLog("✗ Fit ÉCHOUÉ");
-                    handleErrorResponse(response);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<FitResponse> call, Throwable t) {
-                addLog("✗ Fit ERREUR RÉSEAU");
-                addLog("  " + t.getMessage());
-            }
-        });
+    private void goToLoginActivity() {
+        Log.d(TAG, "Redirection vers LoginActivity");
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 
     /**
-     * TEST 3: Predict (Prédiction)
+     * Tester /predict avec SÉRIE 1 (EDIBLE)
      */
-    private void testPredict() {
-        addLog("\n>>> TEST PREDICT");
+    private void testPredictSerie1() {
+        resultTextView.setText("⏳ Test Predict SÉRIE 1 (EDIBLE) en cours...\n\n");
 
+        Map<String, Object> sample = new HashMap<>();
+
+        sample.put("cap-shape", MushroomEncoder.encodeCapShape("x"));
+        sample.put("cap-surface", MushroomEncoder.encodeCapSurface("s"));
+        sample.put("cap-color", MushroomEncoder.encodeCapColor("n"));
+        sample.put("bruises", MushroomEncoder.encodeBruises("t"));
+        sample.put("odor", MushroomEncoder.encodeOdor("n"));
+        sample.put("gill-attachment", MushroomEncoder.encodeGillAttachment("d"));
+        sample.put("gill-spacing", MushroomEncoder.encodeGillSpacing("c"));
+        sample.put("gill-size", MushroomEncoder.encodeGillSize("n"));
+        sample.put("gill-color", MushroomEncoder.encodeGillColor("g"));
+        sample.put("stalk-shape", MushroomEncoder.encodeStalkShape("e"));
+        sample.put("stalk-root", MushroomEncoder.encodeStalkRoot("e"));
+        sample.put("stalk-surface-above-ring", MushroomEncoder.encodeStalkSurfaceAboveRing("k"));
+        sample.put("stalk-surface-below-ring", MushroomEncoder.encodeStalkSurfaceBelowRing("k"));
+        sample.put("stalk-color-above-ring", MushroomEncoder.encodeStalkColorAboveRing("w"));
+        sample.put("stalk-color-below-ring", MushroomEncoder.encodeStalkColorBelowRing("w"));
+        sample.put("veil-type", MushroomEncoder.encodeVeilType("p"));
+        sample.put("veil-color", MushroomEncoder.encodeVeilColor("w"));
+        sample.put("ring-number", MushroomEncoder.encodeRingNumber("o"));
+        sample.put("ring-type", MushroomEncoder.encodeRingType("p"));
+        sample.put("spore-print-color", MushroomEncoder.encodeSporeColor("b"));
+        sample.put("population", MushroomEncoder.encodePopulation("s"));
+        sample.put("habitat", MushroomEncoder.encodeHabitat("w"));
+
+        callPredict(sample, "SÉRIE 1 (EDIBLE)");
+    }
+
+    /**
+     * Tester /predict avec SÉRIE 2 (POISONOUS)
+     */
+    private void testPredictSerie2() {
+        resultTextView.setText("⏳ Test Predict SÉRIE 2 (POISONOUS) en cours...\n\n");
+
+        Map<String, Object> sample = new HashMap<>();
+
+        sample.put("cap-shape", MushroomEncoder.encodeCapShape("x"));
+        sample.put("cap-surface", MushroomEncoder.encodeCapSurface("y"));
+        sample.put("cap-color", MushroomEncoder.encodeCapColor("b"));
+        sample.put("bruises", MushroomEncoder.encodeBruises("t"));
+        sample.put("odor", MushroomEncoder.encodeOdor("f"));
+        sample.put("gill-attachment", MushroomEncoder.encodeGillAttachment("f"));
+        sample.put("gill-spacing", MushroomEncoder.encodeGillSpacing("c"));
+        sample.put("gill-size", MushroomEncoder.encodeGillSize("n"));
+        sample.put("gill-color", MushroomEncoder.encodeGillColor("l"));
+        sample.put("stalk-shape", MushroomEncoder.encodeStalkShape("t"));
+        sample.put("stalk-root", MushroomEncoder.encodeStalkRoot("u"));
+        sample.put("stalk-surface-above-ring", MushroomEncoder.encodeStalkSurfaceAboveRing("f"));
+        sample.put("stalk-surface-below-ring", MushroomEncoder.encodeStalkSurfaceBelowRing("f"));
+        sample.put("stalk-color-above-ring", MushroomEncoder.encodeStalkColorAboveRing("b"));
+        sample.put("stalk-color-below-ring", MushroomEncoder.encodeStalkColorBelowRing("b"));
+        sample.put("veil-type", MushroomEncoder.encodeVeilType("u"));
+        sample.put("veil-color", MushroomEncoder.encodeVeilColor("o"));
+        sample.put("ring-number", MushroomEncoder.encodeRingNumber("n"));
+        sample.put("ring-type", MushroomEncoder.encodeRingType("e"));
+        sample.put("spore-print-color", MushroomEncoder.encodeSporeColor("k"));
+        sample.put("population", MushroomEncoder.encodePopulation("s"));
+        sample.put("habitat", MushroomEncoder.encodeHabitat("c"));
+
+        callPredict(sample, "SÉRIE 2 (POISONOUS)");
+    }
+
+    /**
+     * Appeler l'API /predict
+     */
+    private void callPredict(Map<String, Object> sample, String seriesName) {
         if (!AutoMLRetrofitClient.getInstance().isAuthenticated()) {
-            addLog("✗ Pas authentifié! Faites le login d'abord.");
-            showToast("Faites le login d'abord!");
+            resultTextView.setText("❌ PAS AUTHENTIFIÉ!\n");
+            resultTextView.append("Clique 'Go to Login' d'abord.\n");
+            Toast.makeText(this, "Pas authentifié!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        addLog("Envoi: POST /predict");
-
+        // Créer la liste X
         List<Map<String, Object>> X = new ArrayList<>();
-        X.add(createMushroomFeatures("convex", "brown", "narrow", "fishy"));
-        X.add(createMushroomFeatures("bell", "white", "broad", "almond"));
-        X.add(createMushroomFeatures("flat", "red", "narrow", "none"));
+        X.add(sample);
 
-        addLog("  Samples: " + X.size());
+        // Créer la requête
+        PredictRequest request = new PredictRequest(X, new ArrayList<>());
 
-        PredictRequest predictRequest = new PredictRequest(X);
+        Log.d(TAG, "Appel /predict avec " + seriesName);
 
-        api.predict(predictRequest).enqueue(new Callback<PredictResponse>() {
+        // Appeler l'API
+        Call<PredictResponse> call = AutoMLRetrofitClient.getInstance()
+                .getAutoMLApi()
+                .predict(request);
+
+        call.enqueue(new Callback<PredictResponse>() {
             @Override
             public void onResponse(Call<PredictResponse> call, Response<PredictResponse> response) {
-                addLog("✓ Réponse reçue - Code: " + response.code());
+                Log.d(TAG, "Réponse: " + response.code());
 
                 if (response.isSuccessful() && response.body() != null) {
                     List<String> predictions = response.body().getPredictions();
-                    addLog("✓ Predict RÉUSSI!");
-                    addLog("  Prédictions: " + String.join(", ", predictions));
-                    showToast("Prédictions: " + String.join(", ", predictions));
-                } else if (response.code() == 422) {
-                    addLog("✗ Predict ÉCHOUÉ - Erreur de validation");
-                    handleValidationError(response);
-                } else if (response.code() == 401) {
-                    addLog("✗ Predict ÉCHOUÉ - Authentification requise");
-                    AutoMLRetrofitClient.getInstance().clearAuthToken();
+
+                    if (predictions != null && !predictions.isEmpty()) {
+                        String prediction = predictions.get(0);
+
+                        Log.d(TAG, "✅ Prédiction: " + prediction);
+
+                        resultTextView.setText("✅ SUCCÈS!\n\n");
+                        resultTextView.append("Série: " + seriesName + "\n");
+                        resultTextView.append("Prédiction: " + prediction.toUpperCase() + "\n");
+
+                        if ("edible".equals(prediction)) {
+                            resultTextView.append("Résultat: ✅ EDIBLE (Comestible)\n");
+                        } else if ("poisonous".equals(prediction)) {
+                            resultTextView.append("Résultat: ❌ POISONOUS (Toxique)\n");
+                        }
+
+                        resultTextView.append("\n");
+
+                        Toast.makeText(TestActivity.this,
+                                "Prédiction: " + prediction, Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    addLog("✗ Predict ÉCHOUÉ");
-                    handleErrorResponse(response);
+                    Log.e(TAG, "❌ Erreur: " + response.code());
+
+                    resultTextView.setText("❌ ERREUR!\n\n");
+                    resultTextView.append("Code: " + response.code() + "\n");
+                    resultTextView.append("Message: at least one array or dtype is required\n");
+                    resultTextView.append("\n");
+                    resultTextView.append("Logs détaillés: Voir Logcat\n");
+
+                    Toast.makeText(TestActivity.this,
+                            "Erreur: " + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<PredictResponse> call, Throwable t) {
-                addLog("✗ Predict ERREUR RÉSEAU");
-                addLog("  " + t.getMessage());
+                Log.e(TAG, "❌ Erreur réseau: " + t.getMessage());
+
+                resultTextView.setText("❌ ERREUR RÉSEAU!\n\n");
+                resultTextView.append("Message: " + t.getMessage() + "\n");
+                resultTextView.append("\n");
+
+                Toast.makeText(TestActivity.this,
+                        "Erreur: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     /**
-     * Gérer les erreurs de validation (422)
+     * Quand on revient de LoginActivity, vérifier à nouveau l'auth
      */
-    private void handleValidationError(Response<?> response) {
-        String errorBody = "";
-
-        try {
-            if (response.errorBody() != null) {
-                errorBody = response.errorBody().string();
-            }
-        } catch (IOException e) {
-            addLog("  Impossible de lire l'erreur: " + e.getMessage());
-            return;
-        }
-
-        addLog("  Body: " + errorBody);
-
-        try {
-            ValidationError validationError = gson.fromJson(errorBody, ValidationError.class);
-
-            if (validationError.getDetail() != null) {
-                addLog("  Détails des erreurs:");
-                for (ValidationError.ValidationDetail detail : validationError.getDetail()) {
-                    addLog("    - Localisation: " + detail.getLoc());
-                    addLog("      Message: " + detail.getMsg());
-                    addLog("      Type: " + detail.getType());
-                }
-            }
-        } catch (Exception e) {
-            addLog("  Erreur parsing validation error: " + e.getMessage());
-        }
-    }
-
-    /**
-     * Gérer les erreurs HTTP génériques
-     */
-    private void handleErrorResponse(Response<?> response) {
-        String errorBody = "";
-
-        try {
-            if (response.errorBody() != null) {
-                errorBody = response.errorBody().string();
-            }
-        } catch (IOException e) {
-            addLog("  Impossible de lire l'erreur");
-            return;
-        }
-
-        addLog("  Code: " + response.code());
-        addLog("  Message: " + response.message());
-        if (!errorBody.isEmpty()) {
-            addLog("  Body: " + errorBody);
-        }
-    }
-
-    /**
-     * Créer des features pour un champignon
-     */
-    private Map<String, Object> createMushroomFeatures(
-            String capShape, String capColor, String gillSize, String odor) {
-
-        Map<String, Object> features = new HashMap<>();
-        features.put("cap_shape", capShape);
-        features.put("cap_color", capColor);
-        features.put("gill_size", gillSize);
-        features.put("odor", odor);
-
-        return features;
-    }
-
-    /**
-     * Ajouter une ligne de log au TextView
-     */
-    private void addLog(String message) {
-        Log.d(TAG, message);
-        textViewResults.append(message + "\n");
-
-        // Scroll vers le bas
-        scrollView.post(() -> scrollView.fullScroll(ScrollView.FOCUS_DOWN));
-    }
-
-    /**
-     * Effacer les logs
-     */
-    private void clearLogs() {
-        textViewResults.setText("");
-        addLog("=== LOGS EFFACÉS ===\n");
-    }
-
-    /**
-     * Afficher un Toast
-     */
-    private void showToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume - Vérifier authentification");
+        checkAuthentication();
     }
 }

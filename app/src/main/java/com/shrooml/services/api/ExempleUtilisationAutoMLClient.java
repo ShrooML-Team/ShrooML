@@ -5,12 +5,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.shrooml.services.api.Requests.FitRequest;
-import com.shrooml.services.api.Requests.LoginRequest;
-import com.shrooml.services.api.Requests.PredictRequest;
-import com.shrooml.services.api.Response.ErrorResponse;
-import com.shrooml.services.api.Response.FitResponse;
-import com.shrooml.services.api.Response.PredictResponse;
+import com.shrooml.services.api.Requests.*;
+import com.shrooml.services.api.Response.*;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,10 +18,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * ExempleUtilisationAutoMLClient
+ * ExempleUtilisationAutoMLClient - Sans OAuth2
  *
- * Exemples d'utilisation du AutoMLRetrofitClient amélioré
- * Montre comment gérer les erreurs correctement
+ * Exemples d'utilisation du AutoMLRetrofitClient
+ * ⚠️ Le serveur n'implémente pas OAuth2, donc pas de validation de token
  */
 public class ExempleUtilisationAutoMLClient {
 
@@ -38,26 +34,30 @@ public class ExempleUtilisationAutoMLClient {
     }
 
     /**
-     * EXEMPLE 1: Login avec gestion d'erreurs complète
+     * EXEMPLE 1: Login - Vérifie les credentials auprès du serveur
+     * ⚠️ Le token reçu n'est pas utilisé (pas d'OAuth2)
      */
-    public void exemplerLogin() {
+    public void exempleLogin() {
         Log.d(TAG, "=== EXEMPLE 1: Login ===");
 
         AutoMLApi api = AutoMLRetrofitClient.getInstance().getAutoMLApi();
         LoginRequest loginRequest = new LoginRequest("admin", "admin123");
 
-        api.login(loginRequest).enqueue(new Callback<String>() {
+        api.login(loginRequest).enqueue(new Callback<LoginResponse>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 Log.d(TAG, "Login - Code: " + response.code());
 
                 if (response.isSuccessful() && response.body() != null) {
                     // ✅ Succès
-                    String token = response.body();
-                    Log.i(TAG, "Login réussi! Token: " + token.substring(0, 20) + "...");
+                    LoginResponse loginResponse = response.body();
+                    String token = loginResponse.getAccessToken();
+                    String tokenType = loginResponse.getTokenType();
 
-                    // Sauvegarder le token
-                    AutoMLRetrofitClient.getInstance().setAuthToken(token);
+                    Log.i(TAG, "Login réussi!");
+                    Log.i(TAG, "Token Type: " + tokenType);
+                    Log.i(TAG, "Token: " + token.substring(0, Math.min(20, token.length())) + "...");
+                    Log.i(TAG, "⚠️ Token reçu mais non utilisé (pas d'OAuth2)");
 
                     showToast("Connexion réussie!");
 
@@ -68,7 +68,7 @@ public class ExempleUtilisationAutoMLClient {
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
                 // ❌ Erreur réseau
                 Log.e(TAG, "Login échoué: " + t.getMessage());
                 handleNetworkError(t);
@@ -78,16 +78,10 @@ public class ExempleUtilisationAutoMLClient {
 
     /**
      * EXEMPLE 2: Fit (entraînement) avec gestion d'erreurs
+     * ⚠️ Pas de vérification d'authentification (pas d'OAuth2)
      */
     public void exempleFit() {
         Log.d(TAG, "=== EXEMPLE 2: Fit ===");
-
-        // Vérifier que l'utilisateur est authentifié
-        if (!AutoMLRetrofitClient.getInstance().isAuthenticated()) {
-            Log.e(TAG, "Erreur: Pas d'authentification. Connectez-vous d'abord!");
-            showToast("Vous devez d'abord vous connecter");
-            return;
-        }
 
         // Préparer les données
         List<Map<String, Object>> X = new java.util.ArrayList<>();
@@ -121,12 +115,6 @@ public class ExempleUtilisationAutoMLClient {
                     // ❌ Erreur de validation
                     handleValidationError(response);
 
-                } else if (response.code() == 401) {
-                    // ❌ Erreur authentification (token expiré?)
-                    Log.e(TAG, "Token expiré. Reconnexion nécessaire.");
-                    showToast("Votre session a expiré. Reconnectez-vous.");
-                    AutoMLRetrofitClient.getInstance().clearAuthToken();
-
                 } else {
                     // ❌ Autre erreur HTTP
                     handleHttpError(response.code(), response);
@@ -144,14 +132,10 @@ public class ExempleUtilisationAutoMLClient {
 
     /**
      * EXEMPLE 3: Predict (prédiction) avec gestion d'erreurs
+     * ⚠️ Pas de vérification d'authentification (pas d'OAuth2)
      */
-    public void examplePredict() {
+    public void exemplePredict() {
         Log.d(TAG, "=== EXEMPLE 3: Predict ===");
-
-        if (!AutoMLRetrofitClient.getInstance().isAuthenticated()) {
-            showToast("Vous devez d'abord vous connecter");
-            return;
-        }
 
         List<Map<String, Object>> X = new java.util.ArrayList<>();
         X.add(createMushroomFeatures("convex", "brown", "narrow", "fishy"));
@@ -172,9 +156,6 @@ public class ExempleUtilisationAutoMLClient {
 
                 } else if (response.code() == 422) {
                     handleValidationError(response);
-                } else if (response.code() == 401) {
-                    showToast("Session expirée. Reconnectez-vous.");
-                    AutoMLRetrofitClient.getInstance().clearAuthToken();
                 } else {
                     handleHttpError(response.code(), response);
                 }
