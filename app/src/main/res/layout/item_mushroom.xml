@@ -27,8 +27,6 @@
             android:clipToOutline="true"/>
     </FrameLayout>
 
-
-
     <TextView
         android:id="@+id/commonName"
         android:layout_width="0dp"

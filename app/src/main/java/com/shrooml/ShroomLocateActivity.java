@@ -58,7 +58,10 @@ public class ShroomLocateActivity extends AppCompatActivity {
     private ObjectAnimator refreshAnimator;
 
     private TextView loadingText;
-    private TextView emptyMessage;
+    private View emptyState;
+    private TextView emptyTitle;
+    private TextView emptySubtitle;
+
     private RecyclerView recycler;
 
     private Handler handler = new Handler();
@@ -71,7 +74,10 @@ public class ShroomLocateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_locate);
 
         loadingText = findViewById(R.id.loadingText);
-        emptyMessage = findViewById(R.id.emptyMessage);
+        emptyState = findViewById(R.id.emptyState);
+        emptyTitle = findViewById(R.id.emptyTitle);
+        emptySubtitle = findViewById(R.id.emptySubtitle);
+
         recycler = findViewById(R.id.mushroomRecycler);
 
         String[] frames = {"loading .", "loading ..", "loading ..."};
@@ -249,7 +255,7 @@ public class ShroomLocateActivity extends AppCompatActivity {
         lastLat = lat;
         lastLon = lon;
         loadingText.setVisibility(View.VISIBLE);
-        emptyMessage.setVisibility(View.GONE);
+        emptyState.setVisibility(View.GONE);
         recycler.setVisibility(View.GONE);
 
         handler.post(loadingAnimation);
@@ -269,13 +275,13 @@ public class ShroomLocateActivity extends AppCompatActivity {
 
                 // Cas liste vide
                 if (mushrooms == null || mushrooms.isEmpty()) {
-                    emptyMessage.setVisibility(View.VISIBLE);
+                    emptyState.setVisibility(View.VISIBLE);
                     recycler.setVisibility(View.GONE);
                     return;
                 }
 
                 // Cas liste non vide
-                emptyMessage.setVisibility(View.GONE);
+                emptyState.setVisibility(View.GONE);
                 recycler.setVisibility(View.VISIBLE);
 
                 recycler.setLayoutManager(new LinearLayoutManager(ShroomLocateActivity.this));
@@ -303,12 +309,20 @@ public class ShroomLocateActivity extends AppCompatActivity {
                 }
 
                 if ("EMPTY_LIST".equals(errorMessage)) {
-                    emptyMessage.setText("Aucun champignon trouvé à cet endroit");
+                    emptyTitle.setText("No mushroom found near you.");
+                    emptySubtitle.setText("Try moving to another location or reload.");
+
+                    emptyState.setVisibility(View.VISIBLE);
+                    recycler.setVisibility(View.GONE);
                 } else {
-                    emptyMessage.setText("Erreur : " + errorMessage);
+                    emptyTitle.setText("No mushroom found near you.");
+                    emptySubtitle.setText("Try moving to another location or reload.");
+
+                    emptyState.setVisibility(View.VISIBLE);
+                    recycler.setVisibility(View.GONE);
                 }
 
-                emptyMessage.setVisibility(View.VISIBLE);
+                emptyState.setVisibility(View.VISIBLE);
                 recycler.setVisibility(View.GONE);
             }
         });
