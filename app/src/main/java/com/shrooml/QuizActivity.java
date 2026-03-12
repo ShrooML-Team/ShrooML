@@ -74,6 +74,10 @@ public class QuizActivity extends Activity {
                     startActivity(new Intent(QuizActivity.this, SplashActivity.class));
                     return true;
                 }
+                if(id == R.id.nav_identify) {
+                    startActivity(new Intent(QuizActivity.this, IdentifyActivity.class));
+                    return true;
+                }
 
                 return false;
             }

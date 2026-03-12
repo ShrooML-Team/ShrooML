@@ -19,20 +19,6 @@ public class MushroomEntity {
 
   private String image;
 
-  public MushroomEntity() {}
-
-  public MushroomEntity(String scientific_name, String common_name, String edibility,
-      String[] season, int min_temp, int max_temp, int min_humidity, String[] habitat) {
-    this.scientific_name = scientific_name;
-    this.common_name = common_name;
-    this.edibility = edibility;
-    this.season = season;
-    this.min_temp = min_temp;
-    this.max_temp = max_temp;
-    this.min_humidity = min_humidity;
-    this.habitat = habitat;
-  }
-
   public String getImage() {
     return image;
   }

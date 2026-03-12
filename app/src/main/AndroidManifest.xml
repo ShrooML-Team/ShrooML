@@ -7,6 +7,10 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    <!-- Permission appareil photo -->
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera" android:required="false"/>
+
     <!-- Permission localisation en arrière-plan (optionnelle, android 10+) -->
     <uses-permission
         android:name="android.permission.ACCESS_BACKGROUND_LOCATION"
@@ -59,6 +63,25 @@
             android:name=".ShroomDetailsActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
+
+        <!-- IdentifyActivity -->
+        <activity
+            android:name=".IdentifyActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <activity
+            android:name=".IdentifyDetailsActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
 
     </application>
 </manifest>
