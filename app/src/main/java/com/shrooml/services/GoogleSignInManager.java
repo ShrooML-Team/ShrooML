@@ -22,7 +22,7 @@ public class GoogleSignInManager {
     }
 
     public GoogleSignInManager(Context context, String googleClientId) {
-        this.oAuthService = new OAuthService();
+        this.oAuthService = new OAuthService(true);
 
         // Configurer Google Sign-In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

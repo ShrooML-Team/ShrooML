@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
             Log.d(TAG, "  - googleSignInButton: " + (googleSignInButton != null));
 
             // Initialize services
-            oAuthService = new OAuthService();
+            oAuthService = new OAuthService(true);
             Log.d(TAG, "OAuthService créé");
             
             try {
