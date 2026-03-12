@@ -1,56 +1,87 @@
-<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:versionCode="1"
+    android:versionName="1.0" >
+    <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- Permissions localisation -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- Permission appareil photo -->
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera" android:required="false"/>
+
+    <!-- Permission localisation en arrière-plan (optionnelle, android 10+) -->
+    <uses-permission
+        android:name="android.permission.ACCESS_BACKGROUND_LOCATION"
+        android:required="false" />
+
+    <!-- Internet pour API -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
-        android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.CreditScoringApp"
-        tools:targetApi="31">
+        android:theme="@null"
+        android:icon="@mipmap/ic_launcher"
+        android:label="ShrooML">
 
-        <!-- SplashActivity - Activité de démarrage -->
+        <!-- Lancement de l'application : SplashActivity -->
         <activity
-            android:name=".activities.SplashActivity"
-            android:exported="true">
+            android:name=".SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.SplashBackground"
+            android:icon="@mipmap/ic_launcher">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
-        <!-- LoginActivity - Écran de connexion -->
+        <!-- LoginActivity pour l'authentification -->
         <activity
-            android:name=".activities.LoginActivity"
-            android:exported="false" />
+            android:name=".LoginActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
-        <!-- RegisterActivity - Écran d'inscription -->
+        <!-- RegisterActivity pour l'inscription -->
         <activity
-            android:name=".activities.RegisterActivity"
-            android:exported="false" />
+            android:name=".RegisterActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
-        <!-- CustomerHomeActivity - Accueil client -->
+        <!-- ShroomLocateActivity -->
         <activity
-            android:name=".activities.CustomerHomeActivity"
-            android:exported="false" />
+            android:name=".ShroomLocateActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
-        <!-- NewSimulationActivity - Nouvelle simulation -->
+        <!-- QuizActivity -->
         <activity
-            android:name=".activities.NewSimulationActivity"
-            android:exported="false" />
+            android:name=".QuizActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
-        <!-- SimulationResultActivity - Résultat de simulation -->
         <activity
-            android:name=".activities.SimulationResultActivity"
-            android:exported="false" />
+            android:name=".ShroomDetailsActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
-        <!-- TestActivity - Pour tester l'API -->
+
+        <!-- IdentifyActivity -->
         <activity
-            android:name=".activities.TestActivity"
-            android:exported="true" />
+            android:name=".IdentifyActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <activity
+            android:name=".IdentifyDetailsActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
 
     </application>
-
 </manifest>

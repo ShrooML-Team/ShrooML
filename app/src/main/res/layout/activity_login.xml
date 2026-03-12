@@ -3,42 +3,153 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:background="#db9b71"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp"
+    android:paddingTop="40dp"
+    android:paddingBottom="20dp">
 
+    <!-- App title -->
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login"
-        android:textSize="24sp"
+        android:text="ShrooML"
+        android:textColor="#FFFFFF"
+        android:textSize="48sp"
         android:textStyle="bold"
-        android:layout_marginBottom="32dp" />
+        android:fontFamily="@font/sugo_display"
+        android:layout_marginBottom="8dp" />
 
-    <EditText
-        android:id="@+id/et_username"
+    <!-- White separator line -->
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Username"
-        android:layout_marginBottom="16dp" />
+        android:layout_height="2dp"
+        android:background="#FFFFFF"
+        android:layout_marginBottom="24dp" />
 
-    <EditText
-        android:id="@+id/et_password"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:layout_marginBottom="32dp" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="none">
 
-    <Button
-        android:id="@+id/btn_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Login"
-        android:layout_marginBottom="16dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btn_register"
+            <!-- Section title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Login"
+                android:textColor="#FFFFFF"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="16dp" />
+
+            <EditText
+                android:id="@+id/identifiant_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Login ..."
+                android:inputType="text"
+                android:padding="14dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/input_white_outline"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#CCCCCC" />
+
+            <EditText
+                android:id="@+id/mot_de_passe_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password ..."
+                android:inputType="textPassword"
+                android:padding="14dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/input_white_outline"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#CCCCCC" />
+
+            <Button
+                android:id="@+id/login_button"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="LOGIN"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/button_white_outline" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="- or -"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Social login buttons -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_marginBottom="24dp">
+
+                <ImageButton
+                    android:id="@+id/google_signin_button"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:src="@drawable/ic_google"
+                    android:background="@android:color/transparent"
+                    android:padding="4dp"
+                    android:scaleType="fitCenter"
+                    android:contentDescription="Google Sign In" />
+
+            </LinearLayout>
+
+            <!-- Dashed separator -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@drawable/dashed_separator"
+                android:layerType="software"
+                android:layout_marginBottom="24dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not registered yet ?"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="16dp" />
+
+            <Button
+                android:id="@+id/register_button"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="REGISTER"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/button_white_outline" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- Bottom white line -->
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Register" />
+        android:layout_height="2dp"
+        android:background="#FFFFFF"
+        android:layout_marginTop="8dp" />
 
 </LinearLayout>

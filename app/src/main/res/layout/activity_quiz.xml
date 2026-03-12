@@ -1,21 +1,301 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".QuizActivity" >
+    android:background="#D19364">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <!-- Titre -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/titleContainer"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/hello_world"
-        android:textSize="25sp" />
+        android:layout_marginTop="40dp"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textSize="25sp" />
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ShrooML"
+            android:textColor="#FFFFFF"
+            android:textSize="35sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/sugo_display"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
-</RelativeLayout>
+        <ImageView
+            android:id="@+id/titleIcon"
+            android:layout_width="35sp"
+            android:layout_height="35sp"
+            android:src="@drawable/ic_quiz"
+            android:contentDescription="Quiz icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/title"
+            app:layout_constraintBottom_toBottomOf="@id/title"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <!-- Séparateur sous le titre -->
+    <View
+        android:id="@+id/separatorTitle"
+        android:layout_width="0dp"
+        android:layout_height="3dp"
+        android:background="#FFFFFFFF"
+        android:layout_marginTop="14dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintTop_toBottomOf="@id/titleContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- WRAPPER DU CONTENU (padding restauré ici) -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/contentWrapper"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="0dp"
+        app:layout_constraintTop_toBottomOf="@id/separatorTitle"
+        app:layout_constraintBottom_toTopOf="@id/separator2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Progression -->
+        <TextView
+            android:id="@+id/progressText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1 / 5"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="0dp"
+            android:layout_height="8dp"
+            android:max="100"
+            android:progress="20"
+            android:progressTint="#FFFFFF"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintTop_toBottomOf="@id/progressText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- Carte question -->
+        <LinearLayout
+            android:id="@+id/questionCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#FFFFFF"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp"
+            android:elevation="4dp"
+            app:layout_constraintTop_toBottomOf="@id/progressBar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/questionTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Question"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#333333"
+                android:layout_marginBottom="12dp"/>
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:layout_marginBottom="12dp"
+                android:background="#EEEEEE"/>
+
+            <AutoCompleteTextView
+                android:id="@+id/answerInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Guess..."
+                android:padding="12dp"
+                android:background="@android:drawable/edit_text"
+                android:textSize="16sp"/>
+
+            <RadioGroup
+                android:id="@+id/edibleGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:layout_marginTop="12dp">
+
+                <RadioButton
+                    android:id="@+id/trueButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vrai"
+                    android:textSize="18sp"
+                    android:padding="8dp" />
+
+                <RadioButton
+                    android:id="@+id/falseButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Faux"
+                    android:textSize="18sp"
+                    android:padding="8dp"
+                    android:layout_marginStart="20dp" />
+            </RadioGroup>
+
+        </LinearLayout>
+
+        <!-- Bouton suivant -->
+        <Button
+            android:id="@+id/nextButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Suivant"
+            android:enabled="false"
+            android:backgroundTint="#FFFFFF"
+            android:textColor="#D19364"
+            android:textStyle="bold"
+            android:padding="12dp"
+            app:layout_constraintTop_toBottomOf="@id/questionCard"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- Layout fin de quiz -->
+        <LinearLayout
+            android:id="@+id/quizEndLayout"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:padding="16dp"
+            app:layout_constraintTop_toBottomOf="@id/nextButton"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/quizTitleEnd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Titre du quiz"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:layout_marginBottom="20dp"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/quizScoreEnd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Score : 0"
+                android:textSize="20sp"
+                android:textColor="#FFFFFF"
+                android:gravity="center"/>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Séparateur 2 (comme dans l'autre activité) -->
+    <View
+        android:id="@+id/separator2"
+        android:layout_width="0dp"
+        android:layout_height="3dp"
+        android:background="#FFFFFFFF"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavWrapper"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- MENU (inchangé) -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottomNavWrapper"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/chevronLeft"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_chevron_left"
+            android:alpha="0.4"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <HorizontalScrollView
+            android:id="@+id/bottomNavContainer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            android:fillViewport="false"
+            android:background="@android:color/transparent"
+            android:fadingEdge="none"
+            android:requiresFadingEdge="none"
+            android:overScrollMode="never"
+            android:scrollbarStyle="insideOverlay"
+            app:layout_constraintStart_toEndOf="@id/chevronLeft"
+            app:layout_constraintEnd_toStartOf="@id/chevronRight"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottomNav"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:elevation="0dp"
+                app:elevation="0dp"
+                app:backgroundTint="@android:color/transparent"
+                app:itemIconTint="@color/transparent"
+                app:itemIconSize="0dp"
+                app:itemTextColor="@color/white"
+                android:layout_marginBottom="17dp"
+                app:itemTextAppearanceActive="@style/BottomNavText"
+                app:itemTextAppearanceInactive="@style/BottomNavText"
+                app:menu="@menu/bottom_nav_menu"
+                app:labelVisibilityMode="labeled"/>
+        </HorizontalScrollView>
+
+        <ImageView
+            android:id="@+id/chevronRight"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_chevron_right"
+            android:alpha="0.4"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
