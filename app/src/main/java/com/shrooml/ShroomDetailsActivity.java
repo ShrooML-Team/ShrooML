@@ -80,20 +80,23 @@ public class ShroomDetailsActivity extends AppCompatActivity {
                         .into(detailsImage);
 
                 // Badge toxicité
-                switch (m.getToxicity()) {
-                    case "toxic":
-                        detailsBadge.setText("☠️ Toxique");
+                switch (m.getEdibility()) {
+                    case "inedible":
+                        detailsBadge.setText("Toxique");
                         detailsBadge.setBackgroundColor(0xFFD32F2F);
                         break;
-                    case "inedible":
-                        detailsBadge.setText("⚠️ Non comestible");
-                        detailsBadge.setBackgroundColor(0xFFFBC02D);
+
+                    case "medicinal":
+                        detailsBadge.setText("Médicinal");
+                        detailsBadge.setBackgroundColor(0xFF1976D2);
                         break;
+
                     default:
-                        detailsBadge.setText("🟢 Comestible");
+                        detailsBadge.setText("Comestible");
                         detailsBadge.setBackgroundColor(0xFF388E3C);
                         break;
                 }
+
 
                 // Informations générales
                 String general =
