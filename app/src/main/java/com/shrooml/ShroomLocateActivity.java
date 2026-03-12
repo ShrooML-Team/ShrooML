@@ -7,8 +7,10 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import com.google.android.gms.location.LocationRequest;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -55,10 +57,35 @@ public class ShroomLocateActivity extends AppCompatActivity {
 
     private ObjectAnimator refreshAnimator;
 
+    private TextView loadingText;
+    private TextView emptyMessage;
+    private RecyclerView recycler;
+
+    private Handler handler = new Handler();
+    private Runnable loadingAnimation;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_locate);
+
+        loadingText = findViewById(R.id.loadingText);
+        emptyMessage = findViewById(R.id.emptyMessage);
+        recycler = findViewById(R.id.mushroomRecycler);
+
+        String[] frames = {"loading .", "loading ..", "loading ..."};
+        final int[] index = {0};
+
+        loadingAnimation = new Runnable() {
+            @Override
+            public void run() {
+                loadingText.setText(frames[index[0]]);
+                index[0] = (index[0] + 1) % frames.length;
+                handler.postDelayed(this, 500);
+            }
+        };
+
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -217,23 +244,36 @@ public class ShroomLocateActivity extends AppCompatActivity {
     private void callApi(double lat, double lon) {
         lastLat = lat;
         lastLon = lon;
+        loadingText.setVisibility(View.VISIBLE);
+        emptyMessage.setVisibility(View.GONE);
+        recycler.setVisibility(View.GONE);
+
+        handler.post(loadingAnimation);
+
         api.getMushroomsByLocation(lat, lon, new ShroomLocService.MushroomsLocationCallBack() {
             @Override
             public void onSucces(List<MushroomCompleteEntity> mushrooms) {
+
+                // Stop loader
+                handler.removeCallbacks(loadingAnimation);
+                loadingText.setVisibility(View.GONE);
+
+                if (refreshAnimator != null && refreshAnimator.isRunning()) {
+                    refreshAnimator.end();
+                    refreshButton.setRotation(0f);
+                }
+
+                // Cas liste vide
                 if (mushrooms == null || mushrooms.isEmpty()) {
+                    emptyMessage.setVisibility(View.VISIBLE);
+                    recycler.setVisibility(View.GONE);
                     return;
                 }
 
-                StringBuilder sb = new StringBuilder();
+                // Cas liste non vide
+                emptyMessage.setVisibility(View.GONE);
+                recycler.setVisibility(View.VISIBLE);
 
-                for (MushroomCompleteEntity m : mushrooms) {
-                    sb.append(m.getCommonName())
-                            .append(" (")
-                            .append(m.getScientificName())
-                            .append(")\n");
-                }
-
-                RecyclerView recycler = findViewById(R.id.mushroomRecycler);
                 recycler.setLayoutManager(new LinearLayoutManager(ShroomLocateActivity.this));
 
                 MushroomAdapter adapter = new MushroomAdapter(ShroomLocateActivity.this, mushrooms);
@@ -244,23 +284,28 @@ public class ShroomLocateActivity extends AppCompatActivity {
                     intent.putExtra("scientificName", m.getScientificName());
                     startActivity(intent);
                 });
-
-                if (refreshAnimator != null && refreshAnimator.isRunning()) {
-                    refreshAnimator.end();
-                    refreshButton.setRotation(0f); // remet l’icône droite
-                }
-
-
             }
+
 
             @Override
             public void onError(String errorMessage) {
-                Toast.makeText(ShroomLocateActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+
+                handler.removeCallbacks(loadingAnimation);
+                loadingText.setVisibility(View.GONE);
+
                 if (refreshAnimator != null && refreshAnimator.isRunning()) {
                     refreshAnimator.end();
-                    refreshButton.setRotation(0f); // remet l’icône droite
+                    refreshButton.setRotation(0f);
                 }
 
+                if ("EMPTY_LIST".equals(errorMessage)) {
+                    emptyMessage.setText("Aucun champignon trouvé à cet endroit");
+                } else {
+                    emptyMessage.setText("Erreur : " + errorMessage);
+                }
+
+                emptyMessage.setVisibility(View.VISIBLE);
+                recycler.setVisibility(View.GONE);
             }
         });
     }
