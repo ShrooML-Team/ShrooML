@@ -109,18 +109,65 @@
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <!-- Message liste vide -->
-        <TextView
-            android:id="@+id/emptyMessage"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/emptyState"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Aucun champignon trouvé à cet endroit"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
+            android:padding="20dp"
+            android:background="@drawable/item_bg"
             android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <FrameLayout
+                android:id="@+id/emptyIconContainer"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@drawable/mushroom_image_bg"
+                android:padding="6dp"
+                android:clipToPadding="false"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <ImageView
+                    android:id="@+id/emptyIcon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_mushroom_placeholder"
+                    android:scaleType="centerInside"
+                    app:tint="#FFFFFF" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/emptyTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No mushroom found near you."
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"
+                app:layout_constraintTop_toBottomOf="@id/emptyIconContainer"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/emptySubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Try moving to another location or reload."
+                android:textColor="#DDDDDD"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintTop_toBottomOf="@id/emptyTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <!-- Liste des champignons -->
         <androidx.recyclerview.widget.RecyclerView
