@@ -55,12 +55,16 @@ public class MushroomAdapter extends RecyclerView.Adapter<MushroomAdapter.ViewHo
                 .load(m.getImageUrl())
                 .into(holder.image);
 
-        // Icône selon toxicité
-        if ("toxic".equalsIgnoreCase(m.getToxicity())) {
+        // Icône selon comestibilité
+        String ed = m.getEdibility().toLowerCase();
+        if (ed.equals("inedible")) {
             holder.statusIcon.setImageResource(R.drawable.ic_skull);
+        } else if (ed.equals("medicinal")) {
+            holder.statusIcon.setImageResource(R.drawable.ic_medicinal);
         } else {
             holder.statusIcon.setImageResource(R.drawable.ic_check);
         }
+
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
