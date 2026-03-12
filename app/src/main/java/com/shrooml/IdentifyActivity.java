@@ -50,6 +50,10 @@ public class IdentifyActivity extends AppCompatActivity {
 
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
 
+    private String mushroomIdentify;
+
+    private Double accuracyIdentify;
+
     private void setupImagePicker() {
         pickImageLauncher = registerForActivityResult(
                 new ActivityResultContracts.GetContent(),
@@ -83,6 +87,15 @@ public class IdentifyActivity extends AppCompatActivity {
         mushroomImage = findViewById(R.id.mushroomImage);
 
         btnGallery.setOnClickListener(v -> pickImageLauncher.launch("image/*"));
+
+        ImageButton btnZoom = findViewById(R.id.btnZoom);
+
+        btnZoom.setOnClickListener(v -> {
+            Intent intent = new Intent(IdentifyActivity.this, IdentifyDetailsActivity.class);
+            intent.putExtra("scientificName", this.mushroomIdentify);
+            intent.putExtra("accuracy", this.accuracyIdentify);
+            startActivity(intent);
+        });
 
         BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
         bottomNav.setSelectedItemId(R.id.nav_locate);
@@ -193,14 +206,15 @@ public class IdentifyActivity extends AppCompatActivity {
             @Override
             public void onSuccess(IdentificationEntity identification) {
                 if (identification.getResult().getIs_mushroom().getBinary().equals("true")) {
-                    String mush = identification.getResult().
+                    IdentifyActivity.this.mushroomIdentify = identification.getResult().
                             getClassification().
                             getSuggestions().get(0).getName();
-                    Double proba = identification.getResult().
+                    IdentifyActivity.this.accuracyIdentify = identification.getResult().
                             getClassification().
                             getSuggestions().get(0).getProbability();
                     Toast.makeText(IdentifyActivity.this,
-                                    "Mushroom : " + mush + " Probability : " + proba + "%", LENGTH_LONG)
+                                    "Mushroom : " + IdentifyActivity.this.mushroomIdentify + " Probability : " +
+                                            IdentifyActivity.this.accuracyIdentify + "%", LENGTH_LONG)
                             .show();
                 } else {
                     Toast.makeText(IdentifyActivity.this, "Cette photo n'est pas un champignon", LENGTH_LONG)
