@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="loadSplash">Loading ...</string>
+
     <string name="app_name">ShrooML APP</string>
     <string name="hello_world">Hello The world !</string>
     <string name="menu_settings">Settings</string>
@@ -33,9 +35,9 @@
     <string name="reci">Recipe</string>
     <string name="accu">Accuracy</string>
 
-    <string name="loading_1">loading .</string>
-    <string name="loading_2">loading ..</string>
-    <string name="loading_3">loading ...</string>
+    <string name="loading_1">Loading .</string>
+    <string name="loading_2">Loading ..</string>
+    <string name="loading_3">Loading ...</string>
 
 
     <string name="choice_title">Choice identify</string>
