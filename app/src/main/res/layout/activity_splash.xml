@@ -24,7 +24,7 @@
         android:id="@+id/loadingText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="loading ..."
+        android:text="@string/loadSplash"
         android:textColor="#FFFFFF"
         android:textSize="30sp"
         android:layout_below="@id/title"

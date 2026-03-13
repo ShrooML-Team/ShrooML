@@ -70,7 +70,11 @@ public class ShroomLocateActivity extends AppCompatActivity {
 
         recycler = findViewById(R.id.mushroomRecycler);
 
-        String[] frames = {"loading .", "loading ..", "loading ..."};
+        String[] frames = {
+                getString(R.string.loading_1),
+                getString(R.string.loading_2),
+                getString(R.string.loading_3)
+        };
         final int[] index = {0};
 
         loadingAnimation = new Runnable() {
@@ -286,17 +290,19 @@ public class ShroomLocateActivity extends AppCompatActivity {
                 }
 
                 if ("EMPTY_LIST".equals(errorMessage)) {
-                    emptyTitle.setText("No mushroom found near you.");
-                    emptySubtitle.setText("Try moving to another location or reload.");
+                    emptyTitle.setText(getString(R.string.noMushroomFoundNearYou));
+                    emptySubtitle.setText(getString(R.string.changeLocation));
 
                     emptyState.setVisibility(View.VISIBLE);
                     recycler.setVisibility(View.GONE);
+
                 } else {
-                    emptyTitle.setText("No mushroom found near you.");
-                    emptySubtitle.setText("Try moving to another location or reload.");
+                    emptyTitle.setText(getString(R.string.noMushroomFoundNearYou));
+                    emptySubtitle.setText(getString(R.string.changeLocation));
 
                     emptyState.setVisibility(View.VISIBLE);
                     recycler.setVisibility(View.GONE);
+
                 }
 
                 emptyState.setVisibility(View.VISIBLE);
