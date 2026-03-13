@@ -4,6 +4,10 @@ import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.SensorManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
 import android.location.Location;
 import com.google.android.gms.location.LocationRequest;
 import android.os.Bundle;
@@ -35,6 +39,12 @@ import java.util.List;
 
 public class ShroomLocateActivity extends AppCompatActivity {
 
+    private SensorManager sensorManager;
+    private Sensor accelerometer;
+
+    private float shakeThreshold = 12f; // seuil de secouage
+    private long lastShakeTime = 0;
+
     private static final int REQUEST_LOCATION = 1001;
 
     private FusedLocationProviderClient fusedLocationClient;
@@ -62,6 +72,9 @@ public class ShroomLocateActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_locate);
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
 
         loadingText = findViewById(R.id.loadingText);
         emptyState = findViewById(R.id.emptyState);
@@ -145,6 +158,50 @@ public class ShroomLocateActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private final SensorEventListener shakeListener = new SensorEventListener() {
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            float x = event.values[0];
+            float y = event.values[1];
+            float z = event.values[2];
+
+            // Calcul de l'accélération brute
+            float acceleration = (float) Math.sqrt(x * x + y * y + z * z);
+
+            long currentTime = System.currentTimeMillis();
+
+            if (acceleration > shakeThreshold && (currentTime - lastShakeTime) > 1000) {
+                lastShakeTime = currentTime;
+
+                // 👉 Action : lancer le refresh
+                if (!refreshAnimator.isRunning()) {
+                    refreshAnimator.start();
+                }
+
+                if (lastLat != 0 && lastLon != 0) {
+                    callApi(lastLat, lastLon);
+                } else {
+                    Toast.makeText(ShroomLocateActivity.this, "Location not ready yet", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+    };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sensorManager.registerListener(shakeListener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(shakeListener);
     }
 
 
