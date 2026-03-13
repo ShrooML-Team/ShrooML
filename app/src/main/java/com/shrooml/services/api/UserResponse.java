@@ -1,7 +1,5 @@
 package com.shrooml.services.api;
 
-import com.google.gson.annotations.SerializedName;
-
 public class UserResponse {
     private int id;
     private String identifiant;

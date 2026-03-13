@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import com.shrooml.services.OAuthService;
+import com.shrooml.services.api.ShroomLocRetrofitClient;
+
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
@@ -84,8 +87,20 @@ public class SplashActivity extends Activity {
             Log.d(TAG, "isTokenValid() retourné: " + isValid);
             
             if (isValid) {
-                Log.d(TAG, "Token valide -> Navigation vers QuizActivity");
-                startActivity(new Intent(SplashActivity.this, QuizActivity.class));
+                Log.d(TAG, "Token valide -> Navigation vers ChoiceIdentifyActivity");
+                new OAuthService().login("admin", "password123", new OAuthService.OAuthCallback() {
+                    @Override
+                    public void onSuccess(String token) {
+                        ShroomLocRetrofitClient.setToken(token);
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                startActivity(new Intent(SplashActivity.this, ChoiceIdentifyActivity.class));
+
             } else {
                 Log.d(TAG, "Pas de token valide -> Navigation vers LoginActivity");
                 startActivity(new Intent(SplashActivity.this, LoginActivity.class));

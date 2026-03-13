@@ -8,7 +8,6 @@ import android.location.Location;
 import com.google.android.gms.location.LocationRequest;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -26,21 +25,13 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.Priority;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.shrooml.models.MushroomAdapter;
 import com.shrooml.models.MushroomCompleteEntity;
 import com.shrooml.services.OAuthService;
 import com.shrooml.services.ShroomLocService;
-import com.shrooml.services.api.ShroomLocApi;
-import com.shrooml.services.api.ShroomLocRetrofitClient;
 
-import java.text.BreakIterator;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ShroomLocateActivity extends AppCompatActivity {
 
@@ -48,7 +39,6 @@ public class ShroomLocateActivity extends AppCompatActivity {
 
     private FusedLocationProviderClient fusedLocationClient;
     private ShroomLocService api;
-    private TextView mushroomListText;
 
     private ImageView refreshButton;
 
@@ -97,21 +87,8 @@ public class ShroomLocateActivity extends AppCompatActivity {
 
         OAuthService api_auth = new OAuthService();
 
-
-        api_auth.login("admin", "password123", new OAuthService.OAuthCallback() {
-            @Override
-            public void onSuccess(String token) {
-                ShroomLocRetrofitClient.setToken(token);
-                api = new ShroomLocService();
-                requestLocationPermission();
-            }
-
-            @Override
-            public void onError(String errorMessage) {
-                Toast.makeText(ShroomLocateActivity.this, "Erreur : "
-                        + errorMessage, Toast.LENGTH_LONG).show();
-            }
-        });
+        api = new ShroomLocService();
+        requestLocationPermission();
 
         refreshButton = findViewById(R.id.refreshButton);
         refreshAnimator = ObjectAnimator.ofFloat(refreshButton, "rotation", 0f, 360f);
@@ -156,7 +133,7 @@ public class ShroomLocateActivity extends AppCompatActivity {
                     return true;
                 }
                 if(id == R.id.nav_identify) {
-                    startActivity(new Intent(ShroomLocateActivity.this, IdentifyActivity.class));
+                    startActivity(new Intent(ShroomLocateActivity.this, ChoiceIdentifyActivity.class));
                     return true;
                 }
 

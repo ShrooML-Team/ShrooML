@@ -25,9 +25,6 @@ import androidx.annotation.NonNull;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.shrooml.games.QuizGame;
-import com.shrooml.services.InaturalistService;
-import com.shrooml.services.OAuthService;
-import com.shrooml.services.api.ShroomLocRetrofitClient;
 
 public class QuizActivity extends Activity {
 
@@ -47,7 +44,6 @@ public class QuizActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
-        OAuthService auth_api = new OAuthService();
 
         imageView = findViewById(R.id.imageView); // id à adapter
         nextButton = findViewById(R.id.nextButton); // <-- ajouter
@@ -75,7 +71,7 @@ public class QuizActivity extends Activity {
                     return true;
                 }
                 if(id == R.id.nav_identify) {
-                    startActivity(new Intent(QuizActivity.this, IdentifyActivity.class));
+                    startActivity(new Intent(QuizActivity.this, ChoiceIdentifyActivity.class));
                     return true;
                 }
 
@@ -96,93 +92,82 @@ public class QuizActivity extends Activity {
             checkAnswer();
         });
 
-        auth_api.login("admin", "password123", new OAuthService.OAuthCallback(){
+        final QuizGame[] quizGameHolder = new QuizGame[1]; // conteneur pour Java
+        quizGameHolder[0] = new QuizGame(QuizActivity.this, new QuizGame.QuizCallback() {
             @Override
-            public void onSuccess(String token) {
-                ShroomLocRetrofitClient.setToken(token);
-                final QuizGame[] quizGameHolder = new QuizGame[1]; // conteneur pour Java
-                quizGameHolder[0] = new QuizGame(QuizActivity.this, new QuizGame.QuizCallback() {
-                    @Override
-                    public void onQuizReady() {
-                        quizGame = quizGameHolder[0];
+            public void onQuizReady() {
+                quizGame = quizGameHolder[0];
 
-                        ArrayAdapter<String> adapter =
-                                new ArrayAdapter<>(QuizActivity.this,
-                                        android.R.layout.simple_dropdown_item_1line,
-                                        quizGame.getAllCommonName());
+                ArrayAdapter<String> adapter =
+                        new ArrayAdapter<>(QuizActivity.this,
+                                android.R.layout.simple_dropdown_item_1line,
+                                quizGame.getAllCommonName());
 
-                        answerInput.setAdapter(adapter);
+                answerInput.setAdapter(adapter);
 
+                updateQuestion();
+                nextButton.setOnClickListener(v -> {
+                    currentQuestion++;
+                    answerInput.setText("");
+                    edibleGroup.clearCheck();
+                    ArrayAdapter<String> adapt = null;
+                    switch (currentQuestion){
+                        case 1:adapt = new ArrayAdapter<>(QuizActivity.this,
+                                android.R.layout.simple_dropdown_item_1line,
+                                quizGame.getAllScientName());break;
+                        case 3: adapt = new ArrayAdapter<>(QuizActivity.this,
+                                android.R.layout.simple_dropdown_item_1line,
+                                quizGame.getAllHabitat());break;
+                        case 4:adapt = new ArrayAdapter<>(QuizActivity.this,
+                                android.R.layout.simple_dropdown_item_1line,
+                                quizGame.getAllSeason());
+                                nextButton.setText("Terminer le quiz");break;
+
+                    }
+                    answerInput.setAdapter(adapt);
+
+                    if(currentQuestion < 5){
                         updateQuestion();
-                        nextButton.setOnClickListener(v -> {
-                            currentQuestion++;
-                            answerInput.setText("");
-                            edibleGroup.clearCheck();
-                            ArrayAdapter<String> adapt = null;
-                            switch (currentQuestion){
-                                case 1:adapt = new ArrayAdapter<>(QuizActivity.this,
-                                        android.R.layout.simple_dropdown_item_1line,
-                                        quizGame.getAllScientName());break;
-                                case 3: adapt = new ArrayAdapter<>(QuizActivity.this,
-                                        android.R.layout.simple_dropdown_item_1line,
-                                        quizGame.getAllHabitat());break;
-                                case 4:adapt = new ArrayAdapter<>(QuizActivity.this,
-                                        android.R.layout.simple_dropdown_item_1line,
-                                        quizGame.getAllSeason());
-                                        nextButton.setText("Terminer le quiz");break;
+                    } else {
+                        answerInput.setVisibility(View.GONE);
+                        edibleGroup.setVisibility(View.GONE);
+                        nextButton.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.GONE);
+                        progressText.setVisibility(View.GONE);
+                        imageView.setVisibility(View.GONE);
+                        findViewById(R.id.questionTextView).setVisibility(View.GONE);
 
-                            }
-                            answerInput.setAdapter(adapt);
+                        // afficher le layout de fin
+                        LinearLayout quizEndLayout = findViewById(R.id.quizEndLayout);
+                        LinearLayout questionCard = findViewById(R.id.questionCard);
+                        questionCard.setVisibility(View.GONE);
 
-                            if(currentQuestion < 5){
-                                updateQuestion();
-                            } else {
-                                answerInput.setVisibility(View.GONE);
-                                edibleGroup.setVisibility(View.GONE);
-                                nextButton.setVisibility(View.GONE);
-                                progressBar.setVisibility(View.GONE);
-                                progressText.setVisibility(View.GONE);
-                                imageView.setVisibility(View.GONE);
-                                findViewById(R.id.questionTextView).setVisibility(View.GONE);
+                        quizEndLayout.setVisibility(View.VISIBLE);
 
-                                // afficher le layout de fin
-                                LinearLayout quizEndLayout = findViewById(R.id.quizEndLayout);
-                                LinearLayout questionCard = findViewById(R.id.questionCard);
-                                questionCard.setVisibility(View.GONE);
+                        TextView titleEnd = findViewById(R.id.quizTitleEnd);
+                        TextView scoreEnd = findViewById(R.id.quizScoreEnd);
+                        int score = quizGame.getScore();
+                        titleEnd.setText(quizGame.getTitre(score));
+                        scoreEnd.setText("Score : " + score);
+                    }
+                    answerInput.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                });
 
-                                quizEndLayout.setVisibility(View.VISIBLE);
-
-                                TextView titleEnd = findViewById(R.id.quizTitleEnd);
-                                TextView scoreEnd = findViewById(R.id.quizScoreEnd);
-                                int score = quizGame.getScore();
-                                titleEnd.setText(quizGame.getTitre(score));
-                                scoreEnd.setText("Score : " + score);
-                            }
-                            answerInput.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                        });
-
-                        answerInput.addTextChangedListener(new TextWatcher() {
-                            @Override
-                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                                // rien à faire ici
-                            }
-
-                            @Override
-                            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                                // rien à faire ici
-                            }
-
-                            @Override
-                            public void afterTextChanged(Editable s) {
-                                // active le bouton suivant seulement si quelque chose est tapé
-                                nextButton.setEnabled(!s.toString().trim().isEmpty());
-                            }
-                        });
+                answerInput.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        // rien à faire ici
                     }
 
                     @Override
-                    public void onError(String errorMessage) {
-                        Toast.makeText(QuizActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        // rien à faire ici
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        // active le bouton suivant seulement si quelque chose est tapé
+                        nextButton.setEnabled(!s.toString().trim().isEmpty());
                     }
                 });
             }

@@ -63,6 +63,8 @@
             android:name=".ShroomDetailsActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
+        <activity android:name=".ChoiceIdentifyActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <!-- IdentifyActivity -->
         <activity

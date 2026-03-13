@@ -22,4 +22,11 @@
     <string name="title_4">Vous êtes un champignon confirmé</string>
     <string name="title_5">Vous êtes un champignon expert</string>
     <string name="title_6">Vous êtes un champiRoi</string>
+
+    <string name="choice_title">Choix d\'identification</string>
+
+    <string name="choice_description">ShrooML vous aide a identifier un champigon
+        en ce basant sur une image ou critère grace au machine learning !</string>
+
+    <string name="choice_label">— OU —</string>
 </resources>
