@@ -113,6 +113,7 @@ public class LoginActivity extends AppCompatActivity {
                             response.getUser().getId(),
                             response.getUser().getIdentifiant()
                     );
+                        tokenManager.saveUserProfile(response.getUser());
                     Toast.makeText(LoginActivity.this, "Connexion Google réussie!", Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(LoginActivity.this, QuizActivity.class);
@@ -167,6 +168,7 @@ public class LoginActivity extends AppCompatActivity {
                             response.getUser().getId(),
                             response.getUser().getIdentifiant()
                     );
+                        tokenManager.saveUserProfile(response.getUser());
                     Log.d(TAG, "Token sauvegardé avec succès");
                     Toast.makeText(LoginActivity.this, "Connexion réussie!", Toast.LENGTH_SHORT).show();
 

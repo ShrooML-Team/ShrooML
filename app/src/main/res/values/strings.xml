@@ -22,4 +22,5 @@
     <string name="title_4">You are a mushroom confirmate</string>
     <string name="title_5">You are a mushroom expert</string>
     <string name="title_6">You are a mushroom king</string>
+    <string name="nav_profile_title">Profile</string>
 </resources>

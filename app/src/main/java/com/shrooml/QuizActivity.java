@@ -56,7 +56,7 @@ public class QuizActivity extends Activity {
         answerInput = findViewById(R.id.answerInput); // <-- ajouter
         edibleGroup = findViewById(R.id.edibleGroup);
         BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
-        bottomNav.setSelectedItemId(R.id.nav_locate);
+        bottomNav.setSelectedItemId(R.id.nav_quiz);
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -70,8 +70,8 @@ public class QuizActivity extends Activity {
                     startActivity(new Intent(QuizActivity.this, ShroomLocateActivity.class));
                     return true;
                 }
-                if (id == R.id.nav_home) {
-                    startActivity(new Intent(QuizActivity.this, SplashActivity.class));
+                if (id == R.id.nav_profile) {
+                    startActivity(new Intent(QuizActivity.this, ProfileActivity.class));
                     return true;
                 }
                 if(id == R.id.nav_identify) {

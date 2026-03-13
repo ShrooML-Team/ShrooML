@@ -98,7 +98,7 @@ public class IdentifyActivity extends AppCompatActivity {
         });
 
         BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
-        bottomNav.setSelectedItemId(R.id.nav_locate);
+        bottomNav.setSelectedItemId(R.id.nav_identify);
 
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -117,8 +117,8 @@ public class IdentifyActivity extends AppCompatActivity {
                     startActivity(new Intent(IdentifyActivity.this, QuizActivity.class));
                     return true;
                 }
-                if (id == R.id.nav_home) {
-                    startActivity(new Intent(IdentifyActivity.this, SplashActivity.class));
+                if (id == R.id.nav_profile) {
+                    startActivity(new Intent(IdentifyActivity.this, ProfileActivity.class));
                     return true;
                 }
 
