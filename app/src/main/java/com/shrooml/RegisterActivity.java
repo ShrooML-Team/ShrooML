@@ -97,7 +97,7 @@ public class RegisterActivity extends AppCompatActivity {
                     );
                     Toast.makeText(RegisterActivity.this, "Inscription réussie!", Toast.LENGTH_SHORT).show();
                     
-                    Intent intent = new Intent(RegisterActivity.this, QuizActivity.class);
+                    Intent intent = new Intent(RegisterActivity.this, ChoiceIdentifyActivity.class);
                     startActivity(intent);
                     finish();
                 } catch (Exception e) {

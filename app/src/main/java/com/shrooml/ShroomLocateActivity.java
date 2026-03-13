@@ -30,7 +30,6 @@ import com.shrooml.models.MushroomAdapter;
 import com.shrooml.models.MushroomCompleteEntity;
 import com.shrooml.services.OAuthService;
 import com.shrooml.services.ShroomLocService;
-import com.shrooml.services.api.ShroomLocRetrofitClient;
 
 import java.util.List;
 
@@ -40,7 +39,6 @@ public class ShroomLocateActivity extends AppCompatActivity {
 
     private FusedLocationProviderClient fusedLocationClient;
     private ShroomLocService api;
-    private TextView mushroomListText;
 
     private ImageView refreshButton;
 
@@ -93,21 +91,8 @@ public class ShroomLocateActivity extends AppCompatActivity {
 
         OAuthService api_auth = new OAuthService();
 
-
-        api_auth.login("admin", "password123", new OAuthService.OAuthCallback() {
-            @Override
-            public void onSuccess(String token) {
-                ShroomLocRetrofitClient.setToken(token);
-                api = new ShroomLocService();
-                requestLocationPermission();
-            }
-
-            @Override
-            public void onError(String errorMessage) {
-                Toast.makeText(ShroomLocateActivity.this, "Erreur : "
-                        + errorMessage, Toast.LENGTH_LONG).show();
-            }
-        });
+        api = new ShroomLocService();
+        requestLocationPermission();
 
         refreshButton = findViewById(R.id.refreshButton);
         refreshAnimator = ObjectAnimator.ofFloat(refreshButton, "rotation", 0f, 360f);
@@ -152,7 +137,7 @@ public class ShroomLocateActivity extends AppCompatActivity {
                     return true;
                 }
                 if(id == R.id.nav_identify) {
-                    startActivity(new Intent(ShroomLocateActivity.this, IdentifyActivity.class));
+                    startActivity(new Intent(ShroomLocateActivity.this, ChoiceIdentifyActivity.class));
                     return true;
                 }
 

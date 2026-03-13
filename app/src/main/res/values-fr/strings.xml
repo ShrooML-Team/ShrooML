@@ -37,4 +37,11 @@
     <string name="loading_2">Chargement ..</string>
     <string name="loading_3">Chargement ...</string>
 
+
+    <string name="choice_title">Choix d\'identification</string>
+
+    <string name="choice_description">ShrooML vous aide a identifier un champigon
+        en ce basant sur une image ou critère grace au machine learning !</string>
+
+    <string name="choice_label">— OU —</string>
 </resources>

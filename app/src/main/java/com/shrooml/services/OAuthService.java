@@ -16,7 +16,6 @@ import retrofit2.Response;
 
 public class OAuthService {
 
-    private List<MushroomEntity> mushrooms;
 
     private final OAuthApi api;
 
