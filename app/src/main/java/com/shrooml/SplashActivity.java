@@ -92,6 +92,9 @@ public class SplashActivity extends Activity {
                     @Override
                     public void onSuccess(String token) {
                         ShroomLocRetrofitClient.setToken(token);
+                        startActivity(new Intent(SplashActivity.this, ChoiceIdentifyActivity.class));
+                        Log.d(TAG, "Appel de finish()");
+                        finish();
                     }
 
                     @Override
@@ -99,25 +102,29 @@ public class SplashActivity extends Activity {
 
                     }
                 });
-                startActivity(new Intent(SplashActivity.this, ChoiceIdentifyActivity.class));
 
             } else {
                 Log.d(TAG, "Pas de token valide -> Navigation vers LoginActivity");
                 startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                Log.d(TAG, "Appel de finish()");
+                finish();
             }
         } catch (GeneralSecurityException e) {
             Log.e(TAG, "ERREUR GeneralSecurityException dans checkAuthenticationAndNavigate()", e);
             e.printStackTrace();
             startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+            Log.d(TAG, "Appel de finish()");
+            finish();
         } catch (IOException e) {
             Log.e(TAG, "ERREUR IOException dans checkAuthenticationAndNavigate()", e);
             e.printStackTrace();
             startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+            Log.d(TAG, "Appel de finish()");
+            finish();
         } catch (Exception e) {
             Log.e(TAG, "ERREUR INATTENDUE dans checkAuthenticationAndNavigate()", e);
             e.printStackTrace();
             startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-        } finally {
             Log.d(TAG, "Appel de finish()");
             finish();
         }
