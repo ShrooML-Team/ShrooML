@@ -8,7 +8,6 @@ import android.location.Location;
 import com.google.android.gms.location.LocationRequest;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -26,21 +25,14 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.Priority;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.shrooml.models.MushroomAdapter;
 import com.shrooml.models.MushroomCompleteEntity;
 import com.shrooml.services.OAuthService;
 import com.shrooml.services.ShroomLocService;
-import com.shrooml.services.api.ShroomLocApi;
 import com.shrooml.services.api.ShroomLocRetrofitClient;
 
-import java.text.BreakIterator;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ShroomLocateActivity extends AppCompatActivity {
 
@@ -80,7 +72,11 @@ public class ShroomLocateActivity extends AppCompatActivity {
 
         recycler = findViewById(R.id.mushroomRecycler);
 
-        String[] frames = {"loading .", "loading ..", "loading ..."};
+        String[] frames = {
+                getString(R.string.loading_1),
+                getString(R.string.loading_2),
+                getString(R.string.loading_3)
+        };
         final int[] index = {0};
 
         loadingAnimation = new Runnable() {
@@ -309,17 +305,19 @@ public class ShroomLocateActivity extends AppCompatActivity {
                 }
 
                 if ("EMPTY_LIST".equals(errorMessage)) {
-                    emptyTitle.setText("No mushroom found near you.");
-                    emptySubtitle.setText("Try moving to another location or reload.");
+                    emptyTitle.setText(getString(R.string.noMushroomFoundNearYou));
+                    emptySubtitle.setText(getString(R.string.changeLocation));
 
                     emptyState.setVisibility(View.VISIBLE);
                     recycler.setVisibility(View.GONE);
+
                 } else {
-                    emptyTitle.setText("No mushroom found near you.");
-                    emptySubtitle.setText("Try moving to another location or reload.");
+                    emptyTitle.setText(getString(R.string.noMushroomFoundNearYou));
+                    emptySubtitle.setText(getString(R.string.changeLocation));
 
                     emptyState.setVisibility(View.VISIBLE);
                     recycler.setVisibility(View.GONE);
+
                 }
 
                 emptyState.setVisibility(View.VISIBLE);

@@ -22,4 +22,19 @@
     <string name="title_4">Vous êtes un champignon confirmé</string>
     <string name="title_5">Vous êtes un champignon expert</string>
     <string name="title_6">Vous êtes un champiRoi</string>
+
+    <string name="descriptionLocate">ShrooML Locate vous aide à identifier les espèces de champignons susceptibles de pousser près de chez vous, en fonction de votre localisation, de votre biome et de la météo, grâce à ShroomLoc !</string>
+    <string name="noMushroomFoundNearYou">Aucun champignon trouvé proche de vous.</string>
+    <string name="changeLocation">Essayez de changer d\'endroit ou rafraichissez.</string>
+
+    <string name="tox">Toxicité</string>
+    <string name="genInfo">Informations générales</string>
+    <string name="eco">Écologie</string>
+    <string name="reci">Recette</string>
+    <string name="accu">Précision</string>
+
+    <string name="loading_1">Chargement .</string>
+    <string name="loading_2">Chargement ..</string>
+    <string name="loading_3">Chargement ...</string>
+
 </resources>

@@ -22,4 +22,19 @@
     <string name="title_4">You are a mushroom confirmate</string>
     <string name="title_5">You are a mushroom expert</string>
     <string name="title_6">You are a mushroom king</string>
+
+    <string name="descriptionLocate">ShrooML locate helps you find possibly growing mushrooms species near you based on your location, biome and weather, thanks to ShroomLoc !</string>
+    <string name="noMushroomFoundNearYou">No mushroom found near you.</string>
+    <string name="changeLocation">Try moving to another location or reload.</string>
+
+    <string name="tox">Toxicity</string>
+    <string name="genInfo">General Informations</string>
+    <string name="eco">Ecology</string>
+    <string name="reci">Recipe</string>
+    <string name="accu">Accuracy</string>
+
+    <string name="loading_1">loading .</string>
+    <string name="loading_2">loading ..</string>
+    <string name="loading_3">loading ...</string>
+
 </resources>
