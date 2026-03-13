@@ -1,14 +1,18 @@
 package com.shrooml;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.shrooml.models.MushroomCompleteEntity;
 import com.shrooml.models.RecipeEntity;
 import com.shrooml.services.ShroomLocService;
@@ -47,6 +51,35 @@ public class ShroomDetailsActivity extends AppCompatActivity {
         // Dans onCreate(), après findViewById :
         ImageView backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> finish());
+
+        BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
+        bottomNav.setSelectedItemId(R.id.nav_locate);
+        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                int id = item.getItemId();
+
+                if (id == R.id.nav_quiz) {
+                    startActivity(new Intent(ShroomDetailsActivity.this, QuizActivity.class));
+                    return true;
+                }
+                if (id == R.id.nav_locate) {
+                    startActivity(new Intent(ShroomDetailsActivity.this, ShroomLocateActivity.class));
+                    return true;
+                }
+                if (id == R.id.nav_home) {
+                    startActivity(new Intent(ShroomDetailsActivity.this, SplashActivity.class));
+                    return true;
+                }
+                if(id == R.id.nav_identify) {
+                    startActivity(new Intent(ShroomDetailsActivity.this, ChoiceIdentifyActivity.class));
+                    return true;
+                }
+
+                return false;
+            }
+        });
 
         api = new ShroomLocService();
 
