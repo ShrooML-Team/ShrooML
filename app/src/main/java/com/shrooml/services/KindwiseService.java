@@ -4,7 +4,6 @@ import com.shrooml.models.IdentificationEntity;
 import com.shrooml.services.api.KindwiseApi;
 import com.shrooml.services.api.KindwiseRetrofitClient;
 
-
 import java.io.File;
 
 import okhttp3.MediaType;

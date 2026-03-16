@@ -97,7 +97,7 @@ public class IdentifyDetailsActivity extends AppCompatActivity {
 
         int percent = (int)(accuracy * 100);
 
-        accuracyText.setText(percent + "% Accuracy");
+        accuracyText.setText(percent + "% " + getString(R.string.accu));
         accuracyBar.setProgress(percent);
 
         int color;

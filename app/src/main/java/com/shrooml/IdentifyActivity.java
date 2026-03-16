@@ -8,9 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -88,15 +86,6 @@ public class IdentifyActivity extends AppCompatActivity {
 
         btnGallery.setOnClickListener(v -> pickImageLauncher.launch("image/*"));
 
-        ImageButton btnZoom = findViewById(R.id.btnZoom);
-
-        btnZoom.setOnClickListener(v -> {
-            Intent intent = new Intent(IdentifyActivity.this, IdentifyDetailsActivity.class);
-            intent.putExtra("scientificName", this.mushroomIdentify);
-            intent.putExtra("accuracy", this.accuracyIdentify);
-            startActivity(intent);
-        });
-
         BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
         bottomNav.setSelectedItemId(R.id.nav_identify);
 
@@ -107,6 +96,7 @@ public class IdentifyActivity extends AppCompatActivity {
                 int id = item.getItemId();
 
                 if(id == R.id.nav_identify) {
+                    startActivity(new Intent(IdentifyActivity.this, ChoiceIdentifyActivity.class));
                     return true;
                 }
                 if (id == R.id.nav_locate) {
@@ -212,15 +202,15 @@ public class IdentifyActivity extends AppCompatActivity {
                     IdentifyActivity.this.accuracyIdentify = identification.getResult().
                             getClassification().
                             getSuggestions().get(0).getProbability();
-                    Toast.makeText(IdentifyActivity.this,
-                                    "Mushroom : " + IdentifyActivity.this.mushroomIdentify + " Probability : " +
-                                            IdentifyActivity.this.accuracyIdentify + "%", LENGTH_LONG)
-                            .show();
+                    Intent intent_id = new Intent(IdentifyActivity.this, IdentifyDetailsActivity.class);
+                    intent_id.putExtra("scientificName", IdentifyActivity.this.mushroomIdentify);
+                    intent_id.putExtra("accuracy", IdentifyActivity.this.accuracyIdentify);
+                    file.delete();
+                    startActivity(intent_id);
                 } else {
                     Toast.makeText(IdentifyActivity.this, "Cette photo n'est pas un champignon", LENGTH_LONG)
                             .show();
                 }
-                file.delete();
             }
 
             @Override

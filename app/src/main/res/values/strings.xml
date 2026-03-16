@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="loadSplash">Loading ...</string>
+
     <string name="app_name">ShrooML APP</string>
     <string name="hello_world">Hello The world !</string>
     <string name="menu_settings">Settings</string>
@@ -23,4 +25,24 @@
     <string name="title_5">You are a mushroom expert</string>
     <string name="title_6">You are a mushroom king</string>
     <string name="nav_profile_title">Profile</string>
+
+    <string name="descriptionLocate">ShrooML locate helps you find possibly growing mushrooms species near you based on your location, biome and weather, thanks to ShroomLoc !</string>
+    <string name="noMushroomFoundNearYou">No mushroom found near you.</string>
+    <string name="changeLocation">Try moving to another location or reload.</string>
+
+    <string name="tox">Toxicity</string>
+    <string name="genInfo">General Informations</string>
+    <string name="eco">Ecology</string>
+    <string name="reci">Recipe</string>
+    <string name="accu">Accuracy</string>
+
+    <string name="loading_1">Loading .</string>
+    <string name="loading_2">Loading ..</string>
+    <string name="loading_3">Loading ...</string>
+
+
+    <string name="choice_title">Choice identify</string>
+    <string name="choice_description">ShrooML helps you identify mushrooms
+        based on pictures or criterie thank to machine learnings !</string>
+    <string name="choice_label">— OR —</string>
 </resources>
