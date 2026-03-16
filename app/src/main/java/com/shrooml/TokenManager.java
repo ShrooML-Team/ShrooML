@@ -2,12 +2,15 @@ package com.shrooml;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Base64;
 import android.util.Log;
 
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
 
 import com.shrooml.services.api.UserResponse;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -114,6 +117,16 @@ public class TokenManager {
         return token;
     }
 
+    public void updateToken(String token) {
+        if (token == null || token.isEmpty()) {
+            return;
+        }
+
+        encryptedSharedPref.edit()
+                .putString(TOKEN_KEY, token)
+                .apply();
+    }
+
     public int getUserId() {
         int userId = encryptedSharedPref.getInt(USER_ID_KEY, -1);
         Log.d(TAG, "getUserId() - userId: " + userId);
@@ -188,9 +201,66 @@ public class TokenManager {
 
     public boolean isTokenValid() {
         String token = getToken();
-        boolean isValid = token != null && !token.isEmpty();
+        boolean isValid = token != null && !token.isEmpty() && !isTokenExpired();
+
+        if (!isValid && token != null && !token.isEmpty()) {
+            clearToken();
+        }
+
         Log.d(TAG, "isTokenValid() retourne: " + isValid);
         return isValid;
+    }
+
+    public boolean isTokenExpired() {
+        Long expirationEpochSeconds = getTokenExpirationEpochSeconds();
+        if (expirationEpochSeconds == null) {
+            return true;
+        }
+
+        long nowEpochSeconds = System.currentTimeMillis() / 1000L;
+        return nowEpochSeconds >= expirationEpochSeconds;
+    }
+
+    public boolean isTokenExpiringSoon(long thresholdSeconds) {
+        Long expirationEpochSeconds = getTokenExpirationEpochSeconds();
+        if (expirationEpochSeconds == null) {
+            return true;
+        }
+
+        long nowEpochSeconds = System.currentTimeMillis() / 1000L;
+        return nowEpochSeconds + thresholdSeconds >= expirationEpochSeconds;
+    }
+
+    private Long getTokenExpirationEpochSeconds() {
+        String token = encryptedSharedPref.getString(TOKEN_KEY, null);
+        if (token == null || token.isEmpty()) {
+            return null;
+        }
+
+        try {
+            String[] tokenParts = token.split("\\.");
+            if (tokenParts.length < 2) {
+                return null;
+            }
+
+            String payload = tokenParts[1];
+            int padding = (4 - (payload.length() % 4)) % 4;
+            StringBuilder payloadBuilder = new StringBuilder(payload);
+            for (int index = 0; index < padding; index++) {
+                payloadBuilder.append('=');
+            }
+
+            byte[] decodedBytes = Base64.decode(payloadBuilder.toString(), Base64.URL_SAFE);
+            JSONObject payloadJson = new JSONObject(new String(decodedBytes));
+            if (!payloadJson.has("exp")) {
+                return null;
+            }
+
+            return payloadJson.getLong("exp");
+        } catch (Exception e) {
+            Log.e(TAG, "Impossible de décoder l'expiration du token", e);
+            return null;
+        }
     }
 
     public void clearToken() {

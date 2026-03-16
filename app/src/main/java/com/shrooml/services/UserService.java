@@ -13,6 +13,8 @@ import retrofit2.Response;
 
 public class UserService {
 
+    private static final String SESSION_EXPIRED_MESSAGE = "Session expirée, reconnectez-vous";
+
     public interface UserProfileCallback {
         void onSuccess(UserResponse user);
         void onError(String errorMessage);
@@ -40,12 +42,66 @@ public class UserService {
                     return;
                 }
 
+                if (response.code() == 401) {
+                    callback.onError(SESSION_EXPIRED_MESSAGE);
+                    return;
+                }
+
                 callback.onError("Erreur mise a jour profil : " + response.code());
             }
 
             @Override
             public void onFailure(Call<UserResponse> call, Throwable t) {
                 callback.onError("Erreur reseau : " + t.getMessage());
+            }
+        });
+    }
+
+    public void getCurrentUserProfile(UserProfileCallback callback) {
+        Call<UserResponse> call = api.getCurrentUserProfile();
+
+        call.enqueue(new Callback<UserResponse>() {
+            @Override
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                    return;
+                }
+
+                if (response.code() == 401) {
+                    callback.onError(SESSION_EXPIRED_MESSAGE);
+                    return;
+                }
+
+                callback.onError("Erreur lecture profil : " + response.code());
+            }
+
+            @Override
+            public void onFailure(Call<UserResponse> call, Throwable t) {
+                callback.onError("Erreur reseau : " + t.getMessage());
+            }
+        });
+    }
+
+    public void addPoints(float pointsToAdd, UserProfileCallback callback) {
+        getCurrentUserProfile(new UserProfileCallback() {
+            @Override
+            public void onSuccess(UserResponse user) {
+                float updatedScoring = Math.max(0f, user.getScoring() + pointsToAdd);
+                UpdateUserRequest request = new UpdateUserRequest(
+                        null,
+                        null,
+                        null,
+                        null,
+                        updatedScoring
+                );
+
+                updateCurrentUserProfile(request, callback);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onError(errorMessage);
             }
         });
     }
@@ -58,6 +114,11 @@ public class UserService {
             public void onResponse(Call<UserPhotoUploadResponse> call, Response<UserPhotoUploadResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.onSuccess(response.body());
+                    return;
+                }
+
+                if (response.code() == 401) {
+                    callback.onError(SESSION_EXPIRED_MESSAGE);
                     return;
                 }
 

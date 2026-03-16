@@ -48,6 +48,8 @@ import okhttp3.RequestBody;
 
 public class ProfileActivity extends AppCompatActivity {
 
+    private static final long TOKEN_REFRESH_THRESHOLD_SECONDS = 120L;
+
     private static final String[] CREATED_AT_PATTERNS = new String[] {
             "yyyy-MM-dd'T'HH:mm:ss.SSSXXX",
             "yyyy-MM-dd'T'HH:mm:ssXXX",
@@ -249,7 +251,45 @@ public class ProfileActivity extends AppCompatActivity {
         saveButton.setEnabled(false);
         saveButton.setText("Sauvegarde...");
 
+        if (tokenManager.isTokenExpired()) {
+            redirectToLogin();
+            return;
+        }
+
+        if (tokenManager.isTokenExpiringSoon(TOKEN_REFRESH_THRESHOLD_SECONDS)) {
+            OAuthService authService = new OAuthService(true);
+            authService.refreshUserSession(authToken, new OAuthService.OAuthUserCallback() {
+                @Override
+                public void onSuccess(com.shrooml.services.api.TokenResponseFull response) {
+                    tokenManager.updateToken(response.getAccess_token());
+                    tokenManager.saveUserProfile(response.getUser());
+                    continueProfileSave(response.getAccess_token(), email, champignonPrefere);
+                }
+
+                @Override
+                public void onError(String errorMessage) {
+                    runOnUiThread(() -> {
+                        saveButton.setEnabled(true);
+                        saveButton.setText("Sauvegarder");
+                    });
+
+                    if (errorMessage.contains("401")) {
+                        redirectToLogin();
+                        return;
+                    }
+
+                    runOnUiThread(() -> Toast.makeText(ProfileActivity.this, errorMessage, Toast.LENGTH_SHORT).show());
+                }
+            });
+            return;
+        }
+
+        continueProfileSave(authToken, email, champignonPrefere);
+    }
+
+    private void continueProfileSave(String authToken, String email, String champignonPrefere) {
         UserService userService = new UserService(authToken);
+
         uploadProfilePhotoIfNeeded(userService, new Runnable() {
             @Override
             public void run() {
@@ -257,7 +297,8 @@ public class ProfileActivity extends AppCompatActivity {
                         email,
                         null,
                         champignonPrefere,
-                        null
+                    null,
+                    null
                 );
 
                 userService.updateCurrentUserProfile(request, new UserService.UserProfileCallback() {
@@ -277,6 +318,11 @@ public class ProfileActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(String errorMessage) {
+                        if ("Session expirée, reconnectez-vous".equals(errorMessage)) {
+                            redirectToLogin();
+                            return;
+                        }
+
                         runOnUiThread(() -> {
                             saveButton.setEnabled(true);
                             saveButton.setText("Sauvegarder");
@@ -310,6 +356,11 @@ public class ProfileActivity extends AppCompatActivity {
 
                 @Override
                 public void onError(String errorMessage) {
+                    if ("Session expirée, reconnectez-vous".equals(errorMessage)) {
+                        redirectToLogin();
+                        return;
+                    }
+
                     runOnUiThread(() -> {
                         saveButton.setEnabled(true);
                         saveButton.setText("Sauvegarder");
@@ -425,5 +476,18 @@ public class ProfileActivity extends AppCompatActivity {
 
     private String valueOrEmpty(String value) {
         return (value == null) ? "" : value;
+    }
+
+    private void redirectToLogin() {
+        tokenManager.logout();
+        runOnUiThread(() -> {
+            saveButton.setEnabled(true);
+            saveButton.setText("Sauvegarder");
+            Toast.makeText(ProfileActivity.this, "Session expirée, reconnectez-vous", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        });
     }
 }

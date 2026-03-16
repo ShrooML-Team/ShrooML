@@ -27,9 +27,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.shrooml.games.QuizGame;
 import com.shrooml.services.InaturalistService;
 import com.shrooml.services.OAuthService;
+import com.shrooml.services.UserService;
 import com.shrooml.services.api.ShroomLocRetrofitClient;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+
 public class QuizActivity extends Activity {
+
+    private static final long TOKEN_REFRESH_THRESHOLD_SECONDS = 120L;
 
     private ImageView imageView;
 
@@ -157,6 +163,7 @@ public class QuizActivity extends Activity {
                                 int score = quizGame.getScore();
                                 titleEnd.setText(quizGame.getTitre(score));
                                 scoreEnd.setText("Score : " + score);
+                                persistScoreToApi(score);
                             }
                             answerInput.setBackgroundColor(Color.parseColor("#FFFFFF"));
                         });
@@ -270,5 +277,83 @@ public class QuizActivity extends Activity {
         }
 
         nextButton.setEnabled(true);
+    }
+
+    private void persistScoreToApi(int scoreToAdd) {
+        if (scoreToAdd <= 0) {
+            return;
+        }
+
+        try {
+            TokenManager tokenManager = TokenManager.getInstance(this);
+            String authToken = tokenManager.getToken();
+
+            if (authToken == null || authToken.isEmpty()) {
+                return;
+            }
+
+            if (tokenManager.isTokenExpired()) {
+                redirectToLogin(tokenManager);
+                return;
+            }
+
+            if (tokenManager.isTokenExpiringSoon(TOKEN_REFRESH_THRESHOLD_SECONDS)) {
+                OAuthService authService = new OAuthService(true);
+                authService.refreshUserSession(authToken, new OAuthService.OAuthUserCallback() {
+                    @Override
+                    public void onSuccess(com.shrooml.services.api.TokenResponseFull response) {
+                        tokenManager.updateToken(response.getAccess_token());
+                        tokenManager.saveUserProfile(response.getUser());
+                        persistScoreToApiWithToken(tokenManager, scoreToAdd, response.getAccess_token());
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        if (errorMessage.contains("401")) {
+                            redirectToLogin(tokenManager);
+                            return;
+                        }
+
+                        runOnUiThread(() -> Toast.makeText(QuizActivity.this, errorMessage, Toast.LENGTH_SHORT).show());
+                    }
+                });
+                return;
+            }
+
+            persistScoreToApiWithToken(tokenManager, scoreToAdd, authToken);
+        } catch (GeneralSecurityException | IOException e) {
+            Toast.makeText(this, "Impossible d'enregistrer les points", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void persistScoreToApiWithToken(TokenManager tokenManager, int scoreToAdd, String authToken) {
+        UserService userService = new UserService(authToken);
+        userService.addPoints(scoreToAdd, new UserService.UserProfileCallback() {
+            @Override
+            public void onSuccess(com.shrooml.services.api.UserResponse user) {
+                tokenManager.saveUserProfile(user);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                if ("Session expirée, reconnectez-vous".equals(errorMessage)) {
+                    redirectToLogin(tokenManager);
+                    return;
+                }
+
+                runOnUiThread(() -> Toast.makeText(QuizActivity.this, errorMessage, Toast.LENGTH_SHORT).show());
+            }
+        });
+    }
+
+    private void redirectToLogin(TokenManager tokenManager) {
+        tokenManager.logout();
+        runOnUiThread(() -> {
+            Toast.makeText(QuizActivity.this, "Session expirée, reconnectez-vous", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(QuizActivity.this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        });
     }
 }
