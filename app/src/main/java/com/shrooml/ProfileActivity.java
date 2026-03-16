@@ -304,9 +304,16 @@ public class ProfileActivity extends AppCompatActivity {
                 userService.updateCurrentUserProfile(request, new UserService.UserProfileCallback() {
                     @Override
                     public void onSuccess(UserResponse user) {
-                        tokenManager.saveUserProfile(user);
-                        tokenManager.setUserEmail(user.getEmail());
-                        tokenManager.setUserChampignonPrefere(user.getChampignon_prefere());
+                            // Sauvegarder l'URL photo actuelle avant que saveUserProfile ne la remplace.
+                            // Si le serveur retourne photo_profil=null (ex: mauvaise URL interne), on la restaure.
+                            String existingPhotoUrl = tokenManager.getUserPhotoProfil();
+                            tokenManager.saveUserProfile(user);
+                            if ((user.getPhoto_profil() == null || user.getPhoto_profil().isEmpty())
+                                    && existingPhotoUrl != null && !existingPhotoUrl.isEmpty()) {
+                                tokenManager.setUserPhotoProfil(existingPhotoUrl);
+                            }
+                            tokenManager.setUserEmail(user.getEmail());
+                            tokenManager.setUserChampignonPrefere(user.getChampignon_prefere());
 
                         runOnUiThread(() -> {
                             populateProfile();
