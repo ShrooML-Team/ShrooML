@@ -107,15 +107,6 @@
                 android:fontFamily="@font/sugo_display"/>
 
             <TextView
-                android:id="@+id/profileUserIdValue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textColor="#FFFFFF"
-                android:text="ID : -"
-                android:textSize="15sp"/>
-
-            <TextView
                 android:id="@+id/profileIdentifiantValue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -169,15 +160,6 @@
                 android:text="Cree le : -"
                 android:textSize="15sp"/>
 
-            <TextView
-                android:id="@+id/profileActiveValue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:textColor="#FFFFFF"
-                android:text="Actif : -"
-                android:textSize="15sp"/>
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
@@ -206,7 +188,7 @@
                 android:padding="14dp"
                 android:inputType="textEmailAddress"/>
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/profileFavoriteInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -216,7 +198,8 @@
                 android:textColorHint="#CCFFFFFF"
                 android:background="@drawable/input_white_outline"
                 android:padding="14dp"
-                android:inputType="text"/>
+                android:inputType="text"
+                android:completionThreshold="1"/>
 
             <Button
                 android:id="@+id/btnSaveProfile"

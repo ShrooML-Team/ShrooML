@@ -1,8 +1,12 @@
 package com.shrooml;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.OpenableColumns;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -15,25 +19,56 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.shrooml.models.MushroomEntity;
+import com.shrooml.services.OAuthService;
+import com.shrooml.services.ShroomLocService;
+import com.shrooml.services.UserService;
+import com.shrooml.services.api.ShroomLocRetrofitClient;
+import com.shrooml.services.api.UpdateUserRequest;
+import com.shrooml.services.api.UserPhotoUploadResponse;
+import com.shrooml.services.api.UserResponse;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.GeneralSecurityException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Set;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 public class ProfileActivity extends AppCompatActivity {
+
+    private static final String[] CREATED_AT_PATTERNS = new String[] {
+            "yyyy-MM-dd'T'HH:mm:ss.SSSXXX",
+            "yyyy-MM-dd'T'HH:mm:ssXXX",
+            "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+            "yyyy-MM-dd'T'HH:mm:ss'Z'",
+            "yyyy-MM-dd'T'HH:mm:ss",
+            "yyyy-MM-dd"
+    };
 
     private TokenManager tokenManager;
 
     private ImageView profileImage;
-    private TextView userIdText;
     private TextView identifiantText;
     private TextView descriptionText;
     private TextView scoringText;
     private TextView streakText;
     private TextView niveauText;
     private TextView createdAtText;
-    private TextView activeText;
     private EditText emailInput;
-    private EditText favoriteMushroomInput;
+    private AutoCompleteTextView favoriteMushroomInput;
+    private Button saveButton;
 
     private ActivityResultLauncher<String> pickProfileImageLauncher;
 
@@ -50,10 +85,11 @@ public class ProfileActivity extends AppCompatActivity {
         bindViews();
         setupImagePicker();
         setupBottomNavigation();
+        setupFavoriteMushroomSuggestions();
         populateProfile();
 
         Button changePhotoButton = findViewById(R.id.btnChangePhoto);
-        Button saveButton = findViewById(R.id.btnSaveProfile);
+        saveButton = findViewById(R.id.btnSaveProfile);
 
         changePhotoButton.setOnClickListener(v -> pickProfileImageLauncher.launch("image/*"));
 
@@ -72,16 +108,70 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void bindViews() {
         profileImage = findViewById(R.id.profileImage);
-        userIdText = findViewById(R.id.profileUserIdValue);
         identifiantText = findViewById(R.id.profileIdentifiantValue);
         descriptionText = findViewById(R.id.profileDescriptionValue);
         scoringText = findViewById(R.id.profileScoringValue);
         streakText = findViewById(R.id.profileStreakValue);
         niveauText = findViewById(R.id.profileNiveauValue);
         createdAtText = findViewById(R.id.profileCreatedAtValue);
-        activeText = findViewById(R.id.profileActiveValue);
         emailInput = findViewById(R.id.profileEmailInput);
         favoriteMushroomInput = findViewById(R.id.profileFavoriteInput);
+    }
+
+    private void setupFavoriteMushroomSuggestions() {
+        OAuthService authService = new OAuthService();
+        authService.login("admin", "password123", new OAuthService.OAuthCallback() {
+            @Override
+            public void onSuccess(String token) {
+                ShroomLocRetrofitClient.setToken(token);
+                loadFavoriteMushroomSuggestions();
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Toast.makeText(ProfileActivity.this, "Connexion a l'API des champignons impossible", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void loadFavoriteMushroomSuggestions() {
+        ShroomLocService shroomLocService = new ShroomLocService();
+        shroomLocService.getAll(new ShroomLocService.MushroomsCallback() {
+            @Override
+            public void onSuccess(List<MushroomEntity> mushrooms) {
+                Set<String> commonNames = new LinkedHashSet<>();
+
+                for (MushroomEntity mushroom : mushrooms) {
+                    if (mushroom == null || mushroom.getCommon_name() == null) {
+                        continue;
+                    }
+
+                    String commonName = mushroom.getCommon_name().trim();
+                    if (!commonName.isEmpty()) {
+                        commonNames.add(commonName);
+                    }
+                }
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                        ProfileActivity.this,
+                        android.R.layout.simple_dropdown_item_1line,
+                        new ArrayList<>(commonNames)
+                );
+
+                favoriteMushroomInput.setAdapter(adapter);
+                favoriteMushroomInput.setOnClickListener(v -> favoriteMushroomInput.showDropDown());
+                favoriteMushroomInput.setOnFocusChangeListener((v, hasFocus) -> {
+                    if (hasFocus) {
+                        favoriteMushroomInput.showDropDown();
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Toast.makeText(ProfileActivity.this, "Liste des champignons indisponible", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void setupImagePicker() {
@@ -124,15 +214,12 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void populateProfile() {
-        userIdText.setText("ID : " + tokenManager.getUserId());
         identifiantText.setText("Identifiant : " + valueOrDash(tokenManager.getUserIdentifiant()));
         descriptionText.setText("Description : " + valueOrDash(tokenManager.getUserDescription()));
         scoringText.setText("Score : " + tokenManager.getUserScoring());
         streakText.setText("Streak : " + tokenManager.getUserStreak());
         niveauText.setText("Niveau : " + tokenManager.getUserNiveau());
-        createdAtText.setText("Cree le : " + valueOrDash(tokenManager.getUserCreatedAt()));
-        activeText.setText("Actif : " + (tokenManager.isUserActive() ? "Oui" : "Non"));
-
+        createdAtText.setText("Cree le : " + formatCreatedAt(tokenManager.getUserCreatedAt()));
         emailInput.setText(valueOrEmpty(tokenManager.getUserEmail()));
         favoriteMushroomInput.setText(valueOrEmpty(tokenManager.getUserChampignonPrefere()));
 
@@ -140,18 +227,145 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void saveProfileChanges() {
+        String authToken = tokenManager.getToken();
         String email = emailInput.getText().toString().trim();
         String champignonPrefere = favoriteMushroomInput.getText().toString().trim();
 
-        if (!email.isEmpty() && !email.contains("@")) {
+        if (email.isEmpty()) {
+            Toast.makeText(this, "Email requis", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!email.contains("@")) {
             Toast.makeText(this, "Email invalide", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        tokenManager.setUserEmail(email);
-        tokenManager.setUserChampignonPrefere(champignonPrefere);
+        if (authToken == null || authToken.isEmpty()) {
+            Toast.makeText(this, "Session invalide", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        Toast.makeText(this, "Profil mis a jour localement", Toast.LENGTH_SHORT).show();
+        saveButton.setEnabled(false);
+        saveButton.setText("Sauvegarde...");
+
+        UserService userService = new UserService(authToken);
+        uploadProfilePhotoIfNeeded(userService, new Runnable() {
+            @Override
+            public void run() {
+                UpdateUserRequest request = new UpdateUserRequest(
+                        email,
+                        null,
+                        champignonPrefere,
+                        null
+                );
+
+                userService.updateCurrentUserProfile(request, new UserService.UserProfileCallback() {
+                    @Override
+                    public void onSuccess(UserResponse user) {
+                        tokenManager.saveUserProfile(user);
+                        tokenManager.setUserEmail(user.getEmail());
+                        tokenManager.setUserChampignonPrefere(user.getChampignon_prefere());
+
+                        runOnUiThread(() -> {
+                            populateProfile();
+                            saveButton.setEnabled(true);
+                            saveButton.setText("Sauvegarder");
+                            Toast.makeText(ProfileActivity.this, "Profil mis a jour", Toast.LENGTH_SHORT).show();
+                        });
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        runOnUiThread(() -> {
+                            saveButton.setEnabled(true);
+                            saveButton.setText("Sauvegarder");
+                            Toast.makeText(ProfileActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+    private void uploadProfilePhotoIfNeeded(UserService userService, Runnable onSuccess) {
+        String localUri = tokenManager.getUserLocalPhotoUri();
+        if (localUri == null || localUri.isEmpty()) {
+            onSuccess.run();
+            return;
+        }
+
+        try {
+            MultipartBody.Part photoPart = buildPhotoPart(Uri.parse(localUri));
+            userService.uploadCurrentUserProfilePhoto(photoPart, new UserService.UserPhotoCallback() {
+                @Override
+                public void onSuccess(UserPhotoUploadResponse response) {
+                    tokenManager.setUserPhotoProfil(response.getPhoto_profil());
+                    tokenManager.clearUserLocalPhotoUri();
+                    runOnUiThread(() -> {
+                        loadProfileImage();
+                        onSuccess.run();
+                    });
+                }
+
+                @Override
+                public void onError(String errorMessage) {
+                    runOnUiThread(() -> {
+                        saveButton.setEnabled(true);
+                        saveButton.setText("Sauvegarder");
+                        Toast.makeText(ProfileActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                    });
+                }
+            });
+        } catch (IOException e) {
+            saveButton.setEnabled(true);
+            saveButton.setText("Sauvegarder");
+            Toast.makeText(this, "Impossible de lire la photo selectionnee", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private MultipartBody.Part buildPhotoPart(Uri photoUri) throws IOException {
+        String mimeType = getContentResolver().getType(photoUri);
+        if (mimeType == null || mimeType.isEmpty()) {
+            mimeType = "image/*";
+        }
+
+        String fileName = getFileName(photoUri);
+        File tempFile = new File(getCacheDir(), fileName);
+
+        try (InputStream inputStream = getContentResolver().openInputStream(photoUri);
+             FileOutputStream outputStream = new FileOutputStream(tempFile)) {
+            if (inputStream == null) {
+                throw new IOException("Flux image indisponible");
+            }
+
+            byte[] buffer = new byte[8192];
+            int read;
+            while ((read = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, read);
+            }
+        }
+
+        RequestBody requestBody = RequestBody.create(tempFile, MediaType.parse(mimeType));
+        return MultipartBody.Part.createFormData("photo", fileName, requestBody);
+    }
+
+    private String getFileName(Uri uri) {
+        String fallbackName = "profile_photo.jpg";
+
+        try (Cursor cursor = getContentResolver().query(uri, null, null, null, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                if (nameIndex != -1) {
+                    String displayName = cursor.getString(nameIndex);
+                    if (displayName != null && !displayName.trim().isEmpty()) {
+                        return displayName;
+                    }
+                }
+            }
+        }
+
+        return fallbackName;
     }
 
     private void loadProfileImage() {
@@ -183,6 +397,30 @@ public class ProfileActivity extends AppCompatActivity {
 
     private String valueOrDash(String value) {
         return (value == null || value.trim().isEmpty()) ? "-" : value;
+    }
+
+    private String formatCreatedAt(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return "-";
+        }
+
+        String trimmedValue = value.trim();
+        for (String pattern : CREATED_AT_PATTERNS) {
+            try {
+                SimpleDateFormat inputFormat = new SimpleDateFormat(pattern, Locale.US);
+                inputFormat.setLenient(false);
+                Date parsedDate = inputFormat.parse(trimmedValue);
+
+                if (parsedDate != null) {
+                    SimpleDateFormat outputFormat = new SimpleDateFormat("d MMMM yyyy", Locale.FRENCH);
+                    return outputFormat.format(parsedDate);
+                }
+            } catch (ParseException ignored) {
+                // Essaie le format suivant.
+            }
+        }
+
+        return trimmedValue;
     }
 
     private String valueOrEmpty(String value) {

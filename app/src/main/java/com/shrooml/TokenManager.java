@@ -174,8 +174,16 @@ public class TokenManager {
         encryptedSharedPref.edit().putString(USER_CHAMPIGNON_PREFERE_KEY, champignonPrefere).apply();
     }
 
+    public void setUserPhotoProfil(String photoProfil) {
+        encryptedSharedPref.edit().putString(USER_PHOTO_PROFIL_KEY, photoProfil).apply();
+    }
+
     public void setUserLocalPhotoUri(String photoUri) {
         encryptedSharedPref.edit().putString(USER_LOCAL_PHOTO_URI_KEY, photoUri).apply();
+    }
+
+    public void clearUserLocalPhotoUri() {
+        encryptedSharedPref.edit().remove(USER_LOCAL_PHOTO_URI_KEY).apply();
     }
 
     public boolean isTokenValid() {
