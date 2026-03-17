@@ -71,6 +71,7 @@ public class ProfileActivity extends AppCompatActivity {
     private ImageView favoriteMushroomStatusIcon;
     private View favoriteMushroomCard;
     private TextView identifiantText;
+    private TextView rangText;
     private TextView favoriteMushroomCommonText;
     private TextView favoriteMushroomScientificText;
     private TextView descriptionText;
@@ -125,6 +126,7 @@ public class ProfileActivity extends AppCompatActivity {
         favoriteMushroomStatusIcon = findViewById(R.id.profileFavoriteStatusIcon);
         favoriteMushroomCard = findViewById(R.id.profileFavoriteCard);
         identifiantText = findViewById(R.id.profileIdentifiantValue);
+        rangText = findViewById(R.id.profileRangValue);
         favoriteMushroomCommonText = findViewById(R.id.profileFavoriteCommonValue);
         favoriteMushroomScientificText = findViewById(R.id.profileFavoriteScientificValue);
         descriptionText = findViewById(R.id.profileDescriptionValue);
@@ -223,7 +225,8 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void populateProfile() {
-        identifiantText.setText(buildDisplayIdentifiant(tokenManager.getUserIdentifiant(), tokenManager.getUserRang()));
+        identifiantText.setText(valueOrDash(tokenManager.getUserIdentifiant()));
+        updateRangDisplay(tokenManager.getUserRang());
         descriptionText.setText("Description : " + valueOrDash(tokenManager.getUserDescription()));
         scoringText.setText("Score : " + tokenManager.getUserScoring());
         streakText.setText("Streak : " + tokenManager.getUserStreak());
@@ -605,6 +608,14 @@ public class ProfileActivity extends AppCompatActivity {
             return safeIdentifiant + "  |  Rang " + rang;
         }
         return safeIdentifiant;
+    }
+
+    private void updateRangDisplay(int rang) {
+        if (rang > 0) {
+            rangText.setText("Rang " + rang);
+        } else {
+            rangText.setText("-");
+        }
     }
 
     private String formatCreatedAt(String value) {
