@@ -1,15 +1,20 @@
 package com.shrooml;
 
 import android.content.Intent;
+import android.app.AlertDialog;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
+import android.text.InputType;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,7 +67,12 @@ public class ProfileActivity extends AppCompatActivity {
     private TokenManager tokenManager;
 
     private ImageView profileImage;
+    private ImageView favoriteMushroomImage;
+    private ImageView favoriteMushroomStatusIcon;
+    private View favoriteMushroomCard;
     private TextView identifiantText;
+    private TextView favoriteMushroomCommonText;
+    private TextView favoriteMushroomScientificText;
     private TextView descriptionText;
     private TextView scoringText;
     private TextView streakText;
@@ -71,6 +81,7 @@ public class ProfileActivity extends AppCompatActivity {
     private EditText emailInput;
     private AutoCompleteTextView favoriteMushroomInput;
     private Button saveButton;
+    private List<MushroomEntity> availableMushrooms = new ArrayList<>();
 
     private ActivityResultLauncher<String> pickProfileImageLauncher;
 
@@ -90,10 +101,10 @@ public class ProfileActivity extends AppCompatActivity {
         setupFavoriteMushroomSuggestions();
         populateProfile();
 
-        Button changePhotoButton = findViewById(R.id.btnChangePhoto);
         saveButton = findViewById(R.id.btnSaveProfile);
 
-        changePhotoButton.setOnClickListener(v -> pickProfileImageLauncher.launch("image/*"));
+        profileImage.setOnClickListener(v -> pickProfileImageLauncher.launch("image/*"));
+        favoriteMushroomCard.setOnClickListener(v -> showFavoriteMushroomDialog());
 
         saveButton.setOnClickListener(v -> saveProfileChanges());
     }
@@ -110,7 +121,12 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void bindViews() {
         profileImage = findViewById(R.id.profileImage);
+        favoriteMushroomImage = findViewById(R.id.profileFavoriteImage);
+        favoriteMushroomStatusIcon = findViewById(R.id.profileFavoriteStatusIcon);
+        favoriteMushroomCard = findViewById(R.id.profileFavoriteCard);
         identifiantText = findViewById(R.id.profileIdentifiantValue);
+        favoriteMushroomCommonText = findViewById(R.id.profileFavoriteCommonValue);
+        favoriteMushroomScientificText = findViewById(R.id.profileFavoriteScientificValue);
         descriptionText = findViewById(R.id.profileDescriptionValue);
         scoringText = findViewById(R.id.profileScoringValue);
         streakText = findViewById(R.id.profileStreakValue);
@@ -141,23 +157,12 @@ public class ProfileActivity extends AppCompatActivity {
         shroomLocService.getAll(new ShroomLocService.MushroomsCallback() {
             @Override
             public void onSuccess(List<MushroomEntity> mushrooms) {
-                Set<String> commonNames = new LinkedHashSet<>();
-
-                for (MushroomEntity mushroom : mushrooms) {
-                    if (mushroom == null || mushroom.getCommon_name() == null) {
-                        continue;
-                    }
-
-                    String commonName = mushroom.getCommon_name().trim();
-                    if (!commonName.isEmpty()) {
-                        commonNames.add(commonName);
-                    }
-                }
+                availableMushrooms = (mushrooms == null) ? new ArrayList<>() : mushrooms;
 
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(
                         ProfileActivity.this,
                         android.R.layout.simple_dropdown_item_1line,
-                        new ArrayList<>(commonNames)
+                        buildFavoriteMushroomNames()
                 );
 
                 favoriteMushroomInput.setAdapter(adapter);
@@ -167,6 +172,8 @@ public class ProfileActivity extends AppCompatActivity {
                         favoriteMushroomInput.showDropDown();
                     }
                 });
+
+                updateFavoriteMushroomSection(tokenManager.getUserChampignonPrefere());
             }
 
             @Override
@@ -216,14 +223,16 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void populateProfile() {
-        identifiantText.setText("Identifiant : " + valueOrDash(tokenManager.getUserIdentifiant()));
+        identifiantText.setText(buildDisplayIdentifiant(tokenManager.getUserIdentifiant(), tokenManager.getUserRang()));
         descriptionText.setText("Description : " + valueOrDash(tokenManager.getUserDescription()));
         scoringText.setText("Score : " + tokenManager.getUserScoring());
         streakText.setText("Streak : " + tokenManager.getUserStreak());
         niveauText.setText("Niveau : " + tokenManager.getUserNiveau());
         createdAtText.setText("Cree le : " + formatCreatedAt(tokenManager.getUserCreatedAt()));
         emailInput.setText(valueOrEmpty(tokenManager.getUserEmail()));
-        favoriteMushroomInput.setText(valueOrEmpty(tokenManager.getUserChampignonPrefere()));
+        String preferredMushroom = valueOrEmpty(tokenManager.getUserChampignonPrefere());
+        favoriteMushroomInput.setText(preferredMushroom);
+        updateFavoriteMushroomSection(preferredMushroom);
 
         loadProfileImage();
     }
@@ -453,8 +462,149 @@ public class ProfileActivity extends AppCompatActivity {
         profileImage.setImageResource(R.drawable.ic_profile);
     }
 
+    private void updateFavoriteMushroomSection(String preferredMushroomName) {
+        String safeName = valueOrDash(preferredMushroomName);
+        MushroomEntity matchedMushroom = findMushroomByCommonName(preferredMushroomName);
+
+        if (matchedMushroom == null) {
+            favoriteMushroomCommonText.setText("Nom commun : " + safeName);
+            favoriteMushroomScientificText.setText("Nom scientifique : -");
+            favoriteMushroomImage.setImageResource(R.drawable.ic_mushroom_placeholder);
+            favoriteMushroomStatusIcon.setImageResource(R.drawable.ic_check);
+            return;
+        }
+
+        favoriteMushroomCommonText.setText("Nom commun : " + valueOrDash(matchedMushroom.getCommon_name()));
+        favoriteMushroomScientificText.setText("Nom scientifique : " + valueOrDash(matchedMushroom.getScientific_name()));
+        updateFavoriteMushroomStatusIcon(matchedMushroom.getEdibility());
+
+        String imageUrl = matchedMushroom.getImage();
+        if (imageUrl == null || imageUrl.trim().isEmpty()) {
+            favoriteMushroomImage.setImageResource(R.drawable.ic_mushroom_placeholder);
+            return;
+        }
+
+        Glide.with(this)
+                .load(imageUrl)
+                .placeholder(R.drawable.ic_mushroom_placeholder)
+                .error(R.drawable.ic_mushroom_placeholder)
+                .centerCrop()
+                .into(favoriteMushroomImage);
+    }
+
+    private void updateFavoriteMushroomStatusIcon(String edibility) {
+        if (edibility == null) {
+            favoriteMushroomStatusIcon.setImageResource(R.drawable.ic_check);
+            return;
+        }
+
+        String normalizedEdibility = edibility.trim().toLowerCase();
+        if ("inedible".equals(normalizedEdibility)) {
+            favoriteMushroomStatusIcon.setImageResource(R.drawable.ic_skull);
+        } else if ("medicinal".equals(normalizedEdibility)) {
+            favoriteMushroomStatusIcon.setImageResource(R.drawable.ic_medicinal);
+        } else {
+            favoriteMushroomStatusIcon.setImageResource(R.drawable.ic_check);
+        }
+    }
+
+    private MushroomEntity findMushroomByCommonName(String commonName) {
+        if (commonName == null || commonName.trim().isEmpty()) {
+            return null;
+        }
+
+        String normalizedName = commonName.trim();
+        for (MushroomEntity mushroom : availableMushrooms) {
+            if (mushroom == null || mushroom.getCommon_name() == null) {
+                continue;
+            }
+
+            if (normalizedName.equalsIgnoreCase(mushroom.getCommon_name().trim())) {
+                return mushroom;
+            }
+        }
+
+        return null;
+    }
+
+    private List<String> buildFavoriteMushroomNames() {
+        Set<String> commonNames = new LinkedHashSet<>();
+        for (MushroomEntity mushroom : availableMushrooms) {
+            if (mushroom == null || mushroom.getCommon_name() == null) {
+                continue;
+            }
+
+            String commonName = mushroom.getCommon_name().trim();
+            if (!commonName.isEmpty()) {
+                commonNames.add(commonName);
+            }
+        }
+        return new ArrayList<>(commonNames);
+    }
+
+    private void showFavoriteMushroomDialog() {
+        AutoCompleteTextView input = new AutoCompleteTextView(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        input.setHint("Nom du champignon");
+        input.setTextColor(Color.WHITE);
+        input.setHintTextColor(0xCCFFFFFF);
+        input.setBackgroundResource(R.drawable.input_white_outline);
+        input.setText(favoriteMushroomInput.getText());
+        input.setSelectAllOnFocus(true);
+        input.setThreshold(1);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_dropdown_item_1line,
+                buildFavoriteMushroomNames()
+        );
+        input.setAdapter(adapter);
+        input.setOnClickListener(v -> input.showDropDown());
+        input.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                input.showDropDown();
+            }
+        });
+
+        int horizontalPadding = (int) (20 * getResources().getDisplayMetrics().density);
+        int verticalPadding = (int) (10 * getResources().getDisplayMetrics().density);
+        LinearLayout container = new LinearLayout(this);
+        container.setOrientation(LinearLayout.VERTICAL);
+        container.setPadding(horizontalPadding, verticalPadding, horizontalPadding, verticalPadding);
+        container.addView(input, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Changer le champignon prefere")
+                .setView(container)
+            .setPositiveButton("Valider", (dialogInterface, which) -> {
+                    String value = input.getText().toString().trim();
+                    favoriteMushroomInput.setText(value);
+                    updateFavoriteMushroomSection(value);
+                    saveProfileChanges();
+                })
+                .setNegativeButton("Annuler", null)
+                .show();
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.item_bg);
+        }
+
+        input.post(input::showDropDown);
+    }
+
     private String valueOrDash(String value) {
         return (value == null || value.trim().isEmpty()) ? "-" : value;
+    }
+
+    private String buildDisplayIdentifiant(String identifiant, int rang) {
+        String safeIdentifiant = valueOrDash(identifiant);
+        if (rang > 0) {
+            return safeIdentifiant + "  |  Rang " + rang;
+        }
+        return safeIdentifiant;
     }
 
     private String formatCreatedAt(String value) {
