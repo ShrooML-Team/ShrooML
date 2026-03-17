@@ -10,6 +10,7 @@ public class UserResponse {
     private float scoring;
     private int streak;
     private int niveau;
+    private int rang;
     private String created_at;
     private boolean is_active;
 
@@ -84,6 +85,14 @@ public class UserResponse {
 
     public void setNiveau(int niveau) {
         this.niveau = niveau;
+    }
+
+    public int getRang() {
+        return rang;
+    }
+
+    public void setRang(int rang) {
+        this.rang = rang;
     }
 
     public String getCreated_at() {

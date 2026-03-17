@@ -43,7 +43,7 @@ public class ChoiceIdentifyActivity extends Activity {
                     return true;
                 }
                 if (id == R.id.nav_profile) {
-                    startActivity(new Intent(ChoiceIdentifyActivity.this, SplashActivity.class));
+                    startActivity(new Intent(ChoiceIdentifyActivity.this, ProfileActivity.class));
                     return true;
                 }
 

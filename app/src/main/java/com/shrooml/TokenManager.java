@@ -28,6 +28,7 @@ public class TokenManager {
     private static final String USER_SCORING_KEY = "user_scoring";
     private static final String USER_STREAK_KEY = "user_streak";
     private static final String USER_NIVEAU_KEY = "user_niveau";
+    private static final String USER_RANG_KEY = "user_rang";
     private static final String USER_CREATED_AT_KEY = "user_created_at";
     private static final String USER_IS_ACTIVE_KEY = "user_is_active";
     private static final String USER_LOCAL_PHOTO_URI_KEY = "user_local_photo_uri";
@@ -103,6 +104,7 @@ public class TokenManager {
                     .putFloat(USER_SCORING_KEY, user.getScoring())
                     .putInt(USER_STREAK_KEY, user.getStreak())
                     .putInt(USER_NIVEAU_KEY, user.getNiveau())
+                    .putInt(USER_RANG_KEY, user.getRang())
                     .putString(USER_CREATED_AT_KEY, user.getCreated_at())
                     .putBoolean(USER_IS_ACTIVE_KEY, user.isIs_active())
                     .apply();
@@ -169,6 +171,10 @@ public class TokenManager {
 
     public int getUserNiveau() {
         return encryptedSharedPref.getInt(USER_NIVEAU_KEY, 0);
+    }
+
+    public int getUserRang() {
+        return encryptedSharedPref.getInt(USER_RANG_KEY, 0);
     }
 
     public String getUserCreatedAt() {
@@ -277,6 +283,7 @@ public class TokenManager {
                     .remove(USER_SCORING_KEY)
                     .remove(USER_STREAK_KEY)
                     .remove(USER_NIVEAU_KEY)
+                    .remove(USER_RANG_KEY)
                     .remove(USER_CREATED_AT_KEY)
                     .remove(USER_IS_ACTIVE_KEY)
                     .remove(USER_LOCAL_PHOTO_URI_KEY)
