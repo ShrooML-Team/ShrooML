@@ -25,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.shrooml.models.MushroomEntity;
+import com.shrooml.services.InaturalistService;
 import com.shrooml.services.OAuthService;
 import com.shrooml.services.ShroomLocService;
 import com.shrooml.services.UserService;
@@ -84,6 +85,8 @@ public class ProfileActivity extends AppCompatActivity {
     private Button saveButton;
     private List<MushroomEntity> availableMushrooms = new ArrayList<>();
 
+    private InaturalistService inaturalistService;
+
     private ActivityResultLauncher<String> pickProfileImageLauncher;
 
     @Override
@@ -99,6 +102,7 @@ public class ProfileActivity extends AppCompatActivity {
         bindViews();
         setupImagePicker();
         setupBottomNavigation();
+        inaturalistService = new InaturalistService();
         setupFavoriteMushroomSuggestions();
         populateProfile();
 
@@ -481,18 +485,28 @@ public class ProfileActivity extends AppCompatActivity {
         favoriteMushroomScientificText.setText("Nom scientifique : " + valueOrDash(matchedMushroom.getScientific_name()));
         updateFavoriteMushroomStatusIcon(matchedMushroom.getEdibility());
 
-        String imageUrl = matchedMushroom.getImage();
-        if (imageUrl == null || imageUrl.trim().isEmpty()) {
-            favoriteMushroomImage.setImageResource(R.drawable.ic_mushroom_placeholder);
-            return;
-        }
+        // Charger l'image via iNaturalis
+        String scientificName = matchedMushroom.getScientific_name();
+        if (scientificName != null && !scientificName.trim().isEmpty()) {
+            inaturalistService.getMushroomImage(scientificName, new InaturalistService.ImageCallback() {
+                @Override
+                public void onSuccess(String imageUrl) {
+                    Glide.with(ProfileActivity.this)
+                            .load(imageUrl)
+                            .placeholder(R.drawable.ic_mushroom_placeholder)
+                            .error(R.drawable.ic_mushroom_placeholder)
+                            .centerCrop()
+                            .into(favoriteMushroomImage);
+                }
 
-        Glide.with(this)
-                .load(imageUrl)
-                .placeholder(R.drawable.ic_mushroom_placeholder)
-                .error(R.drawable.ic_mushroom_placeholder)
-                .centerCrop()
-                .into(favoriteMushroomImage);
+                @Override
+                public void onError(String errorMessage) {
+                    favoriteMushroomImage.setImageResource(R.drawable.ic_mushroom_placeholder);
+                }
+            });
+        } else {
+            favoriteMushroomImage.setImageResource(R.drawable.ic_mushroom_placeholder);
+        }
     }
 
     private void updateFavoriteMushroomStatusIcon(String edibility) {
