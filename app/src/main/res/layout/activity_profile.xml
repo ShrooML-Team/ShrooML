@@ -87,7 +87,7 @@
                     android:focusable="true"
                     android:outlineProvider="background"
                     android:scaleType="centerCrop"
-                    android:contentDescription="Photo de profil"
+                    android:contentDescription="@string/profile_picture"
                     android:src="@drawable/ic_profile"/>
 
                 <LinearLayout
@@ -108,10 +108,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="-"
-                            android:textColor="#9B7653"
+                            android:textColor="#FFF4E8"
                             android:textSize="30sp"
                             android:textStyle="bold"
-                            android:fontFamily="@font/sugo_display"
                             android:layout_marginEnd="8dp"/>
 
                         <TextView
@@ -131,7 +130,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="-"
-                        android:textColor="#9B7653"
+                        android:textColor="#FFFFFF"
                         android:textSize="13sp"
                         android:textStyle="italic"
                         android:clickable="true"
@@ -150,7 +149,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
-                android:text="Champignon prefere"
+                android:text="@string/profile_favorite_mushroom"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
                 android:textSize="20sp"
@@ -184,7 +183,7 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/mushroom_image_bg"
                         android:clipToOutline="true"
-                        android:contentDescription="Image du champignon prefere"
+                        android:contentDescription="@string/profile_favorite_image"
                         android:scaleType="centerCrop"
                         android:src="@drawable/ic_mushroom_placeholder"/>
                 </FrameLayout>
@@ -194,7 +193,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
-                    android:text="Nom commun : -"
+                    android:text="-"
                     android:textColor="#FFFFFF"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -206,7 +205,7 @@
                     android:id="@+id/profileFavoriteStatusIcon"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
-                    android:contentDescription="Statut comestibilite"
+                    android:contentDescription="@string/profile_edibility_status"
                     android:src="@drawable/ic_check"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/profileFavoriteCommonValue"/>
@@ -216,7 +215,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:text="Nom scientifique : -"
+                    android:text="-"
                     android:textColor="#DDDDDD"
                     android:textSize="13sp"
                     android:textStyle="italic"
@@ -236,20 +235,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
-                android:text="Informations"
+                android:text="@string/profile_informations"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
                 android:textSize="20sp"
                 android:fontFamily="@font/sugo_display"/>
-
-            <TextView
-                android:id="@+id/profileDescriptionValue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:textColor="#FFFFFF"
-                android:text="Description : -"
-                android:textSize="15sp"/>
 
             <TextView
                 android:id="@+id/profileScoringValue"
@@ -257,7 +247,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:textColor="#FFFFFF"
-                android:text="Score : -"
+                android:text="-"
                 android:textSize="15sp"/>
 
             <TextView
@@ -266,7 +256,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:textColor="#FFFFFF"
-                android:text="Streak : -"
+                android:text="-"
                 android:textSize="15sp"/>
 
             <TextView
@@ -275,7 +265,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:textColor="#FFFFFF"
-                android:text="Niveau : -"
+                android:text="-"
                 android:textSize="15sp"/>
 
             <TextView
@@ -284,7 +274,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:textColor="#FFFFFF"
-                android:text="Cree le : -"
+                android:text="-"
                 android:textSize="15sp"/>
 
             <View
@@ -297,7 +287,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
-                android:text="Edition"
+                android:text="@string/profile_edition"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
                 android:textSize="20sp"
@@ -309,7 +299,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="Email"
+                android:hint="@string/profile_email_hint"
                 android:textColor="#FFFFFF"
                 android:textColorHint="#CCFFFFFF"
                 android:background="@drawable/input_white_outline"
@@ -322,7 +312,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="Champignon prefere"
+                android:hint="@string/profile_favorite_mushroom_input"
                 android:textColor="#FFFFFF"
                 android:textColorHint="#CCFFFFFF"
                 android:background="@drawable/input_white_outline"
@@ -336,7 +326,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
-                android:text="Sauvegarder"
+                android:text="@string/profile_save_button"
                 android:textColor="#FFFFFF"
                 android:visibility="gone"
                 android:background="@drawable/button_white_outline"/>

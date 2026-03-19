@@ -49,6 +49,46 @@
 
     <string name="choice_label">— OU —</string>
 
+    <!-- Profile page strings -->
+    <string name="profile_favorite_mushroom">Champignon préféré</string>
+    <string name="profile_informations">Informations</string>
+    <string name="profile_edition">Édition</string>
+    <string name="profile_score">Score : %s</string>
+    <string name="profile_streak">Streak : %s</string>
+    <string name="profile_niveau">Niveau : %s</string>
+    <string name="profile_created_at">Créé le : %s</string>
+    <string name="profile_common_name">Nom commun : %s</string>
+    <string name="profile_scientific_name">Nom scientifique : %s</string>
+    <string name="profile_picture">Photo de profil</string>
+    <string name="profile_favorite_image">Image du champignon préféré</string>
+    <string name="profile_edibility_status">Statut de comestibilité</string>
+
+    <!-- Login page strings -->
+    <string name="login_title">Connexion</string>
+    <string name="login_identifiant_hint">Identifiant ...</string>
+    <string name="login_password_hint">Mot de passe ...</string>
+    <string name="login_button">CONNEXION</string>
+    <string name="login_or_text">- ou -</string>
+    <string name="login_google_signin">Connexion Google</string>
+    <string name="login_not_registered">Pas encore inscrit ?</string>
+    <string name="login_register_button">S\'INSCRIRE</string>
+
+    <!-- Register page strings -->
+    <string name="register_title">Inscription</string>
+    <string name="register_identifiant_hint">Identifiant ...</string>
+    <string name="register_email_hint">E-mail ...</string>
+    <string name="register_password_hint">Mot de passe ...</string>
+    <string name="register_favorite_mushroom_hint">Champignon préféré ...</string>
+    <string name="register_button">S\'INSCRIRE</string>
+    <string name="register_or_text">- ou -</string>
+    <string name="register_google_signin">Connexion Google</string>
+    <string name="register_back_to_login">← Retour à la connexion</string>
+
+    <!-- Profile Edit Form -->
+    <string name="profile_email_hint">E-mail</string>
+    <string name="profile_favorite_mushroom_input">Champignon préféré</string>
+    <string name="profile_save_button">Enregistrer</string>
+
     <!-- Profile Descriptions - Phrases rigolotes -->
     <string-array name="profile_descriptions">
         <item>Chasseur de champignons extraordinaire</item>

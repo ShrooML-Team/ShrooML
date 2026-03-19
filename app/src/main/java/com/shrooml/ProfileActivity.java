@@ -41,6 +41,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.text.ParseException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -57,6 +58,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private static final String TAG = "ProfileActivity";
     private static final long TOKEN_REFRESH_THRESHOLD_SECONDS = 120L;
+    private static final DecimalFormat SCORE_FORMAT = new DecimalFormat("0.##");
 
     private static final String[] CREATED_AT_PATTERNS = new String[] {
             "yyyy-MM-dd'T'HH:mm:ss.SSSXXX",
@@ -235,10 +237,10 @@ public class ProfileActivity extends AppCompatActivity {
         identifiantText.setText(valueOrDash(tokenManager.getUserIdentifiant()));
         updateRangDisplay(tokenManager.getUserRang());
         displayRandomDescription();
-        scoringText.setText("Score : " + tokenManager.getUserScoring());
-        streakText.setText("Streak : " + tokenManager.getUserStreak());
-        niveauText.setText("Niveau : " + tokenManager.getUserNiveau());
-        createdAtText.setText("Cree le : " + formatCreatedAt(tokenManager.getUserCreatedAt()));
+        scoringText.setText(String.format(getString(R.string.profile_score), formatScore(tokenManager.getUserScoring())));
+        streakText.setText(String.format(getString(R.string.profile_streak), tokenManager.getUserStreak()));
+        niveauText.setText(String.format(getString(R.string.profile_niveau), tokenManager.getUserNiveau()));
+        createdAtText.setText(String.format(getString(R.string.profile_created_at), formatCreatedAt(tokenManager.getUserCreatedAt())));
         emailInput.setText(valueOrEmpty(tokenManager.getUserEmail()));
         String preferredMushroom = valueOrEmpty(tokenManager.getUserChampignonPrefere());
         favoriteMushroomInput.setText(preferredMushroom);
@@ -476,15 +478,15 @@ public class ProfileActivity extends AppCompatActivity {
         MushroomEntity matchedMushroom = findMushroomByCommonName(preferredMushroomName);
 
         if (matchedMushroom == null) {
-            favoriteMushroomCommonText.setText("Nom commun : " + safeName);
-            favoriteMushroomScientificText.setText("Nom scientifique : -");
+            favoriteMushroomCommonText.setText(String.format(getString(R.string.profile_common_name), safeName));
+            favoriteMushroomScientificText.setText(String.format(getString(R.string.profile_scientific_name), "-"));
             favoriteMushroomImage.setImageResource(R.drawable.ic_mushroom_placeholder);
             favoriteMushroomStatusIcon.setImageResource(R.drawable.ic_check);
             return;
         }
 
-        favoriteMushroomCommonText.setText("Nom commun : " + valueOrDash(matchedMushroom.getCommon_name()));
-        favoriteMushroomScientificText.setText("Nom scientifique : " + valueOrDash(matchedMushroom.getScientific_name()));
+        favoriteMushroomCommonText.setText(String.format(getString(R.string.profile_common_name), valueOrDash(matchedMushroom.getCommon_name())));
+        favoriteMushroomScientificText.setText(String.format(getString(R.string.profile_scientific_name), valueOrDash(matchedMushroom.getScientific_name())));
         updateFavoriteMushroomStatusIcon(matchedMushroom.getEdibility());
 
         // Charger l'image via iNaturalis
@@ -751,6 +753,13 @@ public class ProfileActivity extends AppCompatActivity {
 
     private String valueOrEmpty(String value) {
         return (value == null) ? "" : value;
+    }
+
+    private String formatScore(float score) {
+        if (Float.isNaN(score) || Float.isInfinite(score)) {
+            return "0";
+        }
+        return SCORE_FORMAT.format(score);
     }
 
     private void redirectToLogin() {

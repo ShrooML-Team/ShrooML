@@ -46,6 +46,46 @@
         based on pictures or criterie thank to machine learnings !</string>
     <string name="choice_label">— OR —</string>
 
+    <!-- Profile page strings -->
+    <string name="profile_favorite_mushroom">Favorite Mushroom</string>
+    <string name="profile_informations">Information</string>
+    <string name="profile_edition">Edit</string>
+    <string name="profile_score">Score: %s</string>
+    <string name="profile_streak">Streak: %s</string>
+    <string name="profile_niveau">Level: %s</string>
+    <string name="profile_created_at">Created on: %s</string>
+    <string name="profile_common_name">Common name: %s</string>
+    <string name="profile_scientific_name">Scientific name: %s</string>
+    <string name="profile_picture">Profile picture</string>
+    <string name="profile_favorite_image">Favorite mushroom image</string>
+    <string name="profile_edibility_status">Edibility status</string>
+
+    <!-- Login page strings -->
+    <string name="login_title">Login</string>
+    <string name="login_identifiant_hint">Login ...</string>
+    <string name="login_password_hint">Password ...</string>
+    <string name="login_button">LOGIN</string>
+    <string name="login_or_text">- or -</string>
+    <string name="login_google_signin">Google Sign In</string>
+    <string name="login_not_registered">Not registered yet ?</string>
+    <string name="login_register_button">REGISTER</string>
+
+    <!-- Register page strings -->
+    <string name="register_title">Register</string>
+    <string name="register_identifiant_hint">Login ...</string>
+    <string name="register_email_hint">Mail ...</string>
+    <string name="register_password_hint">Password ...</string>
+    <string name="register_favorite_mushroom_hint">Favorite Mushroom ...</string>
+    <string name="register_button">REGISTER</string>
+    <string name="register_or_text">- or -</string>
+    <string name="register_google_signin">Google Sign In</string>
+    <string name="register_back_to_login">← Back to Login</string>
+
+    <!-- Profile Edit Form -->
+    <string name="profile_email_hint">Email</string>
+    <string name="profile_favorite_mushroom_input">Favorite Mushroom</string>
+    <string name="profile_save_button">Save</string>
+
     <!-- Profile Descriptions - Funny short phrases -->
     <string-array name="profile_descriptions">
         <item>Mushroom hunter extraordinaire</item>
