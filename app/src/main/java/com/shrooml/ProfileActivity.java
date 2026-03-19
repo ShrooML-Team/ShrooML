@@ -612,7 +612,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void updateRangDisplay(int rang) {
         if (rang > 0) {
-            rangText.setText("Rang " + rang);
+            rangText.setText("#" + rang);
         } else {
             rangText.setText("-");
         }
