@@ -92,7 +92,6 @@ public class UserService {
                         null,
                         null,
                         null,
-                        null,
                         updatedScoring
                 );
 

@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -54,6 +55,7 @@ import okhttp3.RequestBody;
 
 public class ProfileActivity extends AppCompatActivity {
 
+    private static final String TAG = "ProfileActivity";
     private static final long TOKEN_REFRESH_THRESHOLD_SECONDS = 120L;
 
     private static final String[] CREATED_AT_PATTERNS = new String[] {
@@ -109,6 +111,7 @@ public class ProfileActivity extends AppCompatActivity {
         saveButton = findViewById(R.id.btnSaveProfile);
 
         profileImage.setOnClickListener(v -> pickProfileImageLauncher.launch("image/*"));
+        descriptionText.setOnClickListener(v -> showDescriptionDialog());
         favoriteMushroomCard.setOnClickListener(v -> showFavoriteMushroomDialog());
 
         saveButton.setOnClickListener(v -> saveProfileChanges());
@@ -231,7 +234,7 @@ public class ProfileActivity extends AppCompatActivity {
     private void populateProfile() {
         identifiantText.setText(valueOrDash(tokenManager.getUserIdentifiant()));
         updateRangDisplay(tokenManager.getUserRang());
-        descriptionText.setText("Description : " + valueOrDash(tokenManager.getUserDescription()));
+        displayRandomDescription();
         scoringText.setText("Score : " + tokenManager.getUserScoring());
         streakText.setText("Streak : " + tokenManager.getUserStreak());
         niveauText.setText("Niveau : " + tokenManager.getUserNiveau());
@@ -311,7 +314,6 @@ public class ProfileActivity extends AppCompatActivity {
             public void run() {
                 UpdateUserRequest request = new UpdateUserRequest(
                         email,
-                        null,
                         champignonPrefere,
                     null,
                     null
@@ -610,6 +612,97 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         input.post(input::showDropDown);
+    }
+
+    private void displayRandomDescription() {
+        int niveau = tokenManager.getUserNiveau();
+        String[] availableDescriptions = getAvailableDescriptions(niveau);
+        
+        if (availableDescriptions.length > 0) {
+            int savedIndex = tokenManager.getUserDescriptionIndex();
+            // Vérifier que l'indice sauvegardé est valide pour le niveau actuel
+            if (savedIndex >= 0 && savedIndex < availableDescriptions.length) {
+                descriptionText.setText(availableDescriptions[savedIndex]);
+            } else {
+                // Si l'indice n'est pas valide (ex: utilisateur a baissé de niveau), afficher le premier
+                descriptionText.setText(availableDescriptions[0]);
+            }
+        }
+    }
+
+    private String[] getAvailableDescriptions(int niveau) {
+        String[] allDescriptions = getResources().getStringArray(R.array.profile_descriptions);
+        
+        // Niveau 1-2: 5 descriptions
+        // Niveau 3-4: 10 descriptions
+        // Niveau 5-6: toutes (15 descriptions)
+        int maxIndex;
+        if (niveau <= 2) {
+            maxIndex = Math.min(5, allDescriptions.length);
+        } else if (niveau <= 4) {
+            maxIndex = Math.min(10, allDescriptions.length);
+        } else {
+            maxIndex = allDescriptions.length;
+        }
+        
+        String[] filtered = new String[maxIndex];
+        System.arraycopy(allDescriptions, 0, filtered, 0, maxIndex);
+        return filtered;
+    }
+
+    private void showDescriptionDialog() {
+        int niveau = tokenManager.getUserNiveau();
+        String[] availableDescriptions = getAvailableDescriptions(niveau);
+        
+        if (availableDescriptions.length == 0) {
+            Toast.makeText(this, "Aucune description disponible", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Changer de description (Niveau " + niveau + ")");
+        builder.setItems(availableDescriptions, (dialog, which) -> {
+            descriptionText.setText(availableDescriptions[which]);
+            
+            // Sauvegarder l'indice localement et sur l'API
+            // L'indice 'which' correspond exactement à l'indice dans le tableau filtré
+            // qui commence à 0, donc c'est aussi l'indice dans le tableau complet
+            tokenManager.saveDescriptionIndex(which);
+            saveDescriptionIndexToAPI(which);
+            
+            Toast.makeText(ProfileActivity.this, "Description changée !", Toast.LENGTH_SHORT).show();
+        });
+        builder.setNegativeButton("Annuler", null);
+        builder.show();
+    }
+
+    private void saveDescriptionIndexToAPI(int descriptionIndex) {
+        String authToken = tokenManager.getToken();
+        if (authToken == null || authToken.isEmpty()) {
+            return;
+        }
+
+        UserService userService = new UserService(authToken);
+        UpdateUserRequest request = new UpdateUserRequest(
+                null,
+                null,
+                null,
+                null,
+                descriptionIndex
+        );
+
+        userService.updateCurrentUserProfile(request, new UserService.UserProfileCallback() {
+            @Override
+            public void onSuccess(UserResponse user) {
+                tokenManager.saveUserProfile(user);
+                Log.d(TAG, "Description index sauvegardée sur l'API: " + descriptionIndex);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.e(TAG, "Erreur lors de la sauvegarde de description_index: " + errorMessage);
+            }
+        });
     }
 
     private String valueOrDash(String value) {

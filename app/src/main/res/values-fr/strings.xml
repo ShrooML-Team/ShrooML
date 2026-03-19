@@ -48,4 +48,23 @@
         en ce basant sur une image ou critère grace au machine learning !</string>
 
     <string name="choice_label">— OU —</string>
+
+    <!-- Profile Descriptions - Phrases rigolotes -->
+    <string-array name="profile_descriptions">
+        <item>Chasseur de champignons extraordinaire</item>
+        <item>Enthousiaste de mycologie confirmé</item>
+        <item>Je vis ma vie de crapaud</item>
+        <item>Collecteur de spores en formation</item>
+        <item>Passionné absolu des fungus</item>
+        <item>Collectionneur de chapeaux errants</item>
+        <item>Obsédé sérieusement par les spores</item>
+        <item>Nerd mycologie pour toujours</item>
+        <item>Les potins fongiques me motivent</item>
+        <item>Aventures avec fungus géniales</item>
+        <item>Manger des champignons pure joie</item>
+        <item>La chasse aux champignons me vit</item>
+        <item>La science fongique rend heureuse</item>
+        <item>Amoureux des caps sans limite</item>
+        <item>Expert du royaume fongique progressif</item>
+    </string-array>
 </resources>

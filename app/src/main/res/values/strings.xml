@@ -45,4 +45,23 @@
     <string name="choice_description">ShrooML helps you identify mushrooms
         based on pictures or criterie thank to machine learnings !</string>
     <string name="choice_label">— OR —</string>
+
+    <!-- Profile Descriptions - Funny short phrases -->
+    <string-array name="profile_descriptions">
+        <item>Mushroom hunter extraordinaire</item>
+        <item>Professional fungi enthusiast here</item>
+        <item>Living my best toadstool life</item>
+        <item>Spore collector in training mode</item>
+        <item>Fungi fanatic with main passion</item>
+        <item>Cap collector and forest wanderer</item>
+        <item>Seriously obsessed with fungus biology</item>
+        <item>Mycology nerd forever and ever</item>
+        <item>Mushroom gossip is my fuel</item>
+        <item>Adventures with fungi are awesome</item>
+        <item>Eating fungi is pure joy</item>
+        <item>Foraging is my reason for living</item>
+        <item>Mushroom science makes me happy</item>
+        <item>Cap lover through and through</item>
+        <item>Fungal kingdom expert in progress</item>
+    </string-array>
 </resources>

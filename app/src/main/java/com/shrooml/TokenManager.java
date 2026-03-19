@@ -23,8 +23,8 @@ public class TokenManager {
     private static final String USER_IDENTIFIANT_KEY = "user_identifiant";
     private static final String USER_EMAIL_KEY = "user_email";
     private static final String USER_PHOTO_PROFIL_KEY = "user_photo_profil";
-    private static final String USER_DESCRIPTION_KEY = "user_description";
     private static final String USER_CHAMPIGNON_PREFERE_KEY = "user_champignon_prefere";
+    private static final String USER_DESCRIPTION_INDEX_KEY = "user_description_index";
     private static final String USER_SCORING_KEY = "user_scoring";
     private static final String USER_STREAK_KEY = "user_streak";
     private static final String USER_NIVEAU_KEY = "user_niveau";
@@ -99,8 +99,8 @@ public class TokenManager {
                     .putString(USER_IDENTIFIANT_KEY, user.getIdentifiant())
                     .putString(USER_EMAIL_KEY, user.getEmail())
                     .putString(USER_PHOTO_PROFIL_KEY, user.getPhoto_profil())
-                    .putString(USER_DESCRIPTION_KEY, user.getDescription())
                     .putString(USER_CHAMPIGNON_PREFERE_KEY, user.getChampignon_prefere())
+                    .putInt(USER_DESCRIPTION_INDEX_KEY, user.getDescription_index() != null ? user.getDescription_index() : 0)
                     .putFloat(USER_SCORING_KEY, user.getScoring())
                     .putInt(USER_STREAK_KEY, user.getStreak())
                     .putInt(USER_NIVEAU_KEY, user.getNiveau())
@@ -153,12 +153,22 @@ public class TokenManager {
         return encryptedSharedPref.getString(USER_LOCAL_PHOTO_URI_KEY, null);
     }
 
-    public String getUserDescription() {
-        return encryptedSharedPref.getString(USER_DESCRIPTION_KEY, null);
-    }
-
     public String getUserChampignonPrefere() {
         return encryptedSharedPref.getString(USER_CHAMPIGNON_PREFERE_KEY, null);
+    }
+
+    public int getUserDescriptionIndex() {
+        return encryptedSharedPref.getInt(USER_DESCRIPTION_INDEX_KEY, 0);
+    }
+
+    public void saveDescriptionIndex(int index) {
+        try {
+            encryptedSharedPref.edit()
+                    .putInt(USER_DESCRIPTION_INDEX_KEY, index)
+                    .apply();
+        } catch (Exception e) {
+            Log.e(TAG, "ERREUR lors de la sauvegarde du description_index", e);
+        }
     }
 
     public float getUserScoring() {
@@ -278,8 +288,8 @@ public class TokenManager {
                     .remove(USER_IDENTIFIANT_KEY)
                     .remove(USER_EMAIL_KEY)
                     .remove(USER_PHOTO_PROFIL_KEY)
-                    .remove(USER_DESCRIPTION_KEY)
                     .remove(USER_CHAMPIGNON_PREFERE_KEY)
+                    .remove(USER_DESCRIPTION_INDEX_KEY)
                     .remove(USER_SCORING_KEY)
                     .remove(USER_STREAK_KEY)
                     .remove(USER_NIVEAU_KEY)
