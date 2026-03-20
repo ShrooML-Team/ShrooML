@@ -1,5 +1,7 @@
 package com.shrooml;
 
+import static android.widget.Toast.LENGTH_LONG;
+
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
@@ -10,6 +12,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.location.Location;
 import com.google.android.gms.location.LocationRequest;
+
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
@@ -36,6 +40,10 @@ import com.shrooml.services.OAuthService;
 import com.shrooml.services.ShroomLocService;
 
 import java.util.List;
+
+import android.os.VibrationEffect;
+import android.os.Vibrator;
+import android.content.Context;
 
 public class ShroomLocateActivity extends AppCompatActivity {
 
@@ -67,6 +75,8 @@ public class ShroomLocateActivity extends AppCompatActivity {
     private Handler handler = new Handler();
     private Runnable loadingAnimation;
 
+    private Vibrator vibrator;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +92,8 @@ public class ShroomLocateActivity extends AppCompatActivity {
         emptySubtitle = findViewById(R.id.emptySubtitle);
 
         recycler = findViewById(R.id.mushroomRecycler);
+
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         String[] frames = {
                 getString(R.string.loading_1),
@@ -315,6 +327,12 @@ public class ShroomLocateActivity extends AppCompatActivity {
                 if (mushrooms == null || mushrooms.isEmpty()) {
                     emptyState.setVisibility(View.VISIBLE);
                     recycler.setVisibility(View.GONE);
+                    if (vibrator != null && vibrator.hasVibrator()) {
+                        // Vibration pendant 100 millisecondes, intensité par défaut
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            vibrator.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
+                        }
+                    }
                     return;
                 }
 
@@ -332,6 +350,12 @@ public class ShroomLocateActivity extends AppCompatActivity {
                     intent.putExtra("scientificName", m.getScientificName());
                     startActivity(intent);
                 });
+                if (vibrator != null && vibrator.hasVibrator()) {
+                    // Vibration pendant 100 millisecondes, intensité par défaut
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        vibrator.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
+                    }
+                }
             }
 
 
