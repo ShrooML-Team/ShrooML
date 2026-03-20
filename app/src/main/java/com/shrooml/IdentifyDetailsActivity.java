@@ -54,40 +54,39 @@ public class IdentifyDetailsActivity extends AppCompatActivity {
         TextView accuracyText = findViewById(R.id.accuracyText);
         ProgressBar accuracyBar = findViewById(R.id.accuracyBar);
 
+        // Dans onCreate(), après findViewById :
+        ImageView backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(m -> {
+            Intent intent = new Intent(IdentifyDetailsActivity.this, IdentifyActivity.class);
+            startActivity(intent);
+        });
+
         BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
-        bottomNav.setSelectedItemId(R.id.nav_locate);
+        bottomNav.setSelectedItemId(R.id.nav_identify);
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
                 int id = item.getItemId();
 
-                if (id == R.id.nav_quiz) {
-                    startActivity(new Intent(IdentifyDetailsActivity.this, QuizActivity.class));
+                if (id == R.id.nav_identify) {
+                    startActivity(new Intent(IdentifyDetailsActivity.this, IdentifyActivity.class));
                     return true;
                 }
                 if (id == R.id.nav_locate) {
                     startActivity(new Intent(IdentifyDetailsActivity.this, ShroomLocateActivity.class));
                     return true;
                 }
-                if (id == R.id.nav_home) {
-                    startActivity(new Intent(IdentifyDetailsActivity.this, SplashActivity.class));
+                if (id == R.id.nav_quiz) {
+                    startActivity(new Intent(IdentifyDetailsActivity.this, QuizActivity.class));
                     return true;
                 }
-                if(id == R.id.nav_identify) {
-                    startActivity(new Intent(IdentifyDetailsActivity.this, ChoiceIdentifyActivity.class));
+                if (id == R.id.nav_profile) {
+                    startActivity(new Intent(IdentifyDetailsActivity.this, ProfileActivity.class));
                     return true;
                 }
 
                 return false;
             }
-        });
-
-        // Dans onCreate(), après findViewById :
-        ImageView backButton = findViewById(R.id.backButton);
-        backButton.setOnClickListener(m -> {
-            Intent intent = new Intent(IdentifyDetailsActivity.this, IdentifyActivity.class);
-            startActivity(intent);
         });
 
         api = new ShroomLocService();

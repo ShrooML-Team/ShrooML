@@ -113,6 +113,27 @@ public class OAuthService {
         });
     }
 
+    public void refreshUserSession(String authToken, OAuthUserCallback callback) {
+        Call<TokenResponseFull> call = api.refresh("Bearer " + authToken);
+
+        call.enqueue(new Callback<TokenResponseFull>() {
+            @Override
+            public void onResponse(Call<TokenResponseFull> call, Response<TokenResponseFull> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                    return;
+                }
+
+                callback.onError("Erreur refresh session : " + response.code());
+            }
+
+            @Override
+            public void onFailure(Call<TokenResponseFull> call, Throwable t) {
+                callback.onError("Erreur réseau : " + t.getMessage());
+            }
+        });
+    }
+
     public void exchangeGoogleToken(com.shrooml.services.api.GoogleTokenRequest request, OAuthUserCallback callback) {
         Call<TokenResponseFull> call = api.exchangeGoogleToken(request);
 

@@ -68,8 +68,8 @@ public class ShroomDetailsActivity extends AppCompatActivity {
                     startActivity(new Intent(ShroomDetailsActivity.this, ShroomLocateActivity.class));
                     return true;
                 }
-                if (id == R.id.nav_home) {
-                    startActivity(new Intent(ShroomDetailsActivity.this, SplashActivity.class));
+                if (id == R.id.nav_profile) {
+                    startActivity(new Intent(ShroomDetailsActivity.this, ProfileActivity.class));
                     return true;
                 }
                 if(id == R.id.nav_identify) {

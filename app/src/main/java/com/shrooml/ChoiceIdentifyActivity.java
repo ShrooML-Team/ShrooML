@@ -42,8 +42,8 @@ public class ChoiceIdentifyActivity extends Activity {
                     startActivity(new Intent(ChoiceIdentifyActivity.this, QuizActivity.class));
                     return true;
                 }
-                if (id == R.id.nav_home) {
-                    startActivity(new Intent(ChoiceIdentifyActivity.this, SplashActivity.class));
+                if (id == R.id.nav_profile) {
+                    startActivity(new Intent(ChoiceIdentifyActivity.this, ProfileActivity.class));
                     return true;
                 }
 

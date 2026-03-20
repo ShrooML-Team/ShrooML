@@ -5,11 +5,12 @@ public class UserResponse {
     private String identifiant;
     private String email;
     private String photo_profil;
-    private String description;
     private String champignon_prefere;
+    private Integer description_index;
     private float scoring;
     private int streak;
     private int niveau;
+    private int rang;
     private String created_at;
     private boolean is_active;
 
@@ -46,20 +47,20 @@ public class UserResponse {
         this.photo_profil = photo_profil;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getChampignon_prefere() {
         return champignon_prefere;
     }
 
     public void setChampignon_prefere(String champignon_prefere) {
         this.champignon_prefere = champignon_prefere;
+    }
+
+    public Integer getDescription_index() {
+        return description_index;
+    }
+
+    public void setDescription_index(Integer description_index) {
+        this.description_index = description_index;
     }
 
     public float getScoring() {
@@ -84,6 +85,14 @@ public class UserResponse {
 
     public void setNiveau(int niveau) {
         this.niveau = niveau;
+    }
+
+    public int getRang() {
+        return rang;
+    }
+
+    public void setRang(int rang) {
+        this.rang = rang;
     }
 
     public String getCreated_at() {
