@@ -327,10 +327,11 @@ public class ShroomLocateActivity extends AppCompatActivity {
                 if (mushrooms == null || mushrooms.isEmpty()) {
                     emptyState.setVisibility(View.VISIBLE);
                     recycler.setVisibility(View.GONE);
+
+                    //Retour haptique
                     if (vibrator != null && vibrator.hasVibrator()) {
-                        // Vibration pendant 100 millisecondes, intensité par défaut
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            vibrator.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
+                            vibrator.vibrate(VibrationEffect.createOneShot(250, 150));
                         }
                     }
                     return;
@@ -350,10 +351,11 @@ public class ShroomLocateActivity extends AppCompatActivity {
                     intent.putExtra("scientificName", m.getScientificName());
                     startActivity(intent);
                 });
+
+                //Retour haptique
                 if (vibrator != null && vibrator.hasVibrator()) {
-                    // Vibration pendant 100 millisecondes, intensité par défaut
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        vibrator.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
+                        vibrator.vibrate(VibrationEffect.createOneShot(250, 150));
                     }
                 }
             }
