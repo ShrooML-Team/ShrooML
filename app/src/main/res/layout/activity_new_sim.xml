@@ -1,491 +1,183 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F9FA"
-    android:fillViewport="true">
+    android:orientation="vertical"
+    android:background="#C98D63"
+    android:padding="20dp">
 
-    <LinearLayout
+    <!-- Titre ShroomML -->
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="20dp"
-        android:paddingTop="32dp"
-        android:paddingBottom="32dp">
+        android:text="ShroomML"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:gravity="center"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="24dp"
+        android:fontFamily="sans-serif-medium" />
 
-        <!-- Titre -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="ShroomML"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:textColor="#2D6A4F"
-            android:gravity="center"
-            android:layout_marginBottom="8dp" />
+    <!-- ScrollView pour le formulaire -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Mushroom Classification AI"
-            android:textSize="14sp"
-            android:textColor="#6C757D"
-            android:gravity="center"
-            android:layout_marginBottom="32dp" />
-
-        <!-- Card des caractéristiques -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="4dp"
-            app:cardBackgroundColor="#FFFFFF"
-            android:layout_marginBottom="24dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <!-- Cap Shape -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="What is the shape of the cap?"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="#212529"
-                    android:layout_marginBottom="8dp" />
-
-                <Spinner
-                    android:id="@+id/spinner_cap_shape"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_spinner"
-                    android:layout_marginBottom="20dp" />
-
-                <!-- Cap Surface -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="What is the surface of the cap?"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="#212529"
-                    android:layout_marginBottom="8dp" />
-
-                <Spinner
-                    android:id="@+id/spinner_cap_surface"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_spinner"
-                    android:layout_marginBottom="20dp" />
-
-                <!-- Cap Color -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="What is the color of the cap?"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="#212529"
-                    android:layout_marginBottom="8dp" />
-
-                <Spinner
-                    android:id="@+id/spinner_cap_color"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_spinner"
-                    android:layout_marginBottom="20dp" />
-
-                <!-- Bruises -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Does it bruise when touched?"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="#212529"
-                    android:layout_marginBottom="8dp" />
-
-                <Spinner
-                    android:id="@+id/spinner_bruises"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_spinner"
-                    android:layout_marginBottom="20dp" />
-
-                <!-- Odor -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="What is the odor?"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="#212529"
-                    android:layout_marginBottom="8dp" />
-
-                <Spinner
-                    android:id="@+id/spinner_odor"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_spinner"
-                    android:layout_marginBottom="20dp" />
-
-                <!-- Gill Attachment -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="How are the gills attached?"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="#212529"
-                    android:layout_marginBottom="8dp" />
-
-                <Spinner
-                    android:id="@+id/spinner_gill_attachment"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_spinner"
-                    android:layout_marginBottom="20dp" />
-
-                <!-- Gill Spacing -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="What is the gill spacing?"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="#212529"
-                    android:layout_marginBottom="8dp" />
-
-                <Spinner
-                    android:id="@+id/spinner_gill_spacing"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_spinner"
-                    android:layout_marginBottom="20dp" />
-
-                <!-- Gill Size -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="What is the gill size?"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="#212529"
-                    android:layout_marginBottom="8dp" />
-
-                <Spinner
-                    android:id="@+id/spinner_gill_size"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_spinner"
-                    android:layout_marginBottom="20dp" />
-
-                <!-- Gill Color -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="What is the gill color?"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="#212529"
-                    android:layout_marginBottom="8dp" />
-
-                <Spinner
-                    android:id="@+id/spinner_gill_color"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_spinner"
-                    android:layout_marginBottom="20dp" />
-
-                <!-- Stalk Shape -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="What is the shape of the stalk?"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="#212529"
-                    android:layout_marginBottom="8dp" />
-
-                <Spinner
-                    android:id="@+id/spinner_stalk_shape"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_spinner"
-                    android:layout_marginBottom="20dp" />
-
-                <!-- Stalk Root -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="What is the stalk root like?"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="#212529"
-                    android:layout_marginBottom="8dp" />
-
-                <Spinner
-                    android:id="@+id/spinner_stalk_root"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_spinner"
-                    android:layout_marginBottom="20dp" />
-
-                <!-- Stalk Surface Above Ring -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Stalk surface above ring?"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="#212529"
-                    android:layout_marginBottom="8dp" />
-
-                <Spinner
-                    android:id="@+id/spinner_stalk_surface_above"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_spinner"
-                    android:layout_marginBottom="20dp" />
-
-                <!-- Stalk Surface Below Ring -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Stalk surface below ring?"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="#212529"
-                    android:layout_marginBottom="8dp" />
-
-                <Spinner
-                    android:id="@+id/spinner_stalk_surface_below"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_spinner"
-                    android:layout_marginBottom="20dp" />
-
-                <!-- Stalk Color Above Ring -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Stalk color above ring?"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="#212529"
-                    android:layout_marginBottom="8dp" />
-
-                <Spinner
-                    android:id="@+id/spinner_stalk_color_above"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_spinner"
-                    android:layout_marginBottom="20dp" />
-
-                <!-- Stalk Color Below Ring -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Stalk color below ring?"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="#212529"
-                    android:layout_marginBottom="8dp" />
-
-                <Spinner
-                    android:id="@+id/spinner_stalk_color_below"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_spinner"
-                    android:layout_marginBottom="20dp" />
-
-                <!-- Veil Type -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="What type of veil?"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="#212529"
-                    android:layout_marginBottom="8dp" />
-
-                <Spinner
-                    android:id="@+id/spinner_veil_type"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_spinner"
-                    android:layout_marginBottom="20dp" />
-
-                <!-- Veil Color -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="What is the veil color?"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="#212529"
-                    android:layout_marginBottom="8dp" />
-
-                <Spinner
-                    android:id="@+id/spinner_veil_color"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_spinner"
-                    android:layout_marginBottom="20dp" />
-
-                <!-- Ring Number -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="How many rings?"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="#212529"
-                    android:layout_marginBottom="8dp" />
-
-                <Spinner
-                    android:id="@+id/spinner_ring_number"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_spinner"
-                    android:layout_marginBottom="20dp" />
-
-                <!-- Ring Type -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="What type of ring?"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="#212529"
-                    android:layout_marginBottom="8dp" />
-
-                <Spinner
-                    android:id="@+id/spinner_ring_type"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_spinner"
-                    android:layout_marginBottom="20dp" />
-
-                <!-- Spore Print Color -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="What is the spore print color?"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="#212529"
-                    android:layout_marginBottom="8dp" />
-
-                <Spinner
-                    android:id="@+id/spinner_spore_print_color"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_spinner"
-                    android:layout_marginBottom="20dp" />
-
-                <!-- Population -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="What is the population?"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="#212529"
-                    android:layout_marginBottom="8dp" />
-
-                <Spinner
-                    android:id="@+id/spinner_population"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_spinner"
-                    android:layout_marginBottom="20dp" />
-
-                <!-- Habitat -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="What is the habitat?"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="#212529"
-                    android:layout_marginBottom="8dp" />
-
-                <Spinner
-                    android:id="@+id/spinner_habitat"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_spinner"
-                    android:layout_marginBottom="8dp" />
-
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- ProgressBar -->
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginVertical="24dp"
-            android:visibility="gone" />
-
-        <!-- Boutons de navigation -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginBottom="24dp">
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/btn_ranking"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_weight="1"
-                android:text="Ranking"
-                android:background="@drawable/button_secondary_background"
+            <!-- What is the color of the cap? -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="What is the color of the cap ?"
+                android:textSize="16sp"
                 android:textColor="#FFFFFF"
-                android:layout_marginEnd="8dp" />
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp" />
 
-            <Button
-                android:id="@+id/btn_identify"
-                android:layout_width="0dp"
+            <Spinner
+                android:id="@+id/spinner_cap_color"
+                android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_weight="1"
+                android:background="@drawable/bg_spinner"
+                android:layout_marginBottom="16dp" />
+
+            <!-- What is the color of the foot ? -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="What is the color of the foot ?"
+                android:textSize="16sp"
+                android:textColor="#FFFFFF"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp" />
+
+            <Spinner
+                android:id="@+id/spinner_foot_color"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_spinner"
+                android:layout_marginBottom="16dp" />
+
+            <!-- What is the color of the veil ? -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="What is the color of the veil ?"
+                android:textSize="16sp"
+                android:textColor="#FFFFFF"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp" />
+
+            <Spinner
+                android:id="@+id/spinner_veil_color"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_spinner"
+                android:layout_marginBottom="16dp" />
+
+            <!-- What is the odor of the mushroom? -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="What is the odor of the mushroom ?"
+                android:textSize="16sp"
+                android:textColor="#FFFFFF"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp" />
+
+            <Spinner
+                android:id="@+id/spinner_odor"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_spinner"
+                android:layout_marginBottom="16dp" />
+
+            <!-- What colour has the shroom when broken ? -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="What colour has the shroom when broken ?"
+                android:textSize="16sp"
+                android:textColor="#FFFFFF"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp" />
+
+            <Spinner
+                android:id="@+id/spinner_bruises"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_spinner"
+                android:layout_marginBottom="32dp" />
+
+            <!-- Bouton Identify du formulaire -->
+            <TextView
+                android:id="@+id/btn_identify_form"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
                 android:text="Identify"
-                android:background="@drawable/button_primary_background"
-                android:textColor="#FFFFFF"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp" />
-
-            <Button
-                android:id="@+id/btn_games"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_weight="1"
-                android:text="Games"
-                android:background="@drawable/button_secondary_background"
-                android:textColor="#FFFFFF"
-                android:layout_marginStart="8dp" />
+                android:textSize="16sp"
+                android:textColor="#C98D63"
+                android:gravity="center"
+                android:background="#FFFFFF"
+                android:padding="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginBottom="24dp"
+                android:layout_marginTop="8dp" />
 
         </LinearLayout>
+    </ScrollView>
 
-        <!-- Disclaimer -->
+    <!-- Boutons de navigation : Ranking | Identify | Games -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp">
+
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/btn_ranking"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="⚠️ ShroomML declines all responsibility for any issues resulting from the consumption of a mushroom identified using ShroomML."
-            android:textSize="12sp"
-            android:textColor="#6C757D"
-            android:gravity="center"
-            android:lineSpacingExtra="2dp"
-            android:padding="16dp" />
+            android:text="Ranking"
+            android:textSize="16sp"
+            android:textColor="#FFFFFF"
+            android:padding="12dp"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <TextView
+            android:id="@+id/btn_identify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Identify"
+            android:textSize="16sp"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:padding="12dp"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <TextView
+            android:id="@+id/btn_games"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Games"
+            android:textSize="16sp"
+            android:textColor="#FFFFFF"
+            android:padding="12dp"
+            android:clickable="true"
+            android:focusable="true" />
 
     </LinearLayout>
-</ScrollView>
+
+</LinearLayout>

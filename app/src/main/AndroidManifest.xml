@@ -71,12 +71,15 @@
             android:name=".IdentifyDetailsActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
-        <!-- TestActivity pour les tests de prédiction -->
         <activity
             android:name=".activities.TestActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-
+        <activity
+            android:name=".activities.SimulateActivity"
+            android:label="ShroomL - Formulaire"
+            android:theme="@style/Theme.Shrooml" />
+        <activity android:name=".activities.ResultActivity" />
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"

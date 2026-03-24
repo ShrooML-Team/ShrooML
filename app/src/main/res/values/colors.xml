@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="splash_background">#000000</color>
-    <color name="primary">#2D6A4F</color>
-    <color name="primary_dark">#1B4D3E</color>
-    <color name="primary_light">#40916C</color>
-    <color name="secondary">#FF6B6B</color>
+    <color name="background">#C98D63</color>
 
-    <color name="success">#4CAF50</color>
-    <color name="error">#F44336</color>
-    <color name="warning">#FFC107</color>
-    <color name="info">#2196F3</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#FFFFFF</color>
+        <color name="success">#2E7D32</color>
+    <color name="error">#D32F2F</color>
 
-    <color name="black">#000000</color>
-    <color name="gray_light">#F5F5F5</color>
-    <color name="gray_medium">#E0E0E0</color>
-    <color name="gray_dark">#757575</color>
+    <color name="spinner_background">#FFFFFF</color>
+    <color name="spinner_text">#212529</color>
+
+
+    <color name="separator">#FFFFFF</color>
 </resources>
