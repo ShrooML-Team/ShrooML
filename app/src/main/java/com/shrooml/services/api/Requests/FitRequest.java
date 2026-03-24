@@ -1,40 +1,64 @@
 package com.shrooml.services.api.Requests;
 
+import com.google.gson.annotations.SerializedName;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * FitRequest - Requête pour l'endpoint /fit
+ *
+ * y est List<Integer> (0 = edible, 1 = poisonous)
+ */
 public class FitRequest {
-    private List<Map<String,Object>> X;
-    private List<String> y;
-    private Map<String,Object> automl_params;
 
-    public FitRequest(List<Map<String,Object>> X, List<String> y,Map<String,Object> params){
+    @SerializedName("X")
+    private List<Map<String, Integer>> X;
+
+    @SerializedName("y")
+    private List<Integer> y;
+
+    @SerializedName("automl_params")
+    private Map<String, Object> automl_params;
+
+    public FitRequest() {
+    }
+
+    public FitRequest(List<Map<String, Integer>> X, List<Integer> y, Map<String, Object> params) {
         this.X = X;
         this.y = y;
         this.automl_params = params;
     }
 
-    public List<Map<String, Object>> getX() {
+    public List<Map<String, Integer>> getX() {
         return X;
+    }
+
+    public void setX(List<Map<String, Integer>> x) {
+        X = x;
+    }
+
+    public List<Integer> getY() {
+        return y;
+    }
+
+    public void setY(List<Integer> y) {
+        this.y = y;
     }
 
     public Map<String, Object> getAutoml_params() {
         return automl_params;
     }
 
-    public List<String> getY() {
-        return y;
-    }
-
     public void setAutoml_params(Map<String, Object> automl_params) {
         this.automl_params = automl_params;
     }
 
-    public void setX(List<Map<String, Object>> x) {
-        X = x;
-    }
-
-    public void setY(List<String> y) {
-        this.y = y;
+    @Override
+    public String toString() {
+        return "FitRequest{" +
+                "X=" + X +
+                ", y=" + y +
+                ", automl_params=" + automl_params +
+                '}';
     }
 }

@@ -16,10 +16,9 @@
         android:name="android.permission.ACCESS_BACKGROUND_LOCATION"
         android:required="false" />
 
-    <!-- Internet pour API -->
-    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:theme="@null"
         android:icon="@mipmap/ic_launcher"
@@ -63,7 +62,6 @@
             android:name=".ShroomDetailsActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
-
         <!-- IdentifyActivity -->
         <activity
             android:name=".IdentifyActivity"
@@ -71,6 +69,12 @@
 
         <activity
             android:name=".IdentifyDetailsActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <!-- TestActivity pour les tests de prédiction -->
+        <activity
+            android:name=".activities.TestActivity"
+            android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <provider

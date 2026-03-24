@@ -1,9 +1,13 @@
 package com.shrooml.services.api;
 
+import android.content.Context;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.shrooml.TokenManager;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -14,41 +18,41 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.util.Arrays;
 
-/**
- * AutoMLRetrofitClient - Avec OAuth2 Bearer Token
- *
- * Gère automatiquement l'authentification Bearer pour tous les appels API.
- *
- * Utilisation:
- *   // Après login
- *   AutoMLRetrofitClient.getInstance().setAuthToken(token);
- *
- *   // Avant les appels /fit, /predict, /eval
- *   if (AutoMLRetrofitClient.getInstance().isAuthenticated()) {
- *       // Les headers Bearer sont ajoutés automatiquement!
- *   }
- */
 public class AutoMLRetrofitClient {
 
     private static final String TAG = "AutoMLRetrofitClient";
-    private static final String BASE_URL = "https://automl.shrooml.duckdns.org/";
+    // Utilisation de 10.0.2.2 pour l'émulateur
+    private static final String BASE_URL = "http://10.0.2.2:8000/";
 
     private static AutoMLRetrofitClient instance;
     private static Retrofit retrofit;
     private AutoMLApi api;
 
     // Gestion du token
-    private static String authToken = null;
+    private static TokenManager tokenManager;
+    private static Context appContext;
 
-    private AutoMLRetrofitClient() {
+
+
+    private AutoMLRetrofitClient(Context context) {
+        appContext = context.getApplicationContext();
+        try{
+            tokenManager = TokenManager.getInstance(appContext);
+            Log.d(TAG, "TokenManager initialisé");
+        } catch (GeneralSecurityException | IOException e) {
+            Log.e(TAG, "Erreur lors de l'initialisation du TokenManager", e);
+            tokenManager = null;
+        }
         retrofit = getRetrofit();
         api = retrofit.create(AutoMLApi.class);
     }
 
-    public static synchronized AutoMLRetrofitClient getInstance() {
+    public static synchronized AutoMLRetrofitClient getInstance(Context context) {
         if (instance == null) {
-            instance = new AutoMLRetrofitClient();
+            instance = new AutoMLRetrofitClient(context);
         }
         return instance;
     }
@@ -56,30 +60,33 @@ public class AutoMLRetrofitClient {
     private static Retrofit getRetrofit() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
-        // ============================================================
-        // Interceptor Bearer Token (OAuth2)
-        // ============================================================
         builder.addInterceptor(new Interceptor() {
             @Override
-            public Response intercept(Chain chain) throws IOException {
-                Request originalRequest = chain.request();
+            public Response intercept( Chain chain) throws IOException {
+                Request original = chain.request();
 
-                // Si on a un token, ajouter le header Bearer
-                if (authToken != null && !authToken.isEmpty()) {
-                    Request requestWithToken = originalRequest.newBuilder()
-                            .header("Authorization", "Bearer " + authToken)
-                            .build();
-
-                    Log.d(TAG, "Header Bearer ajouté automatiquement");
-                    return chain.proceed(requestWithToken);
+                String token = null;
+                if (tokenManager != null) {
+                    token = tokenManager.getToken();
                 }
+                if(token != null && !token.isEmpty()){
+                    Log.d(TAG, "Token length: " + token.length());
+                    Log.d(TAG, "Token bytes: " + Arrays.toString(token.getBytes()));
+                    Log.d(TAG, "Token starts with 'eyJ': " + token.startsWith("eyJ"));
 
-                // Sinon, envoyer la requête sans authentification
-                return chain.proceed(originalRequest);
+                    Request request = original.newBuilder()
+                            .header("Authorization", "Bearer " + token)
+                            .build();
+                    Log.d(TAG, "Token Bearer ajouté à la requête: " + token.substring(0, Math.min(50, token.length())) + "...");
+                    return chain.proceed(request);
+                } else {
+                    Log.d(TAG, "Aucun token Bearer trouvé");
+                    return chain.proceed(original);
+                }
             }
         });
 
-        // Support des redirects
+
         builder.followRedirects(true);
         builder.followSslRedirects(true);
 
@@ -132,8 +139,10 @@ public class AutoMLRetrofitClient {
      * @param token Le token JWT reçu du serveur
      */
     public void setAuthToken(String token) {
-        this.authToken = token;
-        Log.d(TAG, "Token Bearer défini: " + (token != null ? token.substring(0, Math.min(50, token.length())) + "..." : "null"));
+        if(tokenManager != null){
+            tokenManager.saveToken(token, tokenManager.getUserId(), tokenManager.getUserIdentifiant());
+            Log.d(TAG, "Token Bearer défini: " + token.substring(0, Math.min(50, token.length())) + "...");
+        }
     }
 
     /**
@@ -141,7 +150,10 @@ public class AutoMLRetrofitClient {
      * @return Le token, ou null si non défini
      */
     public String getAuthToken() {
-        return authToken;
+        if(tokenManager != null) {
+            return tokenManager.getToken();
+        }
+        return null;
     }
 
     /**
@@ -149,6 +161,7 @@ public class AutoMLRetrofitClient {
      * @return true si un token valide existe
      */
     public boolean isAuthenticated() {
+        String authToken = getAuthToken();
         return authToken != null && !authToken.isEmpty();
     }
 
@@ -156,14 +169,17 @@ public class AutoMLRetrofitClient {
      * Effacer le token Bearer (logout)
      */
     public void clearAuthToken() {
-        this.authToken = null;
-        Log.d(TAG, "Token Bearer effacé");
+        if(tokenManager != null){
+            tokenManager.clearToken();
+            Log.d(TAG, "Token Bearer effacé");
+        }
     }
 
     /**
      * Réinitialiser le client (déconnexion totale)
      */
     public void reset() {
+        clearAuthToken();
         instance = null;
         retrofit = null;
         Log.d(TAG, "AutoMLRetrofitClient réinitialisé");
@@ -178,11 +194,25 @@ public class AutoMLRetrofitClient {
     /**
      * Afficher l'état du client (pour debug)
      */
+    private String getTokenPreview(String token) {
+        if (token == null) return "null";
+        if (token.length() <= 30) return token;
+        return token.substring(0, 15) + "..." + token.substring(token.length() - 15);
+    }
     public void printStatus() {
         Log.d(TAG, "=== AutoMLRetrofitClient Status ===");
         Log.d(TAG, "Base URL: " + BASE_URL);
+        Log.d(TAG, "TokenManager: " + (tokenManager != null ? "initialisé" : "null"));
         Log.d(TAG, "Authentifié: " + isAuthenticated());
-        Log.d(TAG, "Token: " + (authToken != null ? authToken.substring(0, Math.min(50, authToken.length())) + "..." : "null"));
+        Log.d(TAG, "Token: " + getTokenPreview(getAuthToken()));
         Log.d(TAG, "====================================");
+    }
+
+    public AutoMLApi getApi() {
+        return api;
+    }
+
+    public static String getTAG() {
+        return TAG;
     }
 }

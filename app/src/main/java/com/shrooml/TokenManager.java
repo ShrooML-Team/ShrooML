@@ -58,21 +58,52 @@ public class TokenManager {
     }
 
     public void saveToken(String token, int userId, String identifiant) {
-        Log.d(TAG, "saveToken() appelé - userId: " + userId + ", identifiant: " + identifiant);
+        Log.d("TokenManager", "=== SAVE TOKEN ===");
+        Log.d("TokenManager", "Token original: '" + token + "'");
+        Log.d("TokenManager", "Token length: " + token.length());
+
         try {
+            // Sauvegarder
             encryptedSharedPref.edit()
                     .putString(TOKEN_KEY, token)
                     .putInt(USER_ID_KEY, userId)
                     .putString(USER_IDENTIFIANT_KEY, identifiant)
-                    .apply();
-            Log.d(TAG, "Token sauvegardé avec succès");
+                    .commit();  // ← Utiliser commit() au lieu de apply() pour être synchrone
+
+            // ✅ VÉRIFICATION IMMÉDIATE
+            String savedToken = encryptedSharedPref.getString(TOKEN_KEY, null);
+            Log.d("TokenManager", "Token sauvegardé: '" + savedToken + "'");
+            Log.d("TokenManager", "Token length après sauvegarde: " + (savedToken != null ? savedToken.length() : 0));
+
+            // ✅ Vérifier l'intégrité
+            boolean isSame = token.equals(savedToken);
+            Log.d("TokenManager", "Token identique après sauvegarde: " + isSame);
+
+            if (!isSame) {
+                Log.e("TokenManager", "⚠️ CRITICAL: Token modifié par EncryptedSharedPreferences !");
+                Log.e("TokenManager", "Original bytes: " + bytesToHex(token.getBytes()));
+                Log.e("TokenManager", "Saved bytes: " + bytesToHex(savedToken.getBytes()));
+            }
+
         } catch (Exception e) {
             Log.e(TAG, "ERREUR lors de la sauvegarde du token", e);
         }
+        Log.d("TokenManager", "=== END SAVE ===");
     }
 
+    // Méthode utilitaire pour debug
+    private String bytesToHex(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) {
+            sb.append(String.format("%02x ", b));
+        }
+        return sb.toString();
+    }
     public String getToken() {
         String token = encryptedSharedPref.getString(TOKEN_KEY, null);
+        Log.d("TokenManager", "getToken() - token récupéré: " + token);
+        Log.d("TokenManager", "getToken() - token length: " + (token != null ? token.length() : 0));
+
         Log.d(TAG, "getToken() - token présent: " + (token != null));
         return token;
     }

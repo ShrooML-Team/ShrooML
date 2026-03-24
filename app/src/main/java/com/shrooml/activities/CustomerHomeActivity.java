@@ -8,7 +8,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.shrooml.activities.NewSimulationActivity;
+import com.shrooml.LoginActivity;
+import com.shrooml.activities.SimulateActivity;
 import com.shrooml.R;
 
 /**
@@ -39,7 +40,7 @@ public class CustomerHomeActivity extends AppCompatActivity {
     }
 
     private void newSimulation() {
-        Intent intent = new Intent(this, NewSimulationActivity.class);
+        Intent intent = new Intent(this, SimulateActivity.class);
         startActivity(intent);
     }
 

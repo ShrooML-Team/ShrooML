@@ -7,60 +7,40 @@ import java.util.ArrayList;
 /**
  * PredictRequest - Requête pour l'endpoint /predict
  *
- * Envoie les features (X) ET un Y vide
- * (au cas où le serveur en aurait besoin)
- *
- * JSON généré:
+ * Format exact attendu par l'API (basé sur schemas.py):
  * {
  *   "X": [
  *     {"cap-shape": 5, "cap-surface": 2, ...}
- *   ],
- *   "y": []
+ *   ]
  * }
+ *
+ * IMPORTANT: PAS de champ "y" pour /predict!
+ * Le modèle Pydantic ne le reconnaît pas → erreur 422
  */
 public class PredictRequest {
 
-    private List<Map<String, Object>> X;
-    private List<String> y;
+    private List<Map<String, Integer>> X;
 
     public PredictRequest() {
         this.X = new ArrayList<>();
-        this.y = new ArrayList<>();
     }
 
-    // Constructeur avec juste X
-    public PredictRequest(List<Map<String, Object>> X) {
+    public PredictRequest(List<Map<String, Integer>> X) {
         this.X = X;
-        this.y = new ArrayList<>();  // Y vide
     }
 
-    // Constructeur avec X et Y
-    public PredictRequest(List<Map<String, Object>> X, List<String> y) {
-        this.X = X;
-        this.y = y;
-    }
-
-    public List<Map<String, Object>> getX() {
+    public List<Map<String, Integer>> getX() {
         return X;
     }
 
-    public void setX(List<Map<String, Object>> X) {
+    public void setX(List<Map<String, Integer>> X) {
         this.X = X;
-    }
-
-    public List<String> getY() {
-        return y;
-    }
-
-    public void setY(List<String> y) {
-        this.y = y;
     }
 
     @Override
     public String toString() {
         return "PredictRequest{" +
                 "X=" + X +
-                ", y=" + y +
                 '}';
     }
 }

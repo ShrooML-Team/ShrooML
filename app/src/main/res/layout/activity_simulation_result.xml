@@ -1,54 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:gravity="center">
+    android:background="#F8F9FA"
+    android:fillViewport="true">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Classification Result"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginBottom="32dp" />
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:gravity="center_horizontal"
+        android:paddingTop="32dp">
 
-    <!-- Image -->
-    <ImageView
-        android:id="@+id/iv_result_image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginBottom="32dp"
-        android:scaleType="centerInside" />
+        <!-- Titre -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ShroomML"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="#2D6A4F"
+            android:gravity="center"
+            android:layout_marginBottom="16dp" />
 
-    <!-- Résultat -->
-    <TextView
-        android:id="@+id/tv_result"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="EDIBLE"
-        android:textSize="48sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginBottom="32dp" />
+        <!-- Card d'information -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="#FFFFFF"
+            android:layout_marginBottom="24dp">
 
-    <!-- Label -->
-    <TextView
-        android:id="@+id/tv_result_label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="This mushroom is SAFE to eat!"
-        android:textSize="18sp"
-        android:gravity="center"
-        android:layout_marginBottom="64dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
 
-    <!-- Bouton Back -->
-    <Button
-        android:id="@+id/btn_back"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Back" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ShroomML helps you determine a mushroom's edibility based on its characteristics using AutoML. Please note that the final assessment of edibility remains uncertain, as AI can make mistakes."
+                    android:textSize="14sp"
+                    android:textColor="#6C757D"
+                    android:lineSpacingExtra="4dp"
+                    android:layout_marginBottom="24dp" />
 
-</LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#E9ECEF"
+                    android:layout_marginBottom="24dp" />
+
+                <!-- Résultat -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Your mushroom is:"
+                    android:textSize="16sp"
+                    android:textColor="#212529"
+                    android:gravity="center"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/result_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Loading..."
+                    android:textSize="36sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:letterSpacing="0.05"
+                    android:layout_marginBottom="24dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#E9ECEF"
+                    android:layout_marginBottom="24dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="⚠️ ShroomML declines all responsibility for any issues resulting from the consumption of a mushroom identified using ShroomML."
+                    android:textSize="12sp"
+                    android:textColor="#6C757D"
+                    android:gravity="center"
+                    android:lineSpacingExtra="2dp" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Boutons de navigation -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="16dp">
+
+            <Button
+                android:id="@+id/btn_ranking"
+                style="@style/ButtonSecondary"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="Ranking"
+                android:layout_marginEnd="8dp" />
+
+            <Button
+                android:id="@+id/btn_identify"
+                style="@style/ButtonPrimary"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="Identify"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp" />
+
+            <Button
+                android:id="@+id/btn_games"
+                style="@style/ButtonSecondary"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="Games"
+                android:layout_marginStart="8dp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_new_prediction"
+            style="@style/ButtonOutlined"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="New Prediction"
+            android:layout_marginTop="8dp" />
+
+    </LinearLayout>
+</ScrollView>
