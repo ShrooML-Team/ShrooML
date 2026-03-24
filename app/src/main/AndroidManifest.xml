@@ -16,6 +16,10 @@
         android:name="android.permission.ACCESS_BACKGROUND_LOCATION"
         android:required="false" />
 
+    <!-- Internet pour API -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:usesCleartextTraffic="true"
@@ -62,6 +66,9 @@
             android:name=".ShroomDetailsActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
+        <activity android:name=".ChoiceIdentifyActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
         <!-- IdentifyActivity -->
         <activity
             android:name=".IdentifyActivity"
@@ -69,6 +76,10 @@
 
         <activity
             android:name=".IdentifyDetailsActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <activity
+            android:name=".ProfileActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity

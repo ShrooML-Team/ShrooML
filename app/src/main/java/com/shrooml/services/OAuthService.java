@@ -16,7 +16,6 @@ import retrofit2.Response;
 
 public class OAuthService {
 
-    private List<MushroomEntity> mushrooms;
 
     private final OAuthApi api;
 
@@ -105,6 +104,27 @@ public class OAuthService {
                 } else {
                     callback.onError("Erreur inscription : " + response.code() + " - " + response.message());
                 }
+            }
+
+            @Override
+            public void onFailure(Call<TokenResponseFull> call, Throwable t) {
+                callback.onError("Erreur réseau : " + t.getMessage());
+            }
+        });
+    }
+
+    public void refreshUserSession(String authToken, OAuthUserCallback callback) {
+        Call<TokenResponseFull> call = api.refresh("Bearer " + authToken);
+
+        call.enqueue(new Callback<TokenResponseFull>() {
+            @Override
+            public void onResponse(Call<TokenResponseFull> call, Response<TokenResponseFull> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                    return;
+                }
+
+                callback.onError("Erreur refresh session : " + response.code());
             }
 
             @Override

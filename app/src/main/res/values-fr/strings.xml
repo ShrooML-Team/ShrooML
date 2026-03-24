@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="loadSplash">Chargement ...</string>
+
+
     <string name="app_name">ShrooML appli</string>
     <string name="hello_world">Bonjour le monde !</string>
     <string name="menu_settings">Paramètre</string>
@@ -22,4 +25,86 @@
     <string name="title_4">Vous êtes un champignon confirmé</string>
     <string name="title_5">Vous êtes un champignon expert</string>
     <string name="title_6">Vous êtes un champiRoi</string>
+    <string name="nav_profile_title">Profil</string>
+
+    <string name="descriptionLocate">ShrooML Locate vous aide à identifier les espèces de champignons susceptibles de pousser près de chez vous, en fonction de votre localisation, de votre biome et de la météo, grâce à ShroomLoc !</string>
+    <string name="noMushroomFoundNearYou">Aucun champignon trouvé proche de vous.</string>
+    <string name="changeLocation">Essayez de changer d\'endroit ou rafraichissez.</string>
+
+    <string name="tox">Toxicité</string>
+    <string name="genInfo">Informations générales</string>
+    <string name="eco">Écologie</string>
+    <string name="reci">Recette</string>
+    <string name="accu">Précision</string>
+
+    <string name="loading_1">Chargement .</string>
+    <string name="loading_2">Chargement ..</string>
+    <string name="loading_3">Chargement ...</string>
+
+
+    <string name="choice_title">Choix d\'identification</string>
+
+    <string name="choice_description">ShrooML vous aide a identifier un champigon
+        en ce basant sur une image ou critère grace au machine learning !</string>
+
+    <string name="choice_label">— OU —</string>
+
+    <!-- Profile page strings -->
+    <string name="profile_favorite_mushroom">Champignon préféré</string>
+    <string name="profile_informations">Informations</string>
+    <string name="profile_edition">Édition</string>
+    <string name="profile_score">Score : %s</string>
+    <string name="profile_streak">Streak : %s</string>
+    <string name="profile_niveau">Niveau : %s</string>
+    <string name="profile_created_at">Créé le : %s</string>
+    <string name="profile_common_name">Nom commun : %s</string>
+    <string name="profile_scientific_name">Nom scientifique : %s</string>
+    <string name="profile_picture">Photo de profil</string>
+    <string name="profile_favorite_image">Image du champignon préféré</string>
+    <string name="profile_edibility_status">Statut de comestibilité</string>
+
+    <!-- Login page strings -->
+    <string name="login_title">Connexion</string>
+    <string name="login_identifiant_hint">Identifiant ...</string>
+    <string name="login_password_hint">Mot de passe ...</string>
+    <string name="login_button">CONNEXION</string>
+    <string name="login_or_text">- ou -</string>
+    <string name="login_google_signin">Connexion Google</string>
+    <string name="login_not_registered">Pas encore inscrit ?</string>
+    <string name="login_register_button">S\'INSCRIRE</string>
+
+    <!-- Register page strings -->
+    <string name="register_title">Inscription</string>
+    <string name="register_identifiant_hint">Identifiant ...</string>
+    <string name="register_email_hint">E-mail ...</string>
+    <string name="register_password_hint">Mot de passe ...</string>
+    <string name="register_favorite_mushroom_hint">Champignon préféré ...</string>
+    <string name="register_button">S\'INSCRIRE</string>
+    <string name="register_or_text">- ou -</string>
+    <string name="register_google_signin">Connexion Google</string>
+    <string name="register_back_to_login">← Retour à la connexion</string>
+
+    <!-- Profile Edit Form -->
+    <string name="profile_email_hint">E-mail</string>
+    <string name="profile_favorite_mushroom_input">Champignon préféré</string>
+    <string name="profile_save_button">Enregistrer</string>
+
+    <!-- Profile Descriptions - Phrases rigolotes -->
+    <string-array name="profile_descriptions">
+        <item>Chasseur de champignons extraordinaire</item>
+        <item>Enthousiaste de mycologie confirmé</item>
+        <item>Je vis ma vie de crapaud</item>
+        <item>Collecteur de spores en formation</item>
+        <item>Passionné absolu des fungus</item>
+        <item>Collectionneur de chapeaux errants</item>
+        <item>Obsédé sérieusement par les spores</item>
+        <item>Nerd mycologie pour toujours</item>
+        <item>Les potins fongiques me motivent</item>
+        <item>Aventures avec fungus géniales</item>
+        <item>Manger des champignons pure joie</item>
+        <item>La chasse aux champignons me vit</item>
+        <item>La science fongique rend heureuse</item>
+        <item>Amoureux des caps sans limite</item>
+        <item>Expert du royaume fongique progressif</item>
+    </string-array>
 </resources>

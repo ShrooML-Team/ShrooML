@@ -4,15 +4,18 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.shrooml.models.MushroomCompleteEntity;
 import com.shrooml.models.RecipeEntity;
 import com.shrooml.services.ShroomLocService;
@@ -58,6 +61,34 @@ public class IdentifyDetailsActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
+        bottomNav.setSelectedItemId(R.id.nav_identify);
+        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+
+                if (id == R.id.nav_identify) {
+                    startActivity(new Intent(IdentifyDetailsActivity.this, IdentifyActivity.class));
+                    return true;
+                }
+                if (id == R.id.nav_locate) {
+                    startActivity(new Intent(IdentifyDetailsActivity.this, ShroomLocateActivity.class));
+                    return true;
+                }
+                if (id == R.id.nav_quiz) {
+                    startActivity(new Intent(IdentifyDetailsActivity.this, QuizActivity.class));
+                    return true;
+                }
+                if (id == R.id.nav_profile) {
+                    startActivity(new Intent(IdentifyDetailsActivity.this, ProfileActivity.class));
+                    return true;
+                }
+
+                return false;
+            }
+        });
+
         api = new ShroomLocService();
 
         // Nom scientifique original
@@ -66,7 +97,7 @@ public class IdentifyDetailsActivity extends AppCompatActivity {
 
         int percent = (int)(accuracy * 100);
 
-        accuracyText.setText(percent + "% Accuracy");
+        accuracyText.setText(percent + "% " + getString(R.string.accu));
         accuracyBar.setProgress(percent);
 
         int color;
@@ -108,17 +139,19 @@ public class IdentifyDetailsActivity extends AppCompatActivity {
                         .into(detailsImage);
 
                 // Badge toxicité
-                switch (m.getToxicity()) {
-                    case "toxic":
-                        detailsBadge.setText("☠️ Toxique");
+                switch (m.getEdibility()) {
+                    case "inedible":
+                        detailsBadge.setText("Toxique");
                         detailsBadge.setBackgroundColor(0xFFD32F2F);
                         break;
-                    case "inedible":
-                        detailsBadge.setText("⚠️ Non comestible");
-                        detailsBadge.setBackgroundColor(0xFFFBC02D);
+
+                    case "medicinal":
+                        detailsBadge.setText("Médicinal");
+                        detailsBadge.setBackgroundColor(0xFF1976D2);
                         break;
+
                     default:
-                        detailsBadge.setText("🟢 Comestible");
+                        detailsBadge.setText("Comestible");
                         detailsBadge.setBackgroundColor(0xFF388E3C);
                         break;
                 }

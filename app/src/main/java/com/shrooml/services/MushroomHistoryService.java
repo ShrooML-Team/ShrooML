@@ -3,12 +3,6 @@ package com.shrooml.services;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.*;
 
 public class MushroomHistoryService {

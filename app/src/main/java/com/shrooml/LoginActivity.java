@@ -113,9 +113,10 @@ public class LoginActivity extends AppCompatActivity {
                             response.getUser().getId(),
                             response.getUser().getIdentifiant()
                     );
+                        tokenManager.saveUserProfile(response.getUser());
                     Toast.makeText(LoginActivity.this, "Connexion Google réussie!", Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(LoginActivity.this, QuizActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, ChoiceIdentifyActivity.class);
                     startActivity(intent);
                     finish();
                 } catch (Exception e) {
@@ -167,11 +168,12 @@ public class LoginActivity extends AppCompatActivity {
                             response.getUser().getId(),
                             response.getUser().getIdentifiant()
                     );
+                        tokenManager.saveUserProfile(response.getUser());
                     Log.d(TAG, "Token sauvegardé avec succès");
                     Toast.makeText(LoginActivity.this, "Connexion réussie!", Toast.LENGTH_SHORT).show();
 
-                    Log.d(TAG, "Navigation vers QuizActivity");
-                    Intent intent = new Intent(LoginActivity.this, QuizActivity.class);
+                    Log.d(TAG, "Navigation vers ChoiceIdentifyActivity");
+                    Intent intent = new Intent(LoginActivity.this, ChoiceIdentifyActivity.class);
                     startActivity(intent);
                     finish();
                 } catch (Exception e) {
