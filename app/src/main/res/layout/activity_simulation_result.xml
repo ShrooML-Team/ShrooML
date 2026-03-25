@@ -1,139 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#C98D63"
-    android:padding="20dp">
+    android:fillViewport="true"
+    android:background="#C98D63">
 
-    <!-- Titre ShroomML -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="ShroomML"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        android:gravity="center"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="24dp" />
-
-    <!-- ScrollView pour le contenu -->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:fillViewport="true">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            android:padding="16dp">
-
-            <!-- Texte d'information -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="ShroomML helps you determine a mushroom's edibility based on its characteristics using AutoML. Please note that the final assessment of edibility remains uncertain, as AI can make mistakes."
-                android:textSize="14sp"
-                android:textColor="#FFFFFF"
-                android:lineSpacingExtra="4dp"
-                android:gravity="center"
-                android:layout_marginBottom="24dp" />
-
-            <!-- Ligne séparatrice -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="#FFFFFF"
-                android:layout_marginBottom="24dp" />
-
-            <!-- Titre du résultat -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Your mushroom is:"
-                android:textSize="18sp"
-                android:textColor="#FFFFFF"
-                android:gravity="center"
-                android:layout_marginBottom="8dp" />
-
-            <!-- Résultat (dynamique) -->
-            <TextView
-                android:id="@+id/result_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="..."
-                android:textSize="48sp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:layout_marginBottom="24dp" />
-
-            <!-- Ligne séparatrice -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="#FFFFFF"
-                android:layout_marginBottom="24dp" />
-
-            <!-- Disclaimer -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="ShroomML declines all responsibility for any issues resulting from the consumption of a mushroom identified using ShroomML."
-                android:textSize="12sp"
-                android:textColor="#FFFFFF"
-                android:gravity="center"
-                android:lineSpacingExtra="2dp" />
-
-        </LinearLayout>
-    </ScrollView>
-
-    <!-- Boutons de navigation : Ranking | Identify | Games -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp">
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="24dp">
 
+        <!-- Titre ShroomML -->
         <TextView
-            android:id="@+id/btn_ranking"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ranking"
-            android:textSize="16sp"
-            android:textColor="#FFFFFF"
-            android:padding="12dp"
-            android:clickable="true"
-            android:focusable="true" />
-
-        <TextView
-            android:id="@+id/btn_identify"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Identify"
-            android:textSize="16sp"
-            android:textColor="#FFFFFF"
+            android:text="ShroomML"
+            android:textSize="28sp"
             android:textStyle="bold"
-            android:padding="12dp"
-            android:clickable="true"
-            android:focusable="true" />
-
-        <TextView
-            android:id="@+id/btn_games"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Games"
-            android:textSize="16sp"
             android:textColor="#FFFFFF"
-            android:padding="12dp"
+            android:gravity="center"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Texte d'information -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ShroomML helps you determine a mushroom's edibility based on its characteristics using AutoML. Please note that the final assessment of edibility remains uncertain, as AI can make mistakes."
+            android:textSize="14sp"
+            android:textColor="#FFFFFF"
+            android:lineSpacingExtra="4dp"
+            android:gravity="center"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Ligne séparatrice -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#FFFFFF"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Titre du résultat -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Your mushroom is:"
+            android:textSize="18sp"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Résultat (dynamique) -->
+        <TextView
+            android:id="@+id/result_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="..."
+            android:textSize="48sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Ligne séparatrice -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#FFFFFF"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Disclaimer -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ShroomML declines all responsibility for any issues resulting from the consumption of a mushroom identified using ShroomML."
+            android:textSize="12sp"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            android:lineSpacingExtra="2dp"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Bouton New Prediction -->
+        <TextView
+            android:id="@+id/btn_new_prediction"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="New Prediction"
+            android:textSize="16sp"
+            android:textColor="#C98D63"
+            android:gravity="center"
+            android:background="#FFFFFF"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
             android:clickable="true"
             android:focusable="true" />
 
     </LinearLayout>
-
-</LinearLayout>
+</ScrollView>

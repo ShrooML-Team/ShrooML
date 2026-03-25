@@ -1,32 +1,75 @@
 package com.shrooml;
 
+
+import static android.widget.Toast.LENGTH_LONG;
+import static android.widget.Toast.LENGTH_SHORT;
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.Toast;
+import androidx.core.content.ContextCompat;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.shrooml.R;
 import com.shrooml.fragments.CameraFragment;
 import com.shrooml.fragments.FormFragment;
+import com.shrooml.fragments.ResultFragment;
+import com.shrooml.models.IdentificationEntity;
+import com.shrooml.services.KindwiseService;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class IdentifyActivity extends AppCompatActivity {
+    private ActivityResultLauncher<Uri> takePhotoLauncher;
+    private File photoFile;
 
     private ImageButton btnToggleMode;
-    private boolean isCameraMode = true;
+    private ImageButton btnTakePhoto;
+    private String mushroomIdentify;
+    private ImageView mushroomImage;
 
+    private KindwiseService identify_API;
+
+    private Double accuracyIdentify;
+
+    private boolean isCameraMode = true;
+    private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_identify);
 
         btnToggleMode = findViewById(R.id.btn_toggle_mode);
+        String defaultMode = getIntent().getStringExtra("default_mode");
+        if("form".equals(defaultMode)) {
+            loadFragment(new FormFragment());
+            btnToggleMode.setImageResource(R.drawable.ic_camera);
+            isCameraMode = false;
+        } else {
+            loadFragment(new CameraFragment());
+            btnToggleMode.setImageResource(R.drawable.ic_edit);
+            isCameraMode = true;
 
-        // Charger le fragment Camera par défaut
-        loadFragment(new CameraFragment());
+        }
 
         setupToggleButton();
         setupBottomNav();
@@ -48,7 +91,7 @@ public class IdentifyActivity extends AppCompatActivity {
         });
     }
 
-    private void loadFragment(Fragment fragment) {
+    public void loadFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .setCustomAnimations(
@@ -207,6 +250,27 @@ public class IdentifyActivity extends AppCompatActivity {
             Toast.makeText(this, "Impossible de créer le fichier photo", Toast.LENGTH_SHORT).show();
         }
     }
-}
+    public void setToggleIconToForm() {
+        if (btnToggleMode != null) {
+            btnToggleMode.setImageResource(R.drawable.ic_camera);
+        }
+    }
+
+    public void setCameraMode(boolean isCamera) {
+        this.isCameraMode = isCamera;
+    }
+
+    // Méthode pour afficher le résultat
+    public void showResult(boolean isEdible) {
+        ResultFragment resultFragment = ResultFragment.newInstance(isEdible);
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(
+                        android.R.anim.fade_in,
+                        android.R.anim.fade_out
+                )
+                .replace(R.id.fragment_container, resultFragment)
+                .commit();
+    }
 
 }
+

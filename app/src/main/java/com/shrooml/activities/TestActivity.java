@@ -95,7 +95,14 @@ public class TestActivity extends AppCompatActivity {
         appendResult("Tentative de connexion avec admin/admin123...\n");
 
         LoginRequest request = new LoginRequest("admin", "admin123");
-        Call<LoginResponse> call = autoMLApi.login(request);
+        Call<LoginResponse> call = autoMLApi.login(
+                "password",           // grant_type
+                "admin",        // username
+                "admin123",        // password
+                "",                   // scope
+                "",                   // client_id
+                ""                    // client_secret
+        );
 
         call.enqueue(new Callback<LoginResponse>() {
             @Override

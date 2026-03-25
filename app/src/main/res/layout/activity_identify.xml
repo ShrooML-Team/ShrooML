@@ -31,18 +31,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
+
         <ImageButton
             android:id="@+id/btn_toggle_mode"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ic_edit"
+            android:layout_marginEnd="52dp"
             android:background="@drawable/circle_button"
             android:backgroundTint="#80FFFFFF"
-            android:padding="8dp"
             android:contentDescription="Switch to form mode"
+            android:padding="8dp"
+            android:src="@drawable/ic_edit"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintVertical_bias="1.0" />
 
         <ImageView
             android:id="@+id/titleIcon"
@@ -84,36 +87,6 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
         <!-- Container des boutons -->
-        <LinearLayout
-            android:id="@+id/buttonContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <ImageButton
-                android:id="@+id/btnGallery"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/circle_button"
-                android:padding="4dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_gallery" />
-
-            <ImageButton
-                android:id="@+id/btnTakePhoto"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@drawable/circle_button"
-                android:padding="8dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_camera" />
-
-        </LinearLayout>
 
 
     <!-- Séparateur 2 -->
