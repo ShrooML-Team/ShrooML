@@ -3,18 +3,18 @@ package com.shrooml.services.api;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * FitResponse - Réponse de l'endpoint /fit
+ * FitAAResponse - Réponse de l'endpoint /fit
  *
  * JSON: {"status": "model trained"}
  */
-public class FitResponse {
+public class FitAAResponse {
 
     @SerializedName("status")
     private String status;
 
-    public FitResponse() {}
+    public FitAAResponse() {}
 
-    public FitResponse(String status) {
+    public FitAAResponse(String status) {
         this.status = status;
     }
 
@@ -28,7 +28,7 @@ public class FitResponse {
 
     @Override
     public String toString() {
-        return "FitResponse{" +
+        return "FitAAResponse{" +
                 "status='" + status + '\'' +
                 '}';
     }

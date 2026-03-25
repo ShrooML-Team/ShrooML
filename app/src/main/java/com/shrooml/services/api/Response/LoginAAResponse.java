@@ -2,7 +2,7 @@ package com.shrooml.services.api.Response;
 
 import com.google.gson.annotations.SerializedName;
 
-public class LoginResponse {
+public class LoginAAResponse {
 
     @SerializedName("access_token")
     private String accessToken;
@@ -10,9 +10,9 @@ public class LoginResponse {
     @SerializedName("token_type")
     private String tokenType;
 
-    public LoginResponse() {}
+    public LoginAAResponse() {}
 
-    public LoginResponse(String accessToken, String tokenType) {
+    public LoginAAResponse(String accessToken, String tokenType) {
         this.accessToken = accessToken;
         this.tokenType = tokenType;
     }
@@ -35,7 +35,7 @@ public class LoginResponse {
 
     @Override
     public String toString() {
-        return "LoginResponse{" +
+        return "LoginAAResponse{" +
                 "accessToken='" + accessToken + '\'' +
                 ", tokenType='" + tokenType + '\'' +
                 '}';

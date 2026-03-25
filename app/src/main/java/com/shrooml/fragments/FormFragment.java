@@ -1,6 +1,5 @@
 package com.shrooml.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,13 +11,11 @@ import androidx.fragment.app.Fragment;
 
 import com.shrooml.IdentifyActivity;
 import com.shrooml.R;
-import com.shrooml.activities.*;
 import com.shrooml.services.api.AutoMLApi;
 import com.shrooml.services.api.AutoMLRetrofitClient;
-import com.shrooml.services.api.Requests.LoginRequest;
-import com.shrooml.services.api.Requests.PredictRequest;
-import com.shrooml.services.api.Response.LoginResponse;
-import com.shrooml.services.api.Response.PredictResponse;
+import com.shrooml.services.api.Requests.PredictAARequest;
+import com.shrooml.services.api.Response.LoginAAResponse;
+import com.shrooml.services.api.Response.PredictAAResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,6 +36,7 @@ public class FormFragment extends Fragment {
             spinnerSporePrintColor, spinnerPopulation,spinnerHabitat;
     private boolean isAuthenticated = false;
 
+
     private TextView btnIdentifyForm;
     private TextView progressText;
 
@@ -51,7 +49,6 @@ public class FormFragment extends Fragment {
         initViews(view);
         setupSpinners();
         setupListeners();
-        autoLogin();
 
         return view;
     }
@@ -202,7 +199,6 @@ public class FormFragment extends Fragment {
         // Vérifier l'authentification
         if (apiClient == null || !apiClient.isAuthenticated()) {
             Toast.makeText(getContext(), "Please login first", Toast.LENGTH_SHORT).show();
-            autoLogin();
             return;
         }
 
@@ -233,14 +229,14 @@ public class FormFragment extends Fragment {
 
         List<Map<String, Integer>> samples = new ArrayList<>();
         samples.add(mushroomFeatures);
-        PredictRequest request = new PredictRequest(samples);
+        PredictAARequest request = new PredictAARequest(samples);
 
         showLoading(true);
 
-        Call<PredictResponse> call = autoMLApi.predict(request);
-        call.enqueue(new Callback<PredictResponse>() {
+        Call<PredictAAResponse> call = autoMLApi.predict(request);
+        call.enqueue(new Callback<PredictAAResponse>() {
             @Override
-            public void onResponse(Call<PredictResponse> call, Response<PredictResponse> response) {
+            public void onResponse(Call<PredictAAResponse> call, Response<PredictAAResponse> response) {
                 showLoading(false);
                 if (response.isSuccessful() && response.body() != null) {
                     List<Integer> predictions = response.body().getPredictions();
@@ -266,7 +262,7 @@ public class FormFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<PredictResponse> call, Throwable t) {
+            public void onFailure(Call<PredictAAResponse> call, Throwable t) {
                 showLoading(false);
                 Toast.makeText(getContext(), "Network error: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
@@ -282,46 +278,5 @@ public class FormFragment extends Fragment {
             progressText.setVisibility(show ? View.VISIBLE : View.GONE);
         }
     }
-    private void autoLogin() {
-        if (getContext() == null) return;
 
-        Toast.makeText(getContext(), "Connecting to AutoML...", Toast.LENGTH_SHORT).show();
-
-        // Utiliser la méthode avec FormUrlEncoded
-        Call<LoginResponse> call = autoMLApi.login(
-                "password",           // grant_type
-                TEST_USERNAME,        // username
-                TEST_PASSWORD,        // password
-                "",                   // scope
-                "",                   // client_id
-                ""                    // client_secret
-        );
-
-        call.enqueue(new Callback<LoginResponse>() {
-            @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    String token = response.body().getAccessToken();
-                    apiClient.setAuthToken(token);
-                    isAuthenticated = true;
-                    Toast.makeText(getContext(), "✓ AutoML connected", Toast.LENGTH_SHORT).show();
-                } else {
-                    String errorMsg = "AutoML login failed: " + response.code();
-                    try {
-                        if (response.errorBody() != null) {
-                            errorMsg += " - " + response.errorBody().string();
-                        }
-                    } catch (Exception e) {
-                        errorMsg += " - " + e.getMessage();
-                    }
-                    Toast.makeText(getContext(), errorMsg, Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
-                Toast.makeText(getContext(), "AutoML connection error: " + t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-    }
 }

@@ -4,19 +4,19 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 /**
- * PredictResponse - Réponse de l'endpoint /predict
+ * PredictAAResponse - Réponse de l'endpoint /predict
  *
  * predictions est List<Integer> (0 = edible, 1 = poisonous)
  */
-public class PredictResponse {
+public class PredictAAResponse {
 
     @SerializedName("predictions")
     private List<Integer> predictions;
 
-    public PredictResponse() {
+    public PredictAAResponse() {
     }
 
-    public PredictResponse(List<Integer> predictions) {
+    public PredictAAResponse(List<Integer> predictions) {
         this.predictions = predictions;
     }
 
@@ -30,7 +30,7 @@ public class PredictResponse {
 
     @Override
     public String toString() {
-        return "PredictResponse{" +
+        return "PredictAAResponse{" +
                 "predictions=" + predictions +
                 '}';
     }

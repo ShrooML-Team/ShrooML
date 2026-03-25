@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * FitRequest - Requête pour l'endpoint /fit
+ * FitAARequest - Requête pour l'endpoint /fit
  *
  * y est List<Integer> (0 = edible, 1 = poisonous)
  */
-public class FitRequest {
+public class FitAARequest {
 
     @SerializedName("X")
     private List<Map<String, Integer>> X;
@@ -20,10 +20,10 @@ public class FitRequest {
     @SerializedName("automl_params")
     private Map<String, Object> automl_params;
 
-    public FitRequest() {
+    public FitAARequest() {
     }
 
-    public FitRequest(List<Map<String, Integer>> X, List<Integer> y, Map<String, Object> params) {
+    public FitAARequest(List<Map<String, Integer>> X, List<Integer> y, Map<String, Object> params) {
         this.X = X;
         this.y = y;
         this.automl_params = params;
@@ -55,7 +55,7 @@ public class FitRequest {
 
     @Override
     public String toString() {
-        return "FitRequest{" +
+        return "FitAARequest{" +
                 "X=" + X +
                 ", y=" + y +
                 ", automl_params=" + automl_params +

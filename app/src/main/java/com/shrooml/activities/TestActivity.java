@@ -2,7 +2,6 @@ package com.shrooml.activities;
 
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,9 +9,13 @@ import com.shrooml.R;
 import com.shrooml.TokenManager;
 import com.shrooml.services.api.AutoMLApi;
 import com.shrooml.services.api.AutoMLRetrofitClient;
-import com.shrooml.services.api.FitResponse;
-import com.shrooml.services.api.Requests.*;
-import com.shrooml.services.api.Response.*;
+import com.shrooml.services.api.FitAAResponse;
+import com.shrooml.services.api.Requests.FitAARequest;
+import com.shrooml.services.api.Requests.LoginAARequest;
+import com.shrooml.services.api.Requests.PredictAARequest;
+import com.shrooml.services.api.Response.LoginAAResponse;
+import com.shrooml.services.api.Response.PredictAAResponse;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -94,8 +97,8 @@ public class TestActivity extends AppCompatActivity {
         appendResult("\n🔐 TEST LOGIN\n");
         appendResult("Tentative de connexion avec admin/admin123...\n");
 
-        LoginRequest request = new LoginRequest("admin", "admin123");
-        Call<LoginResponse> call = autoMLApi.login(
+        LoginAARequest request = new LoginAARequest("admin", "admin123");
+        Call<LoginAAResponse> call = autoMLApi.login(
                 "password",           // grant_type
                 "admin",        // username
                 "admin123",        // password
@@ -104,9 +107,9 @@ public class TestActivity extends AppCompatActivity {
                 ""                    // client_secret
         );
 
-        call.enqueue(new Callback<LoginResponse>() {
+        call.enqueue(new Callback<LoginAAResponse>() {
             @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+            public void onResponse(Call<LoginAAResponse> call, Response<LoginAAResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     String token = response.body().getAccessToken();
                     appendResult("✅ Login réussi !\n");
@@ -135,7 +138,7 @@ public class TestActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
+            public void onFailure(Call<LoginAAResponse> call, Throwable t) {
                 appendResult("❌ Erreur réseau: " + t.getMessage() + "\n");
             }
         });
@@ -214,14 +217,14 @@ public class TestActivity extends AppCompatActivity {
         appendResult("Samples: " + trainingSamples.size() + "\n");
         appendResult("Labels: " + labels.size() + "\n");
 
-        FitRequest request = new FitRequest(trainingSamples, labels, new HashMap<>());
-        Call<FitResponse> call = autoMLApi.fit(request);
+        FitAARequest request = new FitAARequest(trainingSamples, labels, new HashMap<>());
+        Call<FitAAResponse> call = autoMLApi.fit(request);
 
         appendResult("Envoi de la requête...\n");
 
-        call.enqueue(new Callback<FitResponse>() {
+        call.enqueue(new Callback<FitAAResponse>() {
             @Override
-            public void onResponse(Call<FitResponse> call, Response<FitResponse> response) {
+            public void onResponse(Call<FitAAResponse> call, Response<FitAAResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     String status = response.body().getStatus();
                     appendResult("✅ FIT réussi !\n");
@@ -240,7 +243,7 @@ public class TestActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<FitResponse> call, Throwable t) {
+            public void onFailure(Call<FitAAResponse> call, Throwable t) {
                 appendResult("❌ Erreur réseau: " + t.getMessage() + "\n");
                 t.printStackTrace();
             }
@@ -264,12 +267,12 @@ public class TestActivity extends AppCompatActivity {
                 5, 2, 9, 1, 0, 1, 0, 0, 4, 0, 2, 2, 2, 7, 7, 0, 2, 1, 4, 3, 2, 1
         ));
 
-        PredictRequest request = new PredictRequest(testSamples);
-        Call<PredictResponse> call = autoMLApi.predict(request);
+        PredictAARequest request = new PredictAARequest(testSamples);
+        Call<PredictAAResponse> call = autoMLApi.predict(request);
 
-        call.enqueue(new Callback<PredictResponse>() {
+        call.enqueue(new Callback<PredictAAResponse>() {
             @Override
-            public void onResponse(Call<PredictResponse> call, Response<PredictResponse> response) {
+            public void onResponse(Call<PredictAAResponse> call, Response<PredictAAResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<Integer> predictions = response.body().getPredictions();
                     appendResult("✅ PRÉDICTIONS:\n");
@@ -285,7 +288,7 @@ public class TestActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<PredictResponse> call, Throwable t) {
+            public void onFailure(Call<PredictAAResponse> call, Throwable t) {
                 appendResult("❌ Erreur réseau: " + t.getMessage() + "\n");
             }
         });

@@ -3,11 +3,11 @@ package com.shrooml.services.api.Requests;
 import java.util.List;
 import java.util.Map;
 
-public class EvalRequest {
+public class EvalAARequest {
     private List<Map<String,Object>> X;
     private List<String> y;
 
-    public EvalRequest(List<Map<String,Object>> X, List<String> y){
+    public EvalAARequest(List<Map<String,Object>> X, List<String> y){
         this.X = X;
         this.y = y;
     }

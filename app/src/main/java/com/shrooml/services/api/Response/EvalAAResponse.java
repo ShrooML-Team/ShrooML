@@ -4,18 +4,18 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Map;
 
 /**
- * EvalResponse - Réponse de l'endpoint /eval
+ * EvalAAResponse - Réponse de l'endpoint /eval
  *
  * JSON: {"scores": {"accuracy": 0.95, "precision": 0.94, ...}}
  */
-public class EvalResponse {
+public class EvalAAResponse {
 
     @SerializedName("scores")
     private Map<String, Object> scores;
 
-    public EvalResponse() {}
+    public EvalAAResponse() {}
 
-    public EvalResponse(Map<String, Object> scores) {
+    public EvalAAResponse(Map<String, Object> scores) {
         this.scores = scores;
     }
 
@@ -29,7 +29,7 @@ public class EvalResponse {
 
     @Override
     public String toString() {
-        return "EvalResponse{" +
+        return "EvalAAResponse{" +
                 "scores=" + scores +
                 '}';
     }

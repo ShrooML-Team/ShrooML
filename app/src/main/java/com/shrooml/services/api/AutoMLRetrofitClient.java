@@ -25,7 +25,7 @@ public class AutoMLRetrofitClient {
 
     private static final String TAG = "AutoMLRetrofitClient";
     // Utilisation de 10.0.2.2 pour l'émulateur
-    private static final String BASE_URL = "http://10.0.2.2:8000/";
+    private static final String BASE_URL = "https://automl.shrooml.duckdns.org/";
 
     private static AutoMLRetrofitClient instance;
     private static Retrofit retrofit;

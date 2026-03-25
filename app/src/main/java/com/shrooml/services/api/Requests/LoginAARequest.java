@@ -3,7 +3,7 @@ package com.shrooml.services.api.Requests;
 import com.google.gson.annotations.SerializedName;
 
 
-public class LoginRequest {
+public class LoginAARequest {
 
     @SerializedName("username")
     private String username;
@@ -11,7 +11,7 @@ public class LoginRequest {
     @SerializedName("password")
     private String password;
 
-    public LoginRequest(String username, String password) {
+    public LoginAARequest(String username, String password) {
         this.username = username;
         this.password = password;
     }
@@ -34,7 +34,7 @@ public class LoginRequest {
 
     @Override
     public String toString() {
-        return "LoginRequest{" +
+        return "LoginAARequest{" +
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 '}';

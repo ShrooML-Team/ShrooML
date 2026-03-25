@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.ArrayList;
 
 /**
- * PredictRequest - Requête pour l'endpoint /predict
+ * PredictAARequest - Requête pour l'endpoint /predict
  *
  * Format exact attendu par l'API (basé sur schemas.py):
  * {
@@ -17,15 +17,15 @@ import java.util.ArrayList;
  * IMPORTANT: PAS de champ "y" pour /predict!
  * Le modèle Pydantic ne le reconnaît pas → erreur 422
  */
-public class PredictRequest {
+public class PredictAARequest {
 
     private List<Map<String, Integer>> X;
 
-    public PredictRequest() {
+    public PredictAARequest() {
         this.X = new ArrayList<>();
     }
 
-    public PredictRequest(List<Map<String, Integer>> X) {
+    public PredictAARequest(List<Map<String, Integer>> X) {
         this.X = X;
     }
 
@@ -39,7 +39,7 @@ public class PredictRequest {
 
     @Override
     public String toString() {
-        return "PredictRequest{" +
+        return "PredictAARequest{" +
                 "X=" + X +
                 '}';
     }
