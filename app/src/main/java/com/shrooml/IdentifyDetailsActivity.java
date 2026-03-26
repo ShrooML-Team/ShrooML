@@ -59,6 +59,7 @@ public class IdentifyDetailsActivity extends AppCompatActivity {
         backButton.setOnClickListener(m -> {
             Intent intent = new Intent(IdentifyDetailsActivity.this, IdentifyActivity.class);
             startActivity(intent);
+            finish();
         });
 
         BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
@@ -70,18 +71,22 @@ public class IdentifyDetailsActivity extends AppCompatActivity {
 
                 if (id == R.id.nav_identify) {
                     startActivity(new Intent(IdentifyDetailsActivity.this, IdentifyActivity.class));
+                    finish();
                     return true;
                 }
                 if (id == R.id.nav_locate) {
                     startActivity(new Intent(IdentifyDetailsActivity.this, ShroomLocateActivity.class));
+                    finish();
                     return true;
                 }
                 if (id == R.id.nav_quiz) {
                     startActivity(new Intent(IdentifyDetailsActivity.this, QuizActivity.class));
+                    finish();
                     return true;
                 }
                 if (id == R.id.nav_profile) {
                     startActivity(new Intent(IdentifyDetailsActivity.this, ProfileActivity.class));
+                    finish();
                     return true;
                 }
 

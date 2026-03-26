@@ -104,4 +104,9 @@
         <item>Cap lover through and through</item>
         <item>Fungal kingdom expert in progress</item>
     </string-array>
+
+    <string name="CorrectAnswer">The correct Answer is : %1$s</string>
+
+    <string name="trueAnswer">True</string>
+    <string name="falseAnswer">False</string>
 </resources>

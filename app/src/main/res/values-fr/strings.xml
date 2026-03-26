@@ -107,4 +107,9 @@
         <item>Amoureux des caps sans limite</item>
         <item>Expert du royaume fongique progressif</item>
     </string-array>
+
+    <string name="CorrectAnswer">La bonne réponse est : %1$s</string>
+
+    <string name="trueAnswer">Vrai</string>
+    <string name="falseAnswer">Faux</string>
 </resources>

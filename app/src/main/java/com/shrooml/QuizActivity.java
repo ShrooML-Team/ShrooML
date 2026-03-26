@@ -1,6 +1,8 @@
 package com.shrooml;
 
 
+import static android.widget.Toast.LENGTH_SHORT;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -46,6 +48,8 @@ public class QuizActivity extends Activity {
     private ProgressBar progressBar;
     private TextView progressText;
 
+    private TextView correctAnswerText;
+
     private AutoCompleteTextView answerInput;
     private RadioGroup edibleGroup;
 
@@ -54,12 +58,14 @@ public class QuizActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
 
-        imageView = findViewById(R.id.imageView); // id à adapter
-        nextButton = findViewById(R.id.nextButton); // <-- ajouter
-        progressBar = findViewById(R.id.progressBar); // <-- ajouter
-        progressText = findViewById(R.id.progressText); // <-- ajouter
-        answerInput = findViewById(R.id.answerInput); // <-- ajouter
+        imageView = findViewById(R.id.imageView);
+        nextButton = findViewById(R.id.nextButton);
+        progressBar = findViewById(R.id.progressBar);
+        progressText = findViewById(R.id.progressText);
+        answerInput = findViewById(R.id.answerInput);
         edibleGroup = findViewById(R.id.edibleGroup);
+        correctAnswerText = findViewById(R.id.CorrectAnswerText);
+        correctAnswerText.setVisibility(View.GONE);
         BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
         bottomNav.setSelectedItemId(R.id.nav_quiz);
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -73,14 +79,17 @@ public class QuizActivity extends Activity {
                 }
                 if (id == R.id.nav_locate) {
                     startActivity(new Intent(QuizActivity.this, ShroomLocateActivity.class));
+                    finish();
                     return true;
                 }
                 if (id == R.id.nav_profile) {
                     startActivity(new Intent(QuizActivity.this, ProfileActivity.class));
+                    finish();
                     return true;
                 }
                 if(id == R.id.nav_identify) {
                     startActivity(new Intent(QuizActivity.this, ChoiceIdentifyActivity.class));
+                    finish();
                     return true;
                 }
 
@@ -144,6 +153,7 @@ public class QuizActivity extends Activity {
                         progressBar.setVisibility(View.GONE);
                         progressText.setVisibility(View.GONE);
                         imageView.setVisibility(View.GONE);
+                        correctAnswerText.setVisibility(View.GONE);
                         findViewById(R.id.questionTextView).setVisibility(View.GONE);
 
                         // afficher le layout de fin
@@ -184,7 +194,7 @@ public class QuizActivity extends Activity {
 
             @Override
             public void onError(String errorMessage) {
-                Toast.makeText(QuizActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(QuizActivity.this, errorMessage, LENGTH_SHORT).show();
             }
         });
 
@@ -200,6 +210,8 @@ public class QuizActivity extends Activity {
         TextView questionTextView = findViewById(R.id.questionTextView);
 
         questionTextView.setText(quizGame.getQuestion(currentQuestion));
+
+        correctAnswerText.setVisibility(View.GONE);
 
         progressText.setText((currentQuestion + 1) + " / 5");
         progressBar.setProgress((currentQuestion + 1) * 20);
@@ -239,10 +251,14 @@ public class QuizActivity extends Activity {
     }
 
     private void checkAnswer() {
-
         String answer;
+        String answerText = "";
 
         if(currentQuestion == 2){ // question comestible
+            if(edibleGroup.getCheckedRadioButtonId() == -1){
+                return;
+            }
+
             int selectedId = edibleGroup.getCheckedRadioButtonId();
 
             if(selectedId == R.id.trueButton){
@@ -252,10 +268,26 @@ public class QuizActivity extends Activity {
             }
 
         } else {
+            if((answerInput.getText().toString()).isEmpty()){
+                return;
+            }
+
             answer = answerInput.getText().toString().trim();
         }
 
-        boolean result = quizGame.checkAnswer(currentQuestion, answer);
+        boolean result = quizGame.checkAnswer(currentQuestion, answer, QuizActivity.this);
+
+        if(currentQuestion <= 2){
+            answerText = quizGame.getCurrentAnswer().get(0);
+        }
+        else {
+            for(String str : quizGame.getCurrentAnswer()){
+                answerText = answerText.concat(str + ", ");
+            }
+        }
+
+        correctAnswerText.setText(this.getString(R.string.CorrectAnswer, answerText));
+        correctAnswerText.setVisibility(View.VISIBLE);
 
         if(result){
             answerInput.setBackgroundColor(Color.parseColor("#A5D6A7")); // vert
@@ -302,7 +334,7 @@ public class QuizActivity extends Activity {
                             return;
                         }
 
-                        runOnUiThread(() -> Toast.makeText(QuizActivity.this, errorMessage, Toast.LENGTH_SHORT).show());
+                        runOnUiThread(() -> Toast.makeText(QuizActivity.this, errorMessage, LENGTH_SHORT).show());
                     }
                 });
                 return;
@@ -310,7 +342,7 @@ public class QuizActivity extends Activity {
 
             persistScoreToApiWithToken(tokenManager, scoreToAdd, authToken);
         } catch (GeneralSecurityException | IOException e) {
-            Toast.makeText(this, "Impossible d'enregistrer les points", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Impossible d'enregistrer les points", LENGTH_SHORT).show();
         }
     }
 
@@ -329,7 +361,7 @@ public class QuizActivity extends Activity {
                     return;
                 }
 
-                runOnUiThread(() -> Toast.makeText(QuizActivity.this, errorMessage, Toast.LENGTH_SHORT).show());
+                runOnUiThread(() -> Toast.makeText(QuizActivity.this, errorMessage, LENGTH_SHORT).show());
             }
         });
     }
@@ -337,7 +369,7 @@ public class QuizActivity extends Activity {
     private void redirectToLogin(TokenManager tokenManager) {
         tokenManager.logout();
         runOnUiThread(() -> {
-            Toast.makeText(QuizActivity.this, "Session expirée, reconnectez-vous", Toast.LENGTH_SHORT).show();
+            Toast.makeText(QuizActivity.this, "Session expirée, reconnectez-vous", LENGTH_SHORT).show();
             Intent intent = new Intent(QuizActivity.this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

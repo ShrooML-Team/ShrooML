@@ -8,12 +8,18 @@ android {
     namespace 'com.shrooml'
     compileSdk 35
 
+    buildFeatures {
+        buildConfig true
+    }
     defaultConfig {
         applicationId "com.shrooml"
         minSdk 21
         targetSdk 35
         versionCode 1
         versionName "1.0"
+        buildConfigField "String", "KINDWISE_API_KEY_1", "\"${KINDWISE_API_KEY_1}\""
+        buildConfigField "String", "KINDWISE_API_KEY_2", "\"${KINDWISE_API_KEY_2}\""
+        buildConfigField "String", "KINDWISE_API_KEY_3", "\"${KINDWISE_API_KEY_3}\""
     }
 
     compileOptions {

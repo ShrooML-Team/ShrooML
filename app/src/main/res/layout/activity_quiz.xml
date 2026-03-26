@@ -163,6 +163,13 @@
                     android:layout_marginStart="20dp" />
             </RadioGroup>
 
+            <TextView
+                android:id="@+id/CorrectAnswerText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/CorrectAnswer"
+                android:textSize="16sp"></TextView>
+
         </LinearLayout>
 
         <!-- Bouton suivant -->
