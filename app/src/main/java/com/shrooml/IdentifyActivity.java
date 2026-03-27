@@ -1,8 +1,8 @@
 package com.shrooml;
 
+
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.LENGTH_SHORT;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,17 +12,23 @@ import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
+import androidx.core.content.ContextCompat;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.shrooml.R;
+import com.shrooml.fragments.CameraFragment;
+import com.shrooml.fragments.FormFragment;
+import com.shrooml.fragments.ResultFragment;
 import com.shrooml.models.IdentificationEntity;
 import com.shrooml.services.KindwiseService;
 
@@ -33,66 +39,76 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class IdentifyActivity extends AppCompatActivity {
-    private ImageButton btnGallery;
-
-    private ImageButton btnTakePhoto;
-    private ImageView mushroomImage;
-
+    private ActivityResultLauncher<Uri> takePhotoLauncher;
     private File photoFile;
 
-    private ActivityResultLauncher<Uri> takePhotoLauncher;
+    private ImageButton btnToggleMode;
+    private ImageButton btnTakePhoto;
+    private String mushroomIdentify;
+    private ImageView mushroomImage;
 
     private KindwiseService identify_API;
 
-    private ActivityResultLauncher<String> pickImageLauncher;
-
-    private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
-
-    private String mushroomIdentify;
-
     private Double accuracyIdentify;
 
-    private void setupImagePicker() {
-        pickImageLauncher = registerForActivityResult(
-                new ActivityResultContracts.GetContent(),
-                uri -> {
-                    if (uri != null) {
-                        mushroomImage.setImageURI(uri);
-                        try{
-                            File tempFile = uriToFile(uri);
-                            callApi(tempFile);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            Toast.makeText(IdentifyActivity.this, "Erreur lecture fichier", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-        );
-    }
-
+    private boolean isCameraMode = true;
+    private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_identify);
-        setupCameraLauncher();
-        setupCameraButton();
 
-        identify_API = new KindwiseService();
+        btnToggleMode = findViewById(R.id.btn_toggle_mode);
+        String defaultMode = getIntent().getStringExtra("default_mode");
+        if("form".equals(defaultMode)) {
+            loadFragment(new FormFragment());
+            btnToggleMode.setImageResource(R.drawable.ic_camera);
+            isCameraMode = false;
+        } else {
+            loadFragment(new CameraFragment());
+            btnToggleMode.setImageResource(R.drawable.ic_edit);
+            isCameraMode = true;
 
-        setupImagePicker();
+        }
 
-        btnGallery = findViewById(R.id.btnGallery);
-        mushroomImage = findViewById(R.id.mushroomImage);
+        setupToggleButton();
+        setupBottomNav();
+    }
 
-        btnGallery.setOnClickListener(v -> pickImageLauncher.launch("image/*"));
+    private void setupToggleButton() {
+        btnToggleMode.setOnClickListener(v -> {
+            if (isCameraMode) {
+                // Passer en mode Formulaire
+                loadFragment(new FormFragment());
+                btnToggleMode.setImageResource(R.drawable.ic_camera);
+                isCameraMode = false;
+            } else {
+                // Passer en mode Caméra
+                loadFragment(new CameraFragment());
+                btnToggleMode.setImageResource(R.drawable.ic_edit);
+                isCameraMode = true;
+            }
+        });
+    }
 
+    public void loadFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .setCustomAnimations(
+                        android.R.anim.fade_in,
+                        android.R.anim.fade_out
+                )
+                .replace(R.id.fragment_container, fragment)
+                .commit();
+    }
+
+    private void setupBottomNav() {
         BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
         bottomNav.setSelectedItemId(R.id.nav_identify);
 
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
                 int id = item.getItemId();
 
                 if(id == R.id.nav_identify) {
@@ -111,7 +127,6 @@ public class IdentifyActivity extends AppCompatActivity {
                     startActivity(new Intent(IdentifyActivity.this, ProfileActivity.class));
                     return true;
                 }
-
                 return false;
             }
         });
@@ -235,4 +250,27 @@ public class IdentifyActivity extends AppCompatActivity {
             Toast.makeText(this, "Impossible de créer le fichier photo", Toast.LENGTH_SHORT).show();
         }
     }
+    public void setToggleIconToForm() {
+        if (btnToggleMode != null) {
+            btnToggleMode.setImageResource(R.drawable.ic_camera);
+        }
+    }
+
+    public void setCameraMode(boolean isCamera) {
+        this.isCameraMode = isCamera;
+    }
+
+    // Méthode pour afficher le résultat
+    public void showResult(boolean isEdible) {
+        ResultFragment resultFragment = ResultFragment.newInstance(isEdible);
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(
+                        android.R.anim.fade_in,
+                        android.R.anim.fade_out
+                )
+                .replace(R.id.fragment_container, resultFragment)
+                .commit();
+    }
+
 }
+

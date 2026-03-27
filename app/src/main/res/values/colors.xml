@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="splash_background">#000000</color>
+    <color name="background">#C98D63</color>
+
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#FFFFFF</color>
+        <color name="success">#2E7D32</color>
+    <color name="error">#D32F2F</color>
+
+    <color name="spinner_background">#FFFFFF</color>
+    <color name="spinner_text">#212529</color>
+
+
+    <color name="separator">#FFFFFF</color>
 </resources>

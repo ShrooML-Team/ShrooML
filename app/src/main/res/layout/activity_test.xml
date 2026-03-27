@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🧪 AutoML Test Suite"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:id="@+id/auth_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="🔐 Statut: Non authentifié"
+            android:textSize="14sp"
+            android:padding="8dp"
+            android:background="#E0E0E0"
+            android:gravity="center"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Section Tests Authentification -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="🔐 TESTS AUTHENTIFICATION"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:padding="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btn_test_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1️⃣ Test Login (admin/admin123)"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btn_test_token_direct"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2️⃣ Test Token Direct (hardcoded)"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btn_test_token_manager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="3️⃣ Test TokenManager Intégrité"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Section Tests API -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="🚀 TESTS API"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:padding="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btn_fit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="4️⃣ Train Model (/fit)"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btn_predict"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="5️⃣ Predict (/predict)"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btn_eval"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="6️⃣ Evaluate (/eval)"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Section Debug -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="🐛 DEBUG"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:padding="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btn_clear_token"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="🗑️ Clear Token (Logout)"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="#FF4444" />
+
+        <Button
+            android:id="@+id/btn_print_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="📊 Print Status"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Zone de résultats -->
+        <TextView
+            android:id="@+id/result_text"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:text="📝 En attente de test..."
+            android:textSize="12sp"
+            android:padding="12dp"
+            android:background="#222222"
+            android:textColor="#FFFFFF"
+            android:gravity="top"
+            android:fontFamily="monospace"
+            android:scrollbars="vertical" />
+
+    </LinearLayout>
+</ScrollView>
