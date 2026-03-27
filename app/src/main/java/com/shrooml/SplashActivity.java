@@ -18,6 +18,7 @@ public class SplashActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSharedPreferences("app", MODE_PRIVATE).edit().putBoolean("corrupted", false).apply();
         Log.d(TAG, "onCreate() appelé");
 
         try {

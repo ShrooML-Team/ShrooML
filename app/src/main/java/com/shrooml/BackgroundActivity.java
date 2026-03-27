@@ -15,7 +15,6 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +35,6 @@ public class BackgroundActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
 
         if (SpeechRecognizer.isRecognitionAvailable(this)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) { // Android 12+
@@ -51,23 +49,30 @@ public class BackgroundActivity extends AppCompatActivity {
                 public void onResults(Bundle results) {
                     ArrayList<String> matches =
                             results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+                    String textcomp = "";
 
                     if (matches != null) {
+
+                        SharedPreferences prefs = getSharedPreferences("app", MODE_PRIVATE);
+                        boolean corrupted = prefs.getBoolean("corrupted", false);
+                        View root = findViewById(R.id.rootLayout);
+
                         for (String text : matches) {
+                            textcomp = textcomp + text;
                             text = text.toLowerCase();
-                            View root = findViewById(R.id.rootLayout);
-                            SharedPreferences prefs = getSharedPreferences("app", MODE_PRIVATE);
-                            boolean corrupted = prefs.getBoolean("corrupted", false);
+
                             if ((text.contains("poison") || text.contains("corrupted")) && !corrupted) {
                                 animatePoisonEffect(root);
+                                corrupted = true;
                                 prefs.edit().putBoolean("corrupted", true).apply();
                             } else if ((text.contains("heal") || text.contains("cure")) && corrupted) {
                                 animateHealEffect(root);
+                                corrupted = false;
                                 prefs.edit().putBoolean("corrupted", false).apply();
                             }
                         }
                     }
-                    Toast.makeText(BackgroundActivity.this, "FIN ECOUTE", LENGTH_SHORT).show();
+                    Toast.makeText(BackgroundActivity.this, textcomp + "FIN ECOUTE", LENGTH_SHORT).show();
                     title.setClickable(true);
                 }
 
@@ -131,15 +136,6 @@ public class BackgroundActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        // Réinitialiser l'état poison
-        SharedPreferences prefs = getSharedPreferences("app", MODE_PRIVATE);
-        prefs.edit().putBoolean("corrupted", false).apply();
-
-        // remettre la couleur de fond normale
-        LinearLayout root = findViewById(R.id.rootLayout);
-        if (root != null) {
-            root.setBackgroundColor(Color.parseColor("#C98D63"));
-        }
     }
 
     @Override

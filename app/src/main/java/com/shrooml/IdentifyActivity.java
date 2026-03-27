@@ -57,6 +57,13 @@ public class IdentifyActivity extends AppCompatActivity {
 
     private Double accuracyIdentify;
 
+    private SensorManager sensorManager;
+
+    private Sensor lightSensor;
+
+    // Variable NON-statique : elle indique si on a déjà vérifié la lumière pour cette visite
+    private boolean hasCheckedLight = false;
+
     private void setupImagePicker() {
         pickImageLauncher = registerForActivityResult(
                 new ActivityResultContracts.GetContent(),
@@ -81,8 +88,10 @@ public class IdentifyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_identify);
         setupCameraLauncher();
         setupCameraButton();
-        SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        Sensor lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        if (sensorManager != null) {
+            lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+        }
 
         identify_API = new KindwiseService();
 
@@ -95,26 +104,6 @@ public class IdentifyActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
         bottomNav.setSelectedItemId(R.id.nav_identify);
-
-        if (lightSensor != null) {
-            sensorManager.registerListener(new SensorEventListener() {
-                @Override
-                public void onSensorChanged(SensorEvent event) {
-                    float lux = event.values[0];
-
-                    if (lux < 50) {
-                        Toast.makeText(getApplicationContext(),
-                                "Lumière faible, pensez à activer la lampe torche",
-                                Toast.LENGTH_LONG).show();
-                    }
-
-                    sensorManager.unregisterListener(this);
-                }
-
-                @Override
-                public void onAccuracyChanged(Sensor sensor, int accuracy) {}
-            }, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
-        }
 
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -142,6 +131,47 @@ public class IdentifyActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // 1. L'écran s'affiche : on remet notre sécurité à zéro
+        hasCheckedLight = false;
+
+        if (lightSensor != null) {
+            // 2. On attend 500ms pour que le capteur de lumière se calibre (évite le bug des 0 lux)
+            new android.os.Handler().postDelayed(() -> {
+
+                if (isDestroyed() || isFinishing()) return;
+
+                sensorManager.registerListener(new SensorEventListener() {
+                    @Override
+                    public void onSensorChanged(SensorEvent event) {
+                        // Si on a déjà vérifié, on ignore les valeurs suivantes
+                        if (hasCheckedLight) return;
+
+                        float lux = event.values[0];
+
+                        // 3. Si la lumière est vraiment basse (< 15 lux), on affiche le Toast
+                        if (lux < 15) {
+                            Toast.makeText(getApplicationContext(),
+                                    "Lumière faible, pensez à activer la lampe torche",
+                                    Toast.LENGTH_LONG).show();
+                        }
+
+                        // 4. On a notre réponse ! On valide et on coupe le capteur pour économiser la batterie
+                        hasCheckedLight = true;
+                        sensorManager.unregisterListener(this);
+                    }
+
+                    @Override
+                    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+                }, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
+            }, 500); // 500 ms de délai au réveil
+        }
     }
 
     @Override
