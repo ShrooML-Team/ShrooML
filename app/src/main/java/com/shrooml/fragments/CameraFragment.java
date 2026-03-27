@@ -1,6 +1,7 @@
 package com.shrooml.fragments;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -13,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
@@ -28,11 +28,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+
+import static android.widget.Toast.LENGTH_LONG;
+import static android.widget.Toast.LENGTH_SHORT;
 public class CameraFragment extends Fragment {
 
     private ImageButton btnGallery;
     private ImageButton btnTakePhoto;
-    private ImageButton btnZoom;
     private ImageView mushroomImage;
     private File photoFile;
     private ActivityResultLauncher<Uri> takePhotoLauncher;
@@ -41,7 +47,11 @@ public class CameraFragment extends Fragment {
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
     private String mushroomIdentify;
     private Double accuracyIdentify;
+    private SensorManager sensorManager;
 
+    // Variable NON-statique : elle indique si on a déjà vérifié la lumière pour cette visite
+    private boolean hasCheckedLight = false;
+    private Sensor lightSensor;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,7 +61,12 @@ public class CameraFragment extends Fragment {
         setupImagePicker();
         setupCameraLauncher();
         setupCameraButton();
-        identify_API = new KindwiseService();
+
+        sensorManager = (SensorManager) requireActivity().getSystemService(Context.SENSOR_SERVICE);
+
+        if (sensorManager != null) {
+            lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+        }        identify_API = new KindwiseService();
 
         return view;
     }
@@ -59,17 +74,11 @@ public class CameraFragment extends Fragment {
     private void initViews(View view) {
         btnGallery = view.findViewById(R.id.btnGallery);
         btnTakePhoto = view.findViewById(R.id.btnTakePhoto);
-        btnZoom = view.findViewById(R.id.btnZoom);
         mushroomImage = view.findViewById(R.id.mushroomImage);
 
         btnGallery.setOnClickListener(v -> pickImageLauncher.launch("image/*"));
 
-        btnZoom.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), IdentifyDetailsActivity.class);
-            intent.putExtra("scientificName", mushroomIdentify);
-            intent.putExtra("accuracy", accuracyIdentify);
-            startActivity(intent);
-        });
+
     }
 
     private void setupImagePicker() {
@@ -159,34 +168,28 @@ public class CameraFragment extends Fragment {
     }
 
     private void callApi(File file) {
-        if (identify_API == null) return;
-
         identify_API.identificationImg(file.getAbsolutePath(), new KindwiseService.IdentificationCallback() {
             @Override
             public void onSuccess(IdentificationEntity identification) {
-                if (getContext() == null) return;
-
                 if (identification.getResult().getIs_mushroom().getBinary().equals("true")) {
-                    mushroomIdentify = identification.getResult()
-                            .getClassification()
+                    mushroomIdentify = identification.getResult().getClassification()
                             .getSuggestions().get(0).getName();
-                    accuracyIdentify = identification.getResult()
-                            .getClassification()
+                    accuracyIdentify = identification.getResult().getClassification()
                             .getSuggestions().get(0).getProbability();
-                    Toast.makeText(getContext(),
-                            "Mushroom: " + mushroomIdentify + " | " + accuracyIdentify + "%",
-                            Toast.LENGTH_LONG).show();
+                    Intent intent_id = new Intent(getContext(), IdentifyDetailsActivity.class);
+                    intent_id.putExtra("scientificName", mushroomIdentify);
+                    intent_id.putExtra("accuracy", accuracyIdentify);
+                    file.delete();
+                    startActivity(intent_id);
                 } else {
-                    Toast.makeText(getContext(), "Cette photo n'est pas un champignon", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Cette photo n'est pas un champignon", LENGTH_LONG)
+                            .show();
                 }
-                file.delete();
             }
 
             @Override
             public void onError(String errorMessage) {
-                if (getContext() != null) {
-                    Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
-                }
+                Toast.makeText(getContext(), errorMessage, LENGTH_SHORT).show();
                 file.delete();
             }
         });
@@ -200,6 +203,46 @@ public class CameraFragment extends Fragment {
             } else {
                 Toast.makeText(getContext(), "Permission caméra requise", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // 1. L'écran s'affiche : on remet notre sécurité à zéro
+        hasCheckedLight = false;
+
+        if (lightSensor != null) {
+            // 2. On attend 500ms pour que le capteur de lumière se calibre (évite le bug des 0 lux)
+            new android.os.Handler().postDelayed(() -> {
+
+                if (!isAdded() || isDetached() || isRemoving() || getActivity() == null || getActivity().isFinishing()) return;
+
+                sensorManager.registerListener(new SensorEventListener() {
+                    @Override
+                    public void onSensorChanged(SensorEvent event) {
+                        // Si on a déjà vérifié, on ignore les valeurs suivantes
+                        if (hasCheckedLight) return;
+
+                        float lux = event.values[0];
+
+                        // 3. Si la lumière est vraiment basse (< 15 lux), on affiche le Toast
+                        if (lux < 15) {
+                            Toast.makeText(getContext(),
+                                    "Lumière faible, pensez à activer la lampe torche",
+                                    Toast.LENGTH_LONG).show();
+                        }
+
+                        // 4. On a notre réponse ! On valide et on coupe le capteur pour économiser la batterie
+                        hasCheckedLight = true;
+                        sensorManager.unregisterListener(this);
+                    }
+
+                    @Override
+                    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+                }, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
+            }, 500); // 500 ms de délai au réveil
         }
     }
 }
