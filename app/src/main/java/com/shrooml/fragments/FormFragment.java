@@ -13,8 +13,8 @@ import com.shrooml.IdentifyActivity;
 import com.shrooml.R;
 import com.shrooml.services.api.AutoMLApi;
 import com.shrooml.services.api.AutoMLRetrofitClient;
+import com.shrooml.services.api.MushroomAttributes;
 import com.shrooml.services.api.Requests.PredictAARequest;
-import com.shrooml.services.api.Response.LoginAAResponse;
 import com.shrooml.services.api.Response.PredictAAResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,18 +25,16 @@ public class FormFragment extends Fragment {
 
     private AutoMLApi autoMLApi;
     private AutoMLRetrofitClient apiClient;
-    private static final String TEST_USERNAME = "admin";
-    private static final String TEST_PASSWORD = "admin123";
-    // 22 spinners
+    
+    // Spinners correspondant aux 22 caractéristiques
     private Spinner spinnerCapShape, spinnerCapSurface, spinnerCapColor, spinnerBruises,
             spinnerOdor, spinnerGillAttachment, spinnerGillSpacing, spinnerGillSize,
             spinnerGillColor, spinnerStalkShape, spinnerStalkRoot, spinnerStalkSurfaceAbove,
             spinnerStalkSurfaceBelow, spinnerStalkColorAbove, spinnerStalkColorBelow,
             spinnerVeilType, spinnerVeilColor, spinnerRingNumber, spinnerRingType,
-            spinnerSporePrintColor, spinnerPopulation,spinnerHabitat;
-    private boolean isAuthenticated = false;
+            spinnerSporePrintColor, spinnerPopulation, spinnerHabitat;
 
-
+    private static final Integer Edible = 1;
     private TextView btnIdentifyForm;
     private TextView progressText;
 
@@ -93,51 +91,29 @@ public class FormFragment extends Fragment {
     }
 
     private void setupSpinners() {
-        // Options pour chaque spinner
-        String[] capShapes = {"Choose...", "Bell", "Conical", "Convex", "Flat", "Knobbed", "Sunken"};
-        String[] capSurfaces = {"Choose...", "Fibrous", "Grooves", "Scaly", "Smooth"};
-        String[] colors = {"Choose...", "Brown", "Buff", "Cinnamon", "Gray", "Green", "Pink", "Purple", "Red", "White", "Yellow"};
-        String[] bruises = {"Choose...", "No", "Yes"};
-        String[] odors = {"Choose...", "Almond", "Anise", "Creosote", "Fishy", "Foul", "Musty", "None", "Pungent", "Spicy"};
-        String[] gillAttachments = {"Choose...", "Attached", "Descending", "Free", "Notched"};
-        String[] gillSpacings = {"Choose...", "Close", "Crowded", "Distant"};
-        String[] gillSizes = {"Choose...", "Broad", "Narrow"};
-        String[] gillColors = {"Choose...", "Black", "Brown", "Buff", "Chocolate", "Gray", "Green", "Orange", "Pink", "Purple", "Red", "White", "Yellow"};
-        String[] stalkShapes = {"Choose...", "Enlarging", "Tapering"};
-        String[] stalkRoots = {"Choose...", "Bulbous", "Club", "Cup", "Equal", "Rhizomorphs", "Rooted"};
-        String[] stalkSurfaces = {"Choose...", "Fibrous", "Scaly", "Silky", "Smooth"};
-        String[] stalkColors = {"Choose...", "Brown", "Buff", "Cinnamon", "Gray", "Orange", "Pink", "Red", "White", "Yellow"};
-        String[] veilTypes = {"Choose...", "Partial", "Universal"};
-        String[] veilColors = {"Choose...", "Brown", "Orange", "White", "Yellow"};
-        String[] ringNumbers = {"Choose...", "None", "One", "Two"};
-        String[] ringTypes = {"Choose...", "Cobwebby", "Evanescent", "Flaring", "Large", "None", "Pendant"};
-        String[] sporePrintColors = {"Choose...", "Black", "Brown", "Buff", "Chocolate", "Green", "Orange", "Purple", "White", "Yellow"};
-        String[] populations = {"Choose...", "Abundant", "Clustered", "Numerous", "Scattered", "Several", "Solitary"};
-        String[] habitats = {"Choose...", "Grasses", "Leaves", "Meadows", "Paths", "Urban", "Waste", "Woods"};
-
-        // Appliquer les options
-        setSpinnerOptions(spinnerCapShape, capShapes);
-        setSpinnerOptions(spinnerCapSurface, capSurfaces);
-        setSpinnerOptions(spinnerCapColor, colors);
-        setSpinnerOptions(spinnerBruises, bruises);
-        setSpinnerOptions(spinnerOdor, odors);
-        setSpinnerOptions(spinnerGillAttachment, gillAttachments);
-        setSpinnerOptions(spinnerGillSpacing, gillSpacings);
-        setSpinnerOptions(spinnerGillSize, gillSizes);
-        setSpinnerOptions(spinnerGillColor, gillColors);
-        setSpinnerOptions(spinnerStalkShape, stalkShapes);
-        setSpinnerOptions(spinnerStalkRoot, stalkRoots);
-        setSpinnerOptions(spinnerStalkSurfaceAbove, stalkSurfaces);
-        setSpinnerOptions(spinnerStalkSurfaceBelow, stalkSurfaces);
-        setSpinnerOptions(spinnerStalkColorAbove, stalkColors);
-        setSpinnerOptions(spinnerStalkColorBelow, stalkColors);
-        setSpinnerOptions(spinnerVeilType, veilTypes);
-        setSpinnerOptions(spinnerVeilColor, veilColors);
-        setSpinnerOptions(spinnerRingNumber, ringNumbers);
-        setSpinnerOptions(spinnerRingType, ringTypes);
-        setSpinnerOptions(spinnerSporePrintColor, sporePrintColors);
-        setSpinnerOptions(spinnerPopulation, populations);
-        setSpinnerOptions(spinnerHabitat, habitats);
+        // Chargement des données des Spinners depuis les ressources ou tableaux en dur
+        setSpinnerOptions(spinnerCapShape, new String[]{"Choose...", "Bell", "Conical", "Convex", "Flat", "Knobbed", "Sunken"});
+        setSpinnerOptions(spinnerCapSurface, new String[]{"Choose...", "Fibrous", "Grooves", "Scaly", "Smooth"});
+        setSpinnerOptions(spinnerCapColor, new String[]{"Choose...", "Brown", "Buff", "Cinnamon", "Gray", "Green", "Pink", "Purple", "Red", "White", "Yellow"});
+        setSpinnerOptions(spinnerBruises, new String[]{"Choose...", "No", "Yes"});
+        setSpinnerOptions(spinnerOdor, new String[]{"Choose...", "Almond", "Anise", "Creosote", "Fishy", "Foul", "Musty", "None", "Pungent", "Spicy"});
+        setSpinnerOptions(spinnerGillAttachment, new String[]{"Choose...", "Attached", "Descending", "Free", "Notched"});
+        setSpinnerOptions(spinnerGillSpacing, new String[]{"Choose...", "Close", "Crowded", "Distant"});
+        setSpinnerOptions(spinnerGillSize, new String[]{"Choose...", "Broad", "Narrow"});
+        setSpinnerOptions(spinnerGillColor, new String[]{"Choose...", "Black", "Brown", "Buff", "Chocolate", "Gray", "Green", "Orange", "Pink", "Purple", "Red", "White", "Yellow"});
+        setSpinnerOptions(spinnerStalkShape, new String[]{"Choose...", "Enlarging", "Tapering"});
+        setSpinnerOptions(spinnerStalkRoot, new String[]{"Choose...", "Bulbous", "Club", "Cup", "Equal", "Rhizomorphs", "Rooted"});
+        setSpinnerOptions(spinnerStalkSurfaceAbove, new String[]{"Choose...", "Fibrous", "Scaly", "Silky", "Smooth"});
+        setSpinnerOptions(spinnerStalkSurfaceBelow, new String[]{"Choose...", "Fibrous", "Scaly", "Silky", "Smooth"});
+        setSpinnerOptions(spinnerStalkColorAbove, new String[]{"Choose...", "Brown", "Buff", "Cinnamon", "Gray", "Orange", "Pink", "Red", "White", "Yellow"});
+        setSpinnerOptions(spinnerStalkColorBelow, new String[]{"Choose...", "Brown", "Buff", "Cinnamon", "Gray", "Orange", "Pink", "Red", "White", "Yellow"});
+        setSpinnerOptions(spinnerVeilType, new String[]{"Choose...", "Partial", "Universal"});
+        setSpinnerOptions(spinnerVeilColor, new String[]{"Choose...", "Brown", "Orange", "White", "Yellow"});
+        setSpinnerOptions(spinnerRingNumber, new String[]{"Choose...", "None", "One", "Two"});
+        setSpinnerOptions(spinnerRingType, new String[]{"Choose...", "Cobwebby", "Evanescent", "Flaring", "Large", "None", "Pendant"});
+        setSpinnerOptions(spinnerSporePrintColor, new String[]{"Choose...", "Black", "Brown", "Buff", "Chocolate", "Green", "Orange", "Purple", "White", "Yellow"});
+        setSpinnerOptions(spinnerPopulation, new String[]{"Choose...", "Abundant", "Clustered", "Numerous", "Scattered", "Several", "Solitary"});
+        setSpinnerOptions(spinnerHabitat, new String[]{"Choose...", "Grasses", "Leaves", "Meadows", "Paths", "Urban", "Waste", "Woods"});
     }
 
     private void setSpinnerOptions(Spinner spinner, String[] options) {
@@ -156,76 +132,37 @@ public class FormFragment extends Fragment {
     }
 
     private void performPrediction() {
-        // Vérifier que tous les spinners sont initialisés
-        if (spinnerCapShape == null || spinnerCapSurface == null || spinnerCapColor == null ||
-                spinnerBruises == null || spinnerOdor == null || spinnerGillAttachment == null ||
-                spinnerGillSpacing == null || spinnerGillSize == null || spinnerGillColor == null ||
-                spinnerStalkShape == null || spinnerStalkRoot == null || spinnerStalkSurfaceAbove == null ||
-                spinnerStalkSurfaceBelow == null || spinnerStalkColorAbove == null || spinnerStalkColorBelow == null ||
-                spinnerVeilType == null || spinnerVeilColor == null || spinnerRingNumber == null ||
-                spinnerRingType == null || spinnerSporePrintColor == null || spinnerPopulation == null ||
-                spinnerHabitat == null) {
-            Toast.makeText(getContext(), "Error loading form", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        if (!validateForm()) return;
 
-        // Vérifier que tous les champs sont remplis (position > 0)
-        if (spinnerCapShape.getSelectedItemPosition() == 0 ||
-                spinnerCapSurface.getSelectedItemPosition() == 0 ||
-                spinnerCapColor.getSelectedItemPosition() == 0 ||
-                spinnerBruises.getSelectedItemPosition() == 0 ||
-                spinnerOdor.getSelectedItemPosition() == 0 ||
-                spinnerGillAttachment.getSelectedItemPosition() == 0 ||
-                spinnerGillSpacing.getSelectedItemPosition() == 0 ||
-                spinnerGillSize.getSelectedItemPosition() == 0 ||
-                spinnerGillColor.getSelectedItemPosition() == 0 ||
-                spinnerStalkShape.getSelectedItemPosition() == 0 ||
-                spinnerStalkRoot.getSelectedItemPosition() == 0 ||
-                spinnerStalkSurfaceAbove.getSelectedItemPosition() == 0 ||
-                spinnerStalkSurfaceBelow.getSelectedItemPosition() == 0 ||
-                spinnerStalkColorAbove.getSelectedItemPosition() == 0 ||
-                spinnerStalkColorBelow.getSelectedItemPosition() == 0 ||
-                spinnerVeilType.getSelectedItemPosition() == 0 ||
-                spinnerVeilColor.getSelectedItemPosition() == 0 ||
-                spinnerRingNumber.getSelectedItemPosition() == 0 ||
-                spinnerRingType.getSelectedItemPosition() == 0 ||
-                spinnerSporePrintColor.getSelectedItemPosition() == 0 ||
-                spinnerPopulation.getSelectedItemPosition() == 0 ||
-                spinnerHabitat.getSelectedItemPosition() == 0) {
-            Toast.makeText(getContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // Vérifier l'authentification
         if (apiClient == null || !apiClient.isAuthenticated()) {
             Toast.makeText(getContext(), "Please login first", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Construire la map des caractéristiques
+        // Construction de la map en utilisant les constantes de MushroomAttributes
         Map<String, Integer> mushroomFeatures = new LinkedHashMap<>();
-        mushroomFeatures.put("cap-shape", spinnerCapShape.getSelectedItemPosition());
-        mushroomFeatures.put("cap-surface", spinnerCapSurface.getSelectedItemPosition());
-        mushroomFeatures.put("cap-color", spinnerCapColor.getSelectedItemPosition());
-        mushroomFeatures.put("bruises", spinnerBruises.getSelectedItemPosition());
-        mushroomFeatures.put("odor", spinnerOdor.getSelectedItemPosition());
-        mushroomFeatures.put("gill-attachment", spinnerGillAttachment.getSelectedItemPosition());
-        mushroomFeatures.put("gill-spacing", spinnerGillSpacing.getSelectedItemPosition());
-        mushroomFeatures.put("gill-size", spinnerGillSize.getSelectedItemPosition());
-        mushroomFeatures.put("gill-color", spinnerGillColor.getSelectedItemPosition());
-        mushroomFeatures.put("stalk-shape", spinnerStalkShape.getSelectedItemPosition());
-        mushroomFeatures.put("stalk-root", spinnerStalkRoot.getSelectedItemPosition());
-        mushroomFeatures.put("stalk-surface-above-ring", spinnerStalkSurfaceAbove.getSelectedItemPosition());
-        mushroomFeatures.put("stalk-surface-below-ring", spinnerStalkSurfaceBelow.getSelectedItemPosition());
-        mushroomFeatures.put("stalk-color-above-ring", spinnerStalkColorAbove.getSelectedItemPosition());
-        mushroomFeatures.put("stalk-color-below-ring", spinnerStalkColorBelow.getSelectedItemPosition());
-        mushroomFeatures.put("veil-type", spinnerVeilType.getSelectedItemPosition());
-        mushroomFeatures.put("veil-color", spinnerVeilColor.getSelectedItemPosition());
-        mushroomFeatures.put("ring-number", spinnerRingNumber.getSelectedItemPosition());
-        mushroomFeatures.put("ring-type", spinnerRingType.getSelectedItemPosition());
-        mushroomFeatures.put("spore-print-color", spinnerSporePrintColor.getSelectedItemPosition());
-        mushroomFeatures.put("population", spinnerPopulation.getSelectedItemPosition());
-        mushroomFeatures.put("habitat", spinnerHabitat.getSelectedItemPosition());
+        mushroomFeatures.put(MushroomAttributes.CAP_SHAPE, spinnerCapShape.getSelectedItemPosition());
+        mushroomFeatures.put(MushroomAttributes.CAP_SURFACE, spinnerCapSurface.getSelectedItemPosition());
+        mushroomFeatures.put(MushroomAttributes.CAP_COLOR, spinnerCapColor.getSelectedItemPosition());
+        mushroomFeatures.put(MushroomAttributes.BRUISES, spinnerBruises.getSelectedItemPosition());
+        mushroomFeatures.put(MushroomAttributes.ODOR, spinnerOdor.getSelectedItemPosition());
+        mushroomFeatures.put(MushroomAttributes.GILL_ATTACHMENT, spinnerGillAttachment.getSelectedItemPosition());
+        mushroomFeatures.put(MushroomAttributes.GILL_SPACING, spinnerGillSpacing.getSelectedItemPosition());
+        mushroomFeatures.put(MushroomAttributes.GILL_SIZE, spinnerGillSize.getSelectedItemPosition());
+        mushroomFeatures.put(MushroomAttributes.GILL_COLOR, spinnerGillColor.getSelectedItemPosition());
+        mushroomFeatures.put(MushroomAttributes.STALK_SHAPE, spinnerStalkShape.getSelectedItemPosition());
+        mushroomFeatures.put(MushroomAttributes.STALK_ROOT, spinnerStalkRoot.getSelectedItemPosition());
+        mushroomFeatures.put(MushroomAttributes.STALK_SURFACE_ABOVE_RING, spinnerStalkSurfaceAbove.getSelectedItemPosition());
+        mushroomFeatures.put(MushroomAttributes.STALK_SURFACE_BELOW_RING, spinnerStalkSurfaceBelow.getSelectedItemPosition());
+        mushroomFeatures.put(MushroomAttributes.STALK_COLOR_ABOVE_RING, spinnerStalkColorAbove.getSelectedItemPosition());
+        mushroomFeatures.put(MushroomAttributes.STALK_COLOR_BELOW_RING, spinnerStalkColorBelow.getSelectedItemPosition());
+        mushroomFeatures.put(MushroomAttributes.VEIL_TYPE, spinnerVeilType.getSelectedItemPosition());
+        mushroomFeatures.put(MushroomAttributes.VEIL_COLOR, spinnerVeilColor.getSelectedItemPosition());
+        mushroomFeatures.put(MushroomAttributes.RING_NUMBER, spinnerRingNumber.getSelectedItemPosition());
+        mushroomFeatures.put(MushroomAttributes.RING_TYPE, spinnerRingType.getSelectedItemPosition());
+        mushroomFeatures.put(MushroomAttributes.SPORE_PRINT_COLOR, spinnerSporePrintColor.getSelectedItemPosition());
+        mushroomFeatures.put(MushroomAttributes.POPULATION, spinnerPopulation.getSelectedItemPosition());
+        mushroomFeatures.put(MushroomAttributes.HABITAT, spinnerHabitat.getSelectedItemPosition());
 
         List<Map<String, Integer>> samples = new ArrayList<>();
         samples.add(mushroomFeatures);
@@ -234,14 +171,14 @@ public class FormFragment extends Fragment {
         showLoading(true);
 
         Call<PredictAAResponse> call = autoMLApi.predict(request);
-        call.enqueue(new Callback<PredictAAResponse>() {
+        call.enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<PredictAAResponse> call, Response<PredictAAResponse> response) {
                 showLoading(false);
                 if (response.isSuccessful() && response.body() != null) {
                     List<Integer> predictions = response.body().getPredictions();
                     if (!predictions.isEmpty()) {
-                        boolean isEdible = (predictions.get(0) == 0);
+                        boolean isEdible = (predictions.get(0) == Edible);
                         if (getActivity() != null) {
                             ((IdentifyActivity) getActivity()).showResult(isEdible);
                         }
@@ -249,15 +186,7 @@ public class FormFragment extends Fragment {
                         Toast.makeText(getContext(), "No prediction received", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    String errorMsg = "Prediction failed: " + response.code();
-                    try {
-                        if (response.errorBody() != null) {
-                            errorMsg += " - " + response.errorBody().string();
-                        }
-                    } catch (Exception e) {
-                        errorMsg += " - " + e.getMessage();
-                    }
-                    Toast.makeText(getContext(), errorMsg, Toast.LENGTH_LONG).show();
+                    handleApiError(response);
                 }
             }
 
@@ -269,6 +198,41 @@ public class FormFragment extends Fragment {
         });
     }
 
+    private boolean validateForm() {
+        Spinner[] allSpinners = {
+            spinnerCapShape, spinnerCapSurface, spinnerCapColor, spinnerBruises,
+            spinnerOdor, spinnerGillAttachment, spinnerGillSpacing, spinnerGillSize,
+            spinnerGillColor, spinnerStalkShape, spinnerStalkRoot, spinnerStalkSurfaceAbove,
+            spinnerStalkSurfaceBelow, spinnerStalkColorAbove, spinnerStalkColorBelow,
+            spinnerVeilType, spinnerVeilColor, spinnerRingNumber, spinnerRingType,
+            spinnerSporePrintColor, spinnerPopulation, spinnerHabitat
+        };
+
+        for (Spinner s : allSpinners) {
+            if (s == null) {
+                Toast.makeText(getContext(), "Error: View not initialized", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            if (s.getSelectedItemPosition() == 0) {
+                Toast.makeText(getContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void handleApiError(Response<PredictAAResponse> response) {
+        String errorMsg = "Prediction failed: " + response.code();
+        try {
+            if (response.errorBody() != null) {
+                errorMsg += " - " + response.errorBody().string();
+            }
+        } catch (Exception e) {
+            errorMsg += " - " + e.getMessage();
+        }
+        Toast.makeText(getContext(), errorMsg, Toast.LENGTH_LONG).show();
+    }
+
     private void showLoading(boolean show) {
         if (btnIdentifyForm != null) {
             btnIdentifyForm.setEnabled(!show);
@@ -278,5 +242,4 @@ public class FormFragment extends Fragment {
             progressText.setVisibility(show ? View.VISIBLE : View.GONE);
         }
     }
-
 }
