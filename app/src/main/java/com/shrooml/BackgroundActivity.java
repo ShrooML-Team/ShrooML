@@ -65,14 +65,19 @@ public class BackgroundActivity extends AppCompatActivity {
                                 animatePoisonEffect(root);
                                 corrupted = true;
                                 prefs.edit().putBoolean("corrupted", true).apply();
+                                onCorruptedStateChanged();
+                                updateTaggedShapes(root, Color.parseColor("#4f004f"));
                             } else if ((text.contains("heal") || text.contains("cure")) && corrupted) {
                                 animateHealEffect(root);
                                 corrupted = false;
                                 prefs.edit().putBoolean("corrupted", false).apply();
+                                onCorruptedStateChanged();
+                                updateTaggedShapes(root, Color.parseColor("#A06A42"));
                             }
                         }
                     }
                     Toast.makeText(BackgroundActivity.this, textcomp + "FIN ECOUTE", LENGTH_SHORT).show();
+
                     title.setClickable(true);
                 }
 
@@ -81,7 +86,6 @@ public class BackgroundActivity extends AppCompatActivity {
                 @Override public void onRmsChanged(float rmsdB) {}
                 @Override public void onBufferReceived(byte[] buffer) {}
                 @Override public void onEndOfSpeech() {
-                    Toast.makeText(BackgroundActivity.this, "FIN ECOUTE VIDE", LENGTH_SHORT).show();
                     title.setClickable(true);
                 }
                 @Override public void onError(int error) {
@@ -126,10 +130,32 @@ public class BackgroundActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("app", MODE_PRIVATE);
         boolean corrupted = prefs.getBoolean("corrupted", false);
         View root = findViewById(R.id.rootLayout);
-        if (corrupted) {
-            root.setBackgroundColor(Color.parseColor("#800080"));
-        } else {
-            root.setBackgroundColor(Color.parseColor("#C98D63"));
+        int colorMain = corrupted ? Color.parseColor("#800080") : Color.parseColor("#C98D63");
+        int colorItem = corrupted ? Color.parseColor("#4f004f") : Color.parseColor("#A06A42");
+
+        if (root != null) {
+            root.setBackgroundColor(colorMain);
+
+            updateTaggedShapes(root, colorItem);
+        }
+    }
+
+    private void updateTaggedShapes(View view, int color) {
+        // On vérifie si la vue a le tag "item_bg"
+        Object tag = view.getTag();
+        if (tag != null && tag.equals("item_bg")) {
+            android.graphics.drawable.Drawable bg = view.getBackground();
+            if (bg instanceof android.graphics.drawable.GradientDrawable) {
+                ((android.graphics.drawable.GradientDrawable) bg.mutate()).setColor(color);
+            }
+        }
+
+        // On continue de chercher dans les enfants (si c'est un groupe de vues)
+        if (view instanceof android.view.ViewGroup) {
+            android.view.ViewGroup group = (android.view.ViewGroup) view;
+            for (int i = 0; i < group.getChildCount(); i++) {
+                updateTaggedShapes(group.getChildAt(i), color);
+            }
         }
     }
 
@@ -235,5 +261,10 @@ public class BackgroundActivity extends AppCompatActivity {
         colorAnimator.start();
         alphaAnimator.start();
 
+    }
+
+    // Dans BackgroundActivity.java
+    protected void onCorruptedStateChanged() {
+        // Cette méthode sera remplie dans ShroomLocateActivity
     }
 }

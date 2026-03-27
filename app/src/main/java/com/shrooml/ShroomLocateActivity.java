@@ -417,4 +417,16 @@ public class ShroomLocateActivity extends AppCompatActivity {
             }
         }
     }
+/*
+    // Dans ShroomLocateActivity.java
+    @Override
+    protected void onCorruptedStateChanged() {
+        super.onCorruptedStateChanged();
+
+        // On demande à la liste de se rafraîchir immédiatement
+        if (recycler != null && recycler.getAdapter() != null) {
+            // notifyDataSetChanged force onBindViewHolder à s'exécuter pour chaque item
+            recycler.getAdapter().notifyDataSetChanged();
+        }
+    }*/
 }
