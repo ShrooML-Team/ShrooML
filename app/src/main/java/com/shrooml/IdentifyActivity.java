@@ -4,8 +4,13 @@ import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.LENGTH_SHORT;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -76,6 +81,8 @@ public class IdentifyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_identify);
         setupCameraLauncher();
         setupCameraButton();
+        SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        Sensor lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
 
         identify_API = new KindwiseService();
 
@@ -88,6 +95,26 @@ public class IdentifyActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
         bottomNav.setSelectedItemId(R.id.nav_identify);
+
+        if (lightSensor != null) {
+            sensorManager.registerListener(new SensorEventListener() {
+                @Override
+                public void onSensorChanged(SensorEvent event) {
+                    float lux = event.values[0];
+
+                    if (lux < 50) {
+                        Toast.makeText(getApplicationContext(),
+                                "Lumière faible, pensez à activer la lampe torche",
+                                Toast.LENGTH_LONG).show();
+                    }
+
+                    sensorManager.unregisterListener(this);
+                }
+
+                @Override
+                public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+            }, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        }
 
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

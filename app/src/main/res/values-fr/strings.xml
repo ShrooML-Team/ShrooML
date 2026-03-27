@@ -112,4 +112,9 @@
 
     <string name="trueAnswer">Vrai</string>
     <string name="falseAnswer">Faux</string>
+
+    <string name="playAgain">Rejouer</string>
+    <string name="backHome">Accueil</string>
+    <string name="nextButton">Suivant</string>
+    <string name="score">Score : %1$s/5</string>
 </resources>

@@ -53,6 +53,8 @@ public class QuizActivity extends Activity {
     private AutoCompleteTextView answerInput;
     private RadioGroup edibleGroup;
 
+    private TokenManager tokenManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +68,32 @@ public class QuizActivity extends Activity {
         edibleGroup = findViewById(R.id.edibleGroup);
         correctAnswerText = findViewById(R.id.CorrectAnswerText);
         correctAnswerText.setVisibility(View.GONE);
+        Button play_again = findViewById(R.id.playAgain);
+        Button back_home = findViewById(R.id.backHome);
+        ImageView profileImage = findViewById(R.id.profileImage);
+
+        play_again.setOnClickListener(v->{
+            startActivity(new Intent(QuizActivity.this, QuizActivity.class));
+            finish();
+        });
+
+        back_home.setOnClickListener(v->{
+            startActivity(new Intent(QuizActivity.this, ChoiceIdentifyActivity.class));
+            finish();
+        });
+
+        if (initTokenManager()) {
+            String remotePhoto = tokenManager.getUserPhotoProfil();
+            if (remotePhoto != null && !remotePhoto.isEmpty()) {
+                Glide.with(this)
+                        .load(remotePhoto)
+                        .placeholder(R.drawable.ic_profile)
+                        .error(R.drawable.ic_profile)
+                        .centerCrop()
+                        .into(profileImage);
+            }
+        }
+
         BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
         bottomNav.setSelectedItemId(R.id.nav_quiz);
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -167,7 +195,7 @@ public class QuizActivity extends Activity {
                         TextView scoreEnd = findViewById(R.id.quizScoreEnd);
                         int score = quizGame.getScore();
                         titleEnd.setText(quizGame.getTitre(score));
-                        scoreEnd.setText("Score : " + score);
+                        scoreEnd.setText(QuizActivity.this.getString(R.string.score, ""+score));
                         persistScoreToApi(score);
                     }
                     answerInput.setBackgroundColor(Color.parseColor("#FFFFFF"));
@@ -375,5 +403,15 @@ public class QuizActivity extends Activity {
             startActivity(intent);
             finish();
         });
+    }
+
+    private boolean initTokenManager() {
+        try {
+            tokenManager = TokenManager.getInstance(this);
+            return true;
+        } catch (GeneralSecurityException | IOException e) {
+            Toast.makeText(this, "Erreur d'initialisation du profil", Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 }

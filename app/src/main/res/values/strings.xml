@@ -109,4 +109,9 @@
 
     <string name="trueAnswer">True</string>
     <string name="falseAnswer">False</string>
+
+    <string name="playAgain">Play again</string>
+    <string name="backHome">Home</string>
+    <string name="nextButton">Next</string>
+    <string name="score">Score : %1$s/5</string>
 </resources>
