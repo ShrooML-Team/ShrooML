@@ -82,11 +82,25 @@ public class TokenManager {
                     .putString(TOKEN_KEY, token)
                     .putInt(USER_ID_KEY, userId)
                     .putString(USER_IDENTIFIANT_KEY, identifiant)
-                    .apply();
-            Log.d(TAG, "Token sauvegardé avec succès");
+                    .commit();  // ← Utiliser commit() au lieu de apply() pour être synchrone
+
+            String savedToken = encryptedSharedPref.getString(TOKEN_KEY, null);
+            Log.d("TokenManager", "Token sauvegardé: '" + savedToken + "'");
+            Log.d("TokenManager", "Token length après sauvegarde: " + (savedToken != null ? savedToken.length() : 0));
+
+            boolean isSame = token.equals(savedToken);
+            Log.d("TokenManager", "Token identique après sauvegarde: " + isSame);
+
+            if (!isSame) {
+                Log.e("TokenManager", "CRITICAL: Token modifié par EncryptedSharedPreferences !");
+                Log.e("TokenManager", "Original bytes: " + bytesToHex(token.getBytes()));
+                Log.e("TokenManager", "Saved bytes: " + bytesToHex(savedToken.getBytes()));
+            }
+
         } catch (Exception e) {
             Log.e(TAG, "ERREUR lors de la sauvegarde du token", e);
         }
+        Log.d("TokenManager", "=== END SAVE ===");
     }
 
     public void saveUserProfile(UserResponse user) {
@@ -113,8 +127,19 @@ public class TokenManager {
         }
     }
 
+    // Méthode utilitaire pour debug
+    private String bytesToHex(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) {
+            sb.append(String.format("%02x ", b));
+        }
+        return sb.toString();
+    }
     public String getToken() {
         String token = encryptedSharedPref.getString(TOKEN_KEY, null);
+        Log.d("TokenManager", "getToken() - token récupéré: " + token);
+        Log.d("TokenManager", "getToken() - token length: " + (token != null ? token.length() : 0));
+
         Log.d(TAG, "getToken() - token présent: " + (token != null));
         return token;
     }
