@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
+
 import com.shrooml.services.OAuthService;
 import com.shrooml.services.api.ShroomLocRetrofitClient;
 
@@ -86,30 +88,30 @@ public class SplashActivity extends Activity {
             
             boolean isValid = tokenManager.isTokenValid();
             Log.d(TAG, "isTokenValid() retourné: " + isValid);
-            
-            if (isValid) {
-                Log.d(TAG, "Token valide -> Navigation vers ChoiceIdentifyActivity");
-                new OAuthService().login("admin", "password123", new OAuthService.OAuthCallback() {
-                    @Override
-                    public void onSuccess(String token) {
-                        ShroomLocRetrofitClient.setToken(token);
+
+            OAuthService authService = new OAuthService();
+            authService.login("admin", "password123", new OAuthService.OAuthCallback() {
+                @Override
+                public void onSuccess(String token) {
+                    ShroomLocRetrofitClient.setToken(token);
+                    if (isValid) {
+                        Log.d(TAG, "Token valide -> Navigation vers ChoiceIdentifyActivity");
                         startActivity(new Intent(SplashActivity.this, ChoiceIdentifyActivity.class));
                         Log.d(TAG, "Appel de finish()");
                         finish();
+                    } else {
+                        Log.d(TAG, "Pas de token valide -> Navigation vers LoginActivity");
+                        startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                        Log.d(TAG, "Appel de finish()");
+                        finish();
                     }
+                }
 
-                    @Override
-                    public void onError(String errorMessage) {
-
-                    }
-                });
-
-            } else {
-                Log.d(TAG, "Pas de token valide -> Navigation vers LoginActivity");
-                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                Log.d(TAG, "Appel de finish()");
-                finish();
-            }
+                @Override
+                public void onError(String errorMessage) {
+                    Toast.makeText(SplashActivity.this, "Connexion a l'API des champignons impossible", Toast.LENGTH_SHORT).show();
+                }
+            });
         } catch (GeneralSecurityException e) {
             Log.e(TAG, "ERREUR GeneralSecurityException dans checkAuthenticationAndNavigate()", e);
             e.printStackTrace();
