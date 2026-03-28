@@ -35,7 +35,7 @@ import com.shrooml.services.api.ShroomLocRetrofitClient;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
-public class QuizActivity extends Activity {
+public class QuizActivity extends BackgroundActivity {
 
     private static final long TOKEN_REFRESH_THRESHOLD_SECONDS = 120L;
 

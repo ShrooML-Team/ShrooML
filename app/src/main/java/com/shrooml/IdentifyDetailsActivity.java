@@ -22,7 +22,7 @@ import com.shrooml.services.ShroomLocService;
 
 import java.net.URLEncoder;
 
-public class IdentifyDetailsActivity extends AppCompatActivity {
+public class IdentifyDetailsActivity extends BackgroundActivity {
 
     private TextView detailsTitle, detailsBadge, detailsGeneral, detailsEcology;
     private ImageView detailsImage;

@@ -82,7 +82,7 @@ public class TokenManager {
                     .putString(TOKEN_KEY, token)
                     .putInt(USER_ID_KEY, userId)
                     .putString(USER_IDENTIFIANT_KEY, identifiant)
-                    .commit();  // ← Utiliser commit() au lieu de apply() pour être synchrone
+                    .apply();  // ← Utiliser commit() au lieu de apply() pour être synchrone
 
             String savedToken = encryptedSharedPref.getString(TOKEN_KEY, null);
             Log.d("TokenManager", "Token sauvegardé: '" + savedToken + "'");

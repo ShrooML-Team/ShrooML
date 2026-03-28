@@ -54,7 +54,7 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends BackgroundActivity {
 
     private static final String TAG = "ProfileActivity";
     private static final long TOKEN_REFRESH_THRESHOLD_SECONDS = 120L;

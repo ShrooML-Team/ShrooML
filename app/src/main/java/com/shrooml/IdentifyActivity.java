@@ -15,7 +15,7 @@ import com.shrooml.fragments.CameraFragment;
 import com.shrooml.fragments.FormFragment;
 import com.shrooml.fragments.ResultFragment;
 
-public class IdentifyActivity extends AppCompatActivity {
+public class IdentifyActivity extends BackgroundActivity {
 
     private ImageButton btnToggleMode;
 

@@ -45,7 +45,7 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.content.Context;
 
-public class ShroomLocateActivity extends AppCompatActivity {
+public class ShroomLocateActivity extends BackgroundActivity {
 
     private SensorManager sensorManager;
     private Sensor accelerometer;
@@ -417,7 +417,7 @@ public class ShroomLocateActivity extends AppCompatActivity {
             }
         }
     }
-/*
+
     // Dans ShroomLocateActivity.java
     @Override
     protected void onCorruptedStateChanged() {
@@ -428,5 +428,5 @@ public class ShroomLocateActivity extends AppCompatActivity {
             // notifyDataSetChanged force onBindViewHolder à s'exécuter pour chaque item
             recycler.getAdapter().notifyDataSetChanged();
         }
-    }*/
+    }
 }

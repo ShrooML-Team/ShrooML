@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class ChoiceIdentifyActivity extends Activity {
+public class ChoiceIdentifyActivity extends BackgroundActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

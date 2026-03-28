@@ -19,7 +19,7 @@ import com.shrooml.services.ShroomLocService;
 
 import java.net.URLEncoder;
 
-public class ShroomDetailsActivity extends AppCompatActivity {
+public class ShroomDetailsActivity extends BackgroundActivity {
 
     private TextView detailsTitle, detailsBadge, detailsGeneral, detailsEcology;
     private ImageView detailsImage;
