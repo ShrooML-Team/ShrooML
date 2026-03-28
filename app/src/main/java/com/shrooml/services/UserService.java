@@ -43,7 +43,7 @@ public class UserService {
                 }
 
                 if (response.code() == 401) {
-                    callback.onError(SESSION_EXPIRED_MESSAGE);
+                    callback.onError("UPDATE"+SESSION_EXPIRED_MESSAGE);
                     return;
                 }
 
@@ -69,7 +69,7 @@ public class UserService {
                 }
 
                 if (response.code() == 401) {
-                    callback.onError(SESSION_EXPIRED_MESSAGE);
+                    callback.onError(SESSION_EXPIRED_MESSAGE + "GET");
                     return;
                 }
 

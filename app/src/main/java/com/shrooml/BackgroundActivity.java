@@ -106,7 +106,6 @@ public class BackgroundActivity extends AppCompatActivity {
         super.onResume();
         title = findViewById(R.id.title);
         if(title != null && !listenerInitialized){
-            Toast.makeText(BackgroundActivity.this, "RECUP TITLE", LENGTH_SHORT).show();
             title.setClickable(true);
             listenerInitialized = true;
 

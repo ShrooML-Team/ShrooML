@@ -341,6 +341,7 @@ public class QuizActivity extends BackgroundActivity {
             }
 
             if (tokenManager.isTokenExpired()) {
+                Toast.makeText(QuizActivity.this, "IF EXPIRED", LENGTH_SHORT).show();
                 redirectToLogin(tokenManager);
                 return;
             }
@@ -358,6 +359,7 @@ public class QuizActivity extends BackgroundActivity {
                     @Override
                     public void onError(String errorMessage) {
                         if (errorMessage.contains("401")) {
+                            Toast.makeText(QuizActivity.this, errorMessage + "2EME IF", LENGTH_SHORT).show();
                             redirectToLogin(tokenManager);
                             return;
                         }
@@ -384,7 +386,8 @@ public class QuizActivity extends BackgroundActivity {
 
             @Override
             public void onError(String errorMessage) {
-                if ("Session expirée, reconnectez-vous".equals(errorMessage)) {
+                if (errorMessage.contains("Session expirée, reconnectez-vous")) {
+                    Toast.makeText(QuizActivity.this, errorMessage + "3EME IF", LENGTH_SHORT).show();
                     redirectToLogin(tokenManager);
                     return;
                 }

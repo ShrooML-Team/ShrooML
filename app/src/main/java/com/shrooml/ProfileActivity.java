@@ -225,7 +225,7 @@ public class ProfileActivity extends BackgroundActivity {
                 return true;
             }
             if (id == R.id.nav_identify) {
-                startActivity(new Intent(ProfileActivity.this, IdentifyActivity.class));
+                startActivity(new Intent(ProfileActivity.this, ChoiceIdentifyActivity.class));
                 return true;
             }
 

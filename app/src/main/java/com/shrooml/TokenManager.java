@@ -259,7 +259,14 @@ public class TokenManager {
         }
 
         long nowEpochSeconds = System.currentTimeMillis() / 1000L;
-        return nowEpochSeconds >= expirationEpochSeconds;
+        long buffer = 60;
+        boolean expired = (nowEpochSeconds + buffer) >= expirationEpochSeconds;
+
+        if (expired) {
+            Log.d("TokenManager", "Token considéré expiré (Marge de sécurité appliquée)");
+        }
+
+        return expired;
     }
 
     public boolean isTokenExpiringSoon(long thresholdSeconds) {
@@ -274,34 +281,23 @@ public class TokenManager {
 
     private Long getTokenExpirationEpochSeconds() {
         String token = encryptedSharedPref.getString(TOKEN_KEY, null);
-        if (token == null || token.isEmpty()) {
-            return null;
-        }
+        if (token == null || token.isEmpty()) return null;
 
         try {
-            String[] tokenParts = token.split("\\.");
-            if (tokenParts.length < 2) {
-                return null;
-            }
+            String[] parts = token.split("\\.");
+            if (parts.length < 2) return null;
 
-            String payload = tokenParts[1];
-            int padding = (4 - (payload.length() % 4)) % 4;
-            StringBuilder payloadBuilder = new StringBuilder(payload);
-            for (int index = 0; index < padding; index++) {
-                payloadBuilder.append('=');
-            }
+            // Décoder le payload (2ème partie du JWT)
+            String payloadJson = new String(Base64.decode(parts[1], Base64.URL_SAFE));
+            JSONObject jsonObject = new JSONObject(payloadJson);
 
-            byte[] decodedBytes = Base64.decode(payloadBuilder.toString(), Base64.URL_SAFE);
-            JSONObject payloadJson = new JSONObject(new String(decodedBytes));
-            if (!payloadJson.has("exp")) {
-                return null;
+            if (jsonObject.has("exp")) {
+                return jsonObject.getLong("exp");
             }
-
-            return payloadJson.getLong("exp");
         } catch (Exception e) {
-            Log.e(TAG, "Impossible de décoder l'expiration du token", e);
-            return null;
+            Log.e(TAG, "Erreur lors de la lecture de l'expiration du token", e);
         }
+        return null;
     }
 
     public void clearToken() {

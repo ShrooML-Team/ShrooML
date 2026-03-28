@@ -1,5 +1,7 @@
 package com.shrooml.services.api;
 
+import android.util.Log;
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -19,7 +21,9 @@ public class UserRetrofitClient {
                     Request.Builder requestBuilder = chain.request().newBuilder();
 
                     if (authToken != null && !authToken.isEmpty()) {
-                        requestBuilder.header("Authorization", "Bearer " + authToken);
+                        String headerValue = "Bearer " + authToken;
+                        Log.d("RESEAU_DEBUG", "Header envoyé : [" + headerValue + "]");
+                        requestBuilder.header("Authorization", headerValue);
                     }
 
                     return chain.proceed(requestBuilder.build());
