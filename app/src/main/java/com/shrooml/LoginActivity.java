@@ -7,7 +7,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
 import com.shrooml.services.OAuthService;
 import com.shrooml.services.GoogleSignInManager;
 import com.shrooml.services.api.AutoMLApi;

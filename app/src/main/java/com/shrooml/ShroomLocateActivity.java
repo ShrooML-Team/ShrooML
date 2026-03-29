@@ -1,7 +1,5 @@
 package com.shrooml;
 
-import static android.widget.Toast.LENGTH_LONG;
-
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
@@ -24,7 +22,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;

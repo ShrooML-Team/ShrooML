@@ -76,7 +76,6 @@ public class BackgroundActivity extends AppCompatActivity {
                             }
                         }
                     }
-                    Toast.makeText(BackgroundActivity.this, textcomp + "FIN ECOUTE", LENGTH_SHORT).show();
 
                     title.setClickable(true);
                 }
@@ -191,7 +190,6 @@ public class BackgroundActivity extends AppCompatActivity {
     private void launchSpeechRecognizer() {
 
         title.setClickable(false);
-        Toast.makeText(BackgroundActivity.this, "ECOUTE", LENGTH_SHORT).show();
 
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,

@@ -3,7 +3,6 @@ package com.shrooml;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -27,10 +26,8 @@ import androidx.annotation.NonNull;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.shrooml.games.QuizGame;
-import com.shrooml.services.InaturalistService;
 import com.shrooml.services.OAuthService;
 import com.shrooml.services.UserService;
-import com.shrooml.services.api.ShroomLocRetrofitClient;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -341,7 +338,6 @@ public class QuizActivity extends BackgroundActivity {
             }
 
             if (tokenManager.isTokenExpired()) {
-                Toast.makeText(QuizActivity.this, "IF EXPIRED", LENGTH_SHORT).show();
                 redirectToLogin(tokenManager);
                 return;
             }
@@ -359,7 +355,6 @@ public class QuizActivity extends BackgroundActivity {
                     @Override
                     public void onError(String errorMessage) {
                         if (errorMessage.contains("401")) {
-                            Toast.makeText(QuizActivity.this, errorMessage + "2EME IF", LENGTH_SHORT).show();
                             redirectToLogin(tokenManager);
                             return;
                         }
@@ -387,7 +382,6 @@ public class QuizActivity extends BackgroundActivity {
             @Override
             public void onError(String errorMessage) {
                 if (errorMessage.contains("Session expirée, reconnectez-vous")) {
-                    Toast.makeText(QuizActivity.this, errorMessage + "3EME IF", LENGTH_SHORT).show();
                     redirectToLogin(tokenManager);
                     return;
                 }

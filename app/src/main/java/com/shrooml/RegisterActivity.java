@@ -8,7 +8,6 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
 import com.shrooml.services.OAuthService;
 import com.shrooml.services.api.AutoMLApi;
 import com.shrooml.services.api.AutoMLRetrofitClient;
