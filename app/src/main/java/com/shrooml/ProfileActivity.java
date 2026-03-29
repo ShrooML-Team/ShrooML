@@ -239,8 +239,8 @@ public class ProfileActivity extends AppCompatActivity {
         updateRangDisplay(tokenManager.getUserRang());
         displayRandomDescription();
         scoringText.setText(String.format(getString(R.string.profile_score), formatScore(tokenManager.getUserScoring())));
-        streakText.setText(String.format(getString(R.string.profile_streak), tokenManager.getUserStreak()));
-        niveauText.setText(String.format(getString(R.string.profile_niveau), tokenManager.getUserNiveau()));
+        streakText.setText(String.format(getString(R.string.profile_streak), String.valueOf(tokenManager.getUserStreak())));
+        niveauText.setText(String.format(getString(R.string.profile_niveau), String.valueOf(tokenManager.getUserNiveau())));
         createdAtText.setText(String.format(getString(R.string.profile_created_at), formatCreatedAt(tokenManager.getUserCreatedAt())));
         emailInput.setText(valueOrEmpty(tokenManager.getUserEmail()));
         String preferredMushroom = valueOrEmpty(tokenManager.getUserChampignonPrefere());
@@ -248,6 +248,7 @@ public class ProfileActivity extends AppCompatActivity {
         updateFavoriteMushroomSection(preferredMushroom);
 
         loadProfileImage();
+
     }
 
     private void saveProfileChanges() {

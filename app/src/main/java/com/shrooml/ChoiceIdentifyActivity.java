@@ -18,8 +18,17 @@ public class ChoiceIdentifyActivity extends Activity {
         ImageButton btnIdentifyImg = findViewById(R.id.buttonPhoto);
         ImageButton btnIdentifyCriteria = findViewById(R.id.buttonCheck);
 
-        btnIdentifyImg.setOnClickListener(v ->
-                startActivity(new Intent(ChoiceIdentifyActivity.this, IdentifyActivity.class)));
+        btnIdentifyImg.setOnClickListener(v -> {
+                    Intent intent = new Intent(ChoiceIdentifyActivity.this, IdentifyActivity.class);
+                    intent.putExtra("default_mode", "camera");
+                    startActivity(intent);
+                });
+        btnIdentifyCriteria.setOnClickListener(v ->
+        {
+            Intent intent = new Intent(ChoiceIdentifyActivity.this, IdentifyActivity.class);
+            intent.putExtra("default_mode", "form");
+            startActivity(intent);
+        });
 
         BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
         bottomNav.setSelectedItemId(R.id.nav_locate);

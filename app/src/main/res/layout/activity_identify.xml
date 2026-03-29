@@ -32,6 +32,21 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
+        <ImageButton
+            android:id="@+id/btn_toggle_mode"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="52dp"
+            android:background="@drawable/circle_button"
+            android:backgroundTint="#80FFFFFF"
+            android:contentDescription="Switch to form mode"
+            android:padding="8dp"
+            android:src="@drawable/ic_edit"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
         <ImageView
             android:id="@+id/titleIcon"
             android:layout_width="35sp"
@@ -42,7 +57,6 @@
             app:layout_constraintTop_toTopOf="@id/title"
             app:layout_constraintBottom_toBottomOf="@id/title"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     <!-- Séparateur sous le titre -->
     <View
@@ -57,8 +71,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/imageContainer"
+    <!-- Container pour les fragments (Camera ou Form) -->
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="30dp"
@@ -68,53 +84,10 @@
         app:layout_constraintTop_toBottomOf="@id/separatorTitle"
         app:layout_constraintBottom_toTopOf="@id/separator2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <!-- Image -->
-        <ImageView
-            android:id="@+id/mushroomImage"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="#33FFFFFF"
-            android:scaleType="centerCrop"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"/>
 
         <!-- Container des boutons -->
-        <LinearLayout
-            android:id="@+id/buttonContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
 
-            <ImageButton
-                android:id="@+id/btnGallery"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/circle_button"
-                android:padding="4dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_gallery" />
-
-            <ImageButton
-                android:id="@+id/btnTakePhoto"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@drawable/circle_button"
-                android:padding="8dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_camera" />
-
-        </LinearLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Séparateur 2 -->
     <View
@@ -184,7 +157,6 @@
                 app:menu="@menu/bottom_nav_menu"
                 app:labelVisibilityMode="labeled"/>
 
-
         </HorizontalScrollView>
 
         <!-- Chevron droit -->
@@ -200,6 +172,5 @@
             app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
