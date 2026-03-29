@@ -115,6 +115,7 @@ public class ProfileActivity extends AppCompatActivity {
         profileImage.setOnClickListener(v -> pickProfileImageLauncher.launch("image/*"));
         descriptionText.setOnClickListener(v -> showDescriptionDialog());
         favoriteMushroomCard.setOnClickListener(v -> showFavoriteMushroomDialog());
+        rangText.setOnClickListener(v -> openRanking());
 
         saveButton.setOnClickListener(v -> saveProfileChanges());
     }
@@ -774,5 +775,10 @@ public class ProfileActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+    }
+
+    private void openRanking() {
+        Intent intent = new Intent(ProfileActivity.this, RankingActivity.class);
+        startActivity(intent);
     }
 }

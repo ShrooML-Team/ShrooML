@@ -6,6 +6,7 @@ import com.shrooml.services.api.UserPhotoUploadResponse;
 import com.shrooml.services.api.UserResponse;
 import com.shrooml.services.api.UserRetrofitClient;
 
+import java.util.List;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -17,6 +18,11 @@ public class UserService {
 
     public interface UserProfileCallback {
         void onSuccess(UserResponse user);
+        void onError(String errorMessage);
+    }
+
+    public interface UsersListCallback {
+        void onSuccess(List<UserResponse> users);
         void onError(String errorMessage);
     }
 
@@ -126,6 +132,32 @@ public class UserService {
 
             @Override
             public void onFailure(Call<UserPhotoUploadResponse> call, Throwable t) {
+                callback.onError("Erreur reseau : " + t.getMessage());
+            }
+        });
+    }
+
+    public void getTopRanking(int limit, UsersListCallback callback) {
+        Call<List<UserResponse>> call = api.getTopRanking(limit);
+
+        call.enqueue(new Callback<List<UserResponse>>() {
+            @Override
+            public void onResponse(Call<List<UserResponse>> call, Response<List<UserResponse>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                    return;
+                }
+
+                if (response.code() == 401) {
+                    callback.onError(SESSION_EXPIRED_MESSAGE);
+                    return;
+                }
+
+                callback.onError("Erreur recuperation classement : " + response.code());
+            }
+
+            @Override
+            public void onFailure(Call<List<UserResponse>> call, Throwable t) {
                 callback.onError("Erreur reseau : " + t.getMessage());
             }
         });
