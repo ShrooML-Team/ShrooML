@@ -264,6 +264,6 @@ public class BackgroundActivity extends AppCompatActivity {
 
     // Dans BackgroundActivity.java
     protected void onCorruptedStateChanged() {
-        // Cette méthode sera remplie dans ShroomLocateActivity
+        // Cette méthode sera remplie dans ShroomLocateActivity and ranking
     }
 }

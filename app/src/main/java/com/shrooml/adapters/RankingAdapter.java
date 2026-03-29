@@ -1,5 +1,8 @@
 package com.shrooml.adapters;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -67,6 +70,16 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankingV
             holder.itemView.setAlpha(1.0f);
         } else {
             holder.itemView.setAlpha(0.9f);
+        }
+
+        SharedPreferences prefs = holder.itemView.getContext().getSharedPreferences("app", Context.MODE_PRIVATE);
+        boolean corrupted = prefs.getBoolean("corrupted", false);
+
+        int itemColor = corrupted ? Color.parseColor("#4f004f") : Color.parseColor("#A06A42");
+
+        android.graphics.drawable.Drawable background = holder.itemView.getBackground();
+        if (background instanceof android.graphics.drawable.GradientDrawable) {
+            ((android.graphics.drawable.GradientDrawable) background.mutate()).setColor(itemColor);
         }
     }
 

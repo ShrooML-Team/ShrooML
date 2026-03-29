@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.List;
 
-public class RankingActivity extends AppCompatActivity {
+public class RankingActivity extends BackgroundActivity {
     private static final String TAG = "RankingActivity";
 
     private RecyclerView rankingRecyclerView;
@@ -153,5 +153,16 @@ public class RankingActivity extends AppCompatActivity {
         Intent intent = new Intent(RankingActivity.this, ProfileActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    protected void onCorruptedStateChanged() {
+        super.onCorruptedStateChanged();
+
+        // On demande à la liste de se rafraîchir immédiatement
+        if (rankingRecyclerView != null && rankingRecyclerView.getAdapter() != null) {
+            // notifyDataSetChanged force onBindViewHolder à s'exécuter pour chaque item
+            rankingRecyclerView.getAdapter().notifyDataSetChanged();
+        }
     }
 }
