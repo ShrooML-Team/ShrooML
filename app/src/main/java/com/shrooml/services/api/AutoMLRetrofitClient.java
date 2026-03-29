@@ -30,6 +30,7 @@ public class AutoMLRetrofitClient {
     private static AutoMLRetrofitClient instance;
     private static Retrofit retrofit;
     private AutoMLApi api;
+    private static volatile String autoMLAuthToken;
 
     // Gestion du token
     private static TokenManager tokenManager;
@@ -65,10 +66,7 @@ public class AutoMLRetrofitClient {
             public Response intercept( Chain chain) throws IOException {
                 Request original = chain.request();
 
-                String token = null;
-                if (tokenManager != null) {
-                    token = tokenManager.getToken();
-                }
+                String token = autoMLAuthToken;
                 if(token != null && !token.isEmpty()){
                     Log.d(TAG, "Token length: " + token.length());
                     Log.d(TAG, "Token bytes: " + Arrays.toString(token.getBytes()));
@@ -139,8 +137,8 @@ public class AutoMLRetrofitClient {
      * @param token Le token JWT reçu du serveur
      */
     public void setAuthToken(String token) {
-        if(tokenManager != null){
-            tokenManager.saveToken(token, tokenManager.getUserId(), tokenManager.getUserIdentifiant());
+        if (token != null && !token.isEmpty()) {
+            autoMLAuthToken = token;
             Log.d(TAG, "Token Bearer défini: " + token.substring(0, Math.min(50, token.length())) + "...");
         }
     }
@@ -150,10 +148,7 @@ public class AutoMLRetrofitClient {
      * @return Le token, ou null si non défini
      */
     public String getAuthToken() {
-        if(tokenManager != null) {
-            return tokenManager.getToken();
-        }
-        return null;
+        return autoMLAuthToken;
     }
 
     /**
@@ -169,10 +164,8 @@ public class AutoMLRetrofitClient {
      * Effacer le token Bearer (logout)
      */
     public void clearAuthToken() {
-        if(tokenManager != null){
-            tokenManager.clearToken();
-            Log.d(TAG, "Token Bearer effacé");
-        }
+        autoMLAuthToken = null;
+        Log.d(TAG, "Token Bearer effacé");
     }
 
     /**
