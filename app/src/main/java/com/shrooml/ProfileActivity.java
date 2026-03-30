@@ -207,30 +207,12 @@ public class ProfileActivity extends BackgroundActivity {
     }
 
     private void setupBottomNavigation() {
-        BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
-        bottomNav.setSelectedItemId(R.id.nav_profile);
-
-        bottomNav.setOnNavigationItemSelectedListener(item -> {
-            int id = item.getItemId();
-
-            if (id == R.id.nav_profile) {
-                return true;
-            }
-            if (id == R.id.nav_locate) {
-                startActivity(new Intent(ProfileActivity.this, ShroomLocateActivity.class));
-                return true;
-            }
-            if (id == R.id.nav_quiz) {
-                startActivity(new Intent(ProfileActivity.this, QuizActivity.class));
-                return true;
-            }
-            if (id == R.id.nav_identify) {
-                startActivity(new Intent(ProfileActivity.this, ChoiceIdentifyActivity.class));
-                return true;
-            }
-
-            return false;
-        });
+        activityId = 2;
+        bottomNav = findViewById(R.id.bottomNav);
+        if(bottomNav != null) {
+            bottomNav.setSelectedItemId(R.id.nav_profile);
+            initNavBar(ProfileActivity.this);
+        }
     }
 
     private void populateProfile() {
@@ -779,5 +761,6 @@ public class ProfileActivity extends BackgroundActivity {
     private void openRanking() {
         Intent intent = new Intent(ProfileActivity.this, RankingActivity.class);
         startActivity(intent);
+        finish();
     }
 }

@@ -137,35 +137,12 @@ public class ShroomLocateActivity extends BackgroundActivity {
 
 
 
-        BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
-        bottomNav.setSelectedItemId(R.id.nav_locate);
-
-
-        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                int id = item.getItemId();
-
-                if (id == R.id.nav_locate) {
-                    return true;
-                }
-                if (id == R.id.nav_quiz) {
-                    startActivity(new Intent(ShroomLocateActivity.this, QuizActivity.class));
-                    return true;
-                }
-                if (id == R.id.nav_profile) {
-                    startActivity(new Intent(ShroomLocateActivity.this, ProfileActivity.class));
-                    return true;
-                }
-                if(id == R.id.nav_identify) {
-                    startActivity(new Intent(ShroomLocateActivity.this, ChoiceIdentifyActivity.class));
-                    return true;
-                }
-
-                return false;
-            }
-        });
+        activityId = 1;
+        bottomNav = findViewById(R.id.bottomNav);
+        if(bottomNav != null){
+            bottomNav.setSelectedItemId(R.id.nav_locate);
+            initNavBar(ShroomLocateActivity.this);
+        }
 
     }
 

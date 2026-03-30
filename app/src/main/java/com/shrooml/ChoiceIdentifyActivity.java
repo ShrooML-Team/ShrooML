@@ -21,44 +21,22 @@ public class ChoiceIdentifyActivity extends BackgroundActivity {
                     Intent intent = new Intent(ChoiceIdentifyActivity.this, IdentifyActivity.class);
                     intent.putExtra("default_mode", "camera");
                     startActivity(intent);
+                    finish();
                 });
         btnIdentifyCriteria.setOnClickListener(v ->
         {
             Intent intent = new Intent(ChoiceIdentifyActivity.this, IdentifyActivity.class);
             intent.putExtra("default_mode", "form");
             startActivity(intent);
+            finish();
         });
 
-        BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
-        bottomNav.setSelectedItemId(R.id.nav_locate);
-
-
-        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                int id = item.getItemId();
-
-                if(id == R.id.nav_identify) {
-                    return true;
-                }
-                if (id == R.id.nav_locate) {
-                    startActivity(new Intent(ChoiceIdentifyActivity.this, ShroomLocateActivity.class));
-                    return true;
-                }
-                if (id == R.id.nav_quiz) {
-                    startActivity(new Intent(ChoiceIdentifyActivity.this, QuizActivity.class));
-                    return true;
-                }
-                if (id == R.id.nav_profile) {
-                    startActivity(new Intent(ChoiceIdentifyActivity.this, ProfileActivity.class));
-                    return true;
-                }
-
-                return false;
-            }
-        });
-
+        activityId = 3;
+        bottomNav = findViewById(R.id.bottomNav);
+        if(bottomNav != null) {
+            bottomNav.setSelectedItemId(R.id.nav_identify);
+            initNavBar(ChoiceIdentifyActivity.this);
+        }
     }
 
 }

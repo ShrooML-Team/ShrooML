@@ -4,6 +4,7 @@ import static android.widget.Toast.LENGTH_SHORT;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -14,13 +15,19 @@ import android.os.Handler;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowInsets;
+import android.view.WindowInsetsController;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -31,6 +38,10 @@ public class BackgroundActivity extends AppCompatActivity {
     private SpeechRecognizer speechRecognizer;
 
     private TextView title;
+
+    protected BottomNavigationView bottomNav;
+
+    protected int activityId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +114,7 @@ public class BackgroundActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        hideSystemUI();
         title = findViewById(R.id.title);
         if(title != null && !listenerInitialized){
             title.setClickable(true);
@@ -135,6 +147,23 @@ public class BackgroundActivity extends AppCompatActivity {
             root.setBackgroundColor(colorMain);
 
             updateTaggedShapes(root, colorItem);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (speechRecognizer != null) {
+            speechRecognizer.destroy();
+            speechRecognizer = null;
+        }
+        super.onDestroy();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            hideSystemUI();
         }
     }
 
@@ -209,14 +238,7 @@ public class BackgroundActivity extends AppCompatActivity {
         }, 200);
     }
 
-    @Override
-    protected void onDestroy() {
-        if (speechRecognizer != null) {
-            speechRecognizer.destroy();
-            speechRecognizer = null;
-        }
-        super.onDestroy();
-    }
+
     private void animateHealEffect(View view) {
         // Couleur de départ (poison) et couleur finale (normale)
         int colorFrom = Color.parseColor("#800080");
@@ -263,5 +285,71 @@ public class BackgroundActivity extends AppCompatActivity {
     // Dans BackgroundActivity.java
     protected void onCorruptedStateChanged() {
         // Cette méthode sera remplie dans ShroomLocateActivity and ranking
+    }
+
+    protected void initNavBar(Context context) {
+        if(bottomNav != null) {
+            bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                    int id = item.getItemId();
+
+                    if (id == R.id.nav_quiz) {
+                        if (activityId != 0) {
+                            startActivity(new Intent(context, QuizActivity.class));
+                            finish();
+                        }
+                        return true;
+                    }
+                    if (id == R.id.nav_locate) {
+                        if (activityId != 1) {
+                            startActivity(new Intent(context, ShroomLocateActivity.class));
+                            finish();
+                        }
+                        return true;
+                    }
+                    if (id == R.id.nav_profile) {
+                        if (activityId != 2) {
+                            startActivity(new Intent(context, ProfileActivity.class));
+                            finish();
+                        }
+                        return true;
+                    }
+                    if (id == R.id.nav_identify) {
+                        if (activityId != 3) {
+                            startActivity(new Intent(context, ChoiceIdentifyActivity.class));
+                            finish();
+                        }
+                        return true;
+                    }
+
+                    return false;
+                }
+            });
+        }
+    }
+
+    private void hideSystemUI() {
+        // Pour les versions récentes d'Android (API 30+)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            final WindowInsetsController controller = getWindow().getInsetsController();
+            if (controller != null) {
+                // On cache la barre de navigation (boutons) et la barre de statut (heure/batterie)
+                controller.hide(WindowInsets.Type.systemBars());
+                // On fait en sorte qu'elles réapparaissent temporairement au swipe
+                controller.setSystemBarsBehavior(WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+            }
+        } else {
+            // Pour les anciennes versions d'Android (Legacy)
+            View decorView = getWindow().getDecorView();
+            decorView.setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                            | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN);
+        }
     }
 }

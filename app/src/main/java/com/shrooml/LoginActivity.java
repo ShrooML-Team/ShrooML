@@ -103,6 +103,7 @@ public class LoginActivity extends BackgroundActivity {
             registerButton.setOnClickListener(v -> {
                 Log.d(TAG, "Bouton Register cliqué");
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+                finish();
             });
 
             // Set up Google Sign-In button click listener

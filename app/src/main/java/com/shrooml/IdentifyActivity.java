@@ -69,33 +69,12 @@ public class IdentifyActivity extends BackgroundActivity {
     }
 
     private void setupBottomNav() {
-        BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
-        bottomNav.setSelectedItemId(R.id.nav_identify);
-
-        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id = item.getItemId();
-
-                if(id == R.id.nav_identify) {
-                    startActivity(new Intent(IdentifyActivity.this, ChoiceIdentifyActivity.class));
-                    return true;
-                }
-                if (id == R.id.nav_locate) {
-                    startActivity(new Intent(IdentifyActivity.this, ShroomLocateActivity.class));
-                    return true;
-                }
-                if (id == R.id.nav_quiz) {
-                    startActivity(new Intent(IdentifyActivity.this, QuizActivity.class));
-                    return true;
-                }
-                if (id == R.id.nav_profile) {
-                    startActivity(new Intent(IdentifyActivity.this, ProfileActivity.class));
-                    return true;
-                }
-                return false;
-            }
-        });
+        activityId = -1;
+        bottomNav = findViewById(R.id.bottomNav);
+        if(bottomNav != null) {
+            bottomNav.setSelectedItemId(R.id.nav_identify);
+            initNavBar(IdentifyActivity.this);
+        }
     }
 
 

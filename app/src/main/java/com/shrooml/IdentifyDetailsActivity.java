@@ -61,37 +61,12 @@ public class IdentifyDetailsActivity extends BackgroundActivity {
             finish();
         });
 
-        BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
-        bottomNav.setSelectedItemId(R.id.nav_identify);
-        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id = item.getItemId();
-
-                if (id == R.id.nav_identify) {
-                    startActivity(new Intent(IdentifyDetailsActivity.this, IdentifyActivity.class));
-                    finish();
-                    return true;
-                }
-                if (id == R.id.nav_locate) {
-                    startActivity(new Intent(IdentifyDetailsActivity.this, ShroomLocateActivity.class));
-                    finish();
-                    return true;
-                }
-                if (id == R.id.nav_quiz) {
-                    startActivity(new Intent(IdentifyDetailsActivity.this, QuizActivity.class));
-                    finish();
-                    return true;
-                }
-                if (id == R.id.nav_profile) {
-                    startActivity(new Intent(IdentifyDetailsActivity.this, ProfileActivity.class));
-                    finish();
-                    return true;
-                }
-
-                return false;
-            }
-        });
+        activityId = -1;
+        bottomNav = findViewById(R.id.bottomNav);
+        if(bottomNav != null) {
+            bottomNav.setSelectedItemId(R.id.nav_identify);
+            initNavBar(IdentifyDetailsActivity.this);
+        }
 
         api = new ShroomLocService();
 

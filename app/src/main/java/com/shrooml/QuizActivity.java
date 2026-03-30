@@ -91,36 +91,12 @@ public class QuizActivity extends BackgroundActivity {
             }
         }
 
-        BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
-        bottomNav.setSelectedItemId(R.id.nav_quiz);
-        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                int id = item.getItemId();
-
-                if (id == R.id.nav_quiz) {
-                    return true;
-                }
-                if (id == R.id.nav_locate) {
-                    startActivity(new Intent(QuizActivity.this, ShroomLocateActivity.class));
-                    finish();
-                    return true;
-                }
-                if (id == R.id.nav_profile) {
-                    startActivity(new Intent(QuizActivity.this, ProfileActivity.class));
-                    finish();
-                    return true;
-                }
-                if(id == R.id.nav_identify) {
-                    startActivity(new Intent(QuizActivity.this, ChoiceIdentifyActivity.class));
-                    finish();
-                    return true;
-                }
-
-                return false;
-            }
-        });
+        activityId = 0;
+        bottomNav = findViewById(R.id.bottomNav);
+        if(bottomNav != null) {
+            bottomNav.setSelectedItemId(R.id.nav_quiz);
+            initNavBar(QuizActivity.this);
+        }
 
         answerInput.setOnItemClickListener((parent, view, position, id) -> {
             checkAnswer();
