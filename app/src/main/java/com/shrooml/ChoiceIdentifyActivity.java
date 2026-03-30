@@ -32,11 +32,8 @@ public class ChoiceIdentifyActivity extends BackgroundActivity {
         });
 
         activityId = 3;
-        bottomNav = findViewById(R.id.bottomNav);
-        if(bottomNav != null) {
-            bottomNav.setSelectedItemId(R.id.nav_identify);
-            initNavBar(ChoiceIdentifyActivity.this);
-        }
+        initNavBar(ChoiceIdentifyActivity.this);
+
     }
 
 }

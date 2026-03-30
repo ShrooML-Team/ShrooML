@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,10 +27,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.shrooml.adapters.NavbarAdapter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 public class BackgroundActivity extends AppCompatActivity {
@@ -38,8 +46,6 @@ public class BackgroundActivity extends AppCompatActivity {
     private SpeechRecognizer speechRecognizer;
 
     private TextView title;
-
-    protected BottomNavigationView bottomNav;
 
     protected int activityId = -1;
 
@@ -288,45 +294,105 @@ public class BackgroundActivity extends AppCompatActivity {
     }
 
     protected void initNavBar(Context context) {
-        if(bottomNav != null) {
-            bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        RecyclerView navRecycler = findViewById(R.id.bottomNavRecycler);
+        ImageView left = findViewById(R.id.chevronLeft);
+        ImageView right = findViewById(R.id.chevronRight);
+
+        if (navRecycler != null) {
+            navRecycler.post(() -> {
+                int itemWidth = (int) (120 * getResources().getDisplayMetrics().density); // 120dp en pixels
+                int padding = (navRecycler.getWidth() / 2) - (itemWidth / 2);
+                navRecycler.setPadding(padding, 0, padding, 0);
+                navRecycler.setClipToPadding(false);
+
+                // Une fois le padding mis, on centre sur l'activité actuelle
+                int midPosition = (NavbarAdapter.LOOP_COUNT / 2) - ((NavbarAdapter.LOOP_COUNT / 2) % 4) + activityId;
+                navRecycler.scrollToPosition(midPosition);
+            });
+            List<String> menus = Arrays.asList("Quiz", "Locate", "Profile", "Identify");
+
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+            navRecycler.setLayoutManager(layoutManager);
+
+            navRecycler.setOnFlingListener(null);
+            LinearSnapHelper snapHelper = new LinearSnapHelper();
+            snapHelper.attachToRecyclerView(navRecycler);
+
+            NavbarAdapter adapter = new NavbarAdapter(menus, activityId, position -> {
+                if (position != activityId) navigateTo(context, position);
+            });
+            navRecycler.setAdapter(adapter);
+
+            navRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
 
-                    int id = item.getItemId();
+                    int centerX = recyclerView.getWidth() / 2;
 
-                    if (id == R.id.nav_quiz) {
-                        if (activityId != 0) {
-                            startActivity(new Intent(context, QuizActivity.class));
-                            finish();
-                        }
-                        return true;
-                    }
-                    if (id == R.id.nav_locate) {
-                        if (activityId != 1) {
-                            startActivity(new Intent(context, ShroomLocateActivity.class));
-                            finish();
-                        }
-                        return true;
-                    }
-                    if (id == R.id.nav_profile) {
-                        if (activityId != 2) {
-                            startActivity(new Intent(context, ProfileActivity.class));
-                            finish();
-                        }
-                        return true;
-                    }
-                    if (id == R.id.nav_identify) {
-                        if (activityId != 3) {
-                            startActivity(new Intent(context, ChoiceIdentifyActivity.class));
-                            finish();
-                        }
-                        return true;
-                    }
+                    for (int i = 0; i < recyclerView.getChildCount(); i++) {
+                        View child = recyclerView.getChildAt(i);
+                        TextView title = child.findViewById(R.id.nav_title);
 
-                    return false;
+                        if (title == null) continue;
+
+                        int childCenterX = (child.getLeft() + child.getRight()) / 2;
+                        int distance = Math.abs(centerX - childCenterX);
+
+                        // Ratio de proximité (250f pour une transition douce)
+                        float proximity = Math.min(1.0f, (float) distance / 250f);
+
+                        // EFFET DE GROSSISSEMENT ET DE BLANC (Seulement sur le texte)
+                        float alpha = 1.0f - (proximity * 0.5f); // 1.0 au centre, 0.5 sur les bords
+                        float scale = 1.2f - (proximity * 0.2f); // 1.2 au centre, 1.0 sur les bords
+
+                        title.setAlpha(alpha);
+                        title.setScaleX(scale);
+                        title.setScaleY(scale);
+
+                        // Note : On ne touche pas à "nav_indicator" ici !
+                        // Il reste tel que l'Adapter l'a défini (visible ou invisible).
+                    }
                 }
             });
+
+            // ASTUCE POUR LE CYCLIQUE :
+            // On calcule une position au milieu de la liste géante qui correspond à notre activityId
+            int midPosition = (NavbarAdapter.LOOP_COUNT / 2) - ((NavbarAdapter.LOOP_COUNT / 2) % menus.size()) + activityId;
+
+            navRecycler.scrollToPosition(midPosition);
+
+            // Gestion des chevrons (plus besoin de Math.max/min car c'est "infini")
+            if (findViewById(R.id.chevronLeft) != null) {
+                findViewById(R.id.chevronLeft).setOnClickListener(v -> {
+                    // On défile simplement vers la gauche
+                    int currentPos = layoutManager.findFirstVisibleItemPosition();
+                    navRecycler.smoothScrollToPosition(currentPos - 1);
+                });
+            }
+            if (findViewById(R.id.chevronRight) != null) {
+                findViewById(R.id.chevronRight).setOnClickListener(v -> {
+                    // On défile simplement vers la droite
+                    int currentPos = layoutManager.findFirstVisibleItemPosition();
+                    navRecycler.smoothScrollToPosition(currentPos + 1);
+                });
+            }
+        }
+    }
+
+    private void navigateTo(Context context, int position) {
+        Intent intent = null;
+        switch (position) {
+            case 0: intent = new Intent(context, QuizActivity.class); break;
+            case 1: intent = new Intent(context, ShroomLocateActivity.class); break;
+            case 2: intent = new Intent(context, ProfileActivity.class); break;
+            case 3: intent = new Intent(context, ChoiceIdentifyActivity.class); break;
+        }
+        if (intent != null) {
+            startActivity(intent);
+            finish();
+            // Optionnel : petite transition fluide
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
     }
 

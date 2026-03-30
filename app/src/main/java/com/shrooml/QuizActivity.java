@@ -82,21 +82,19 @@ public class QuizActivity extends BackgroundActivity {
         if (initTokenManager()) {
             String remotePhoto = tokenManager.getUserPhotoProfil();
             if (remotePhoto != null && !remotePhoto.isEmpty()) {
-                Glide.with(this)
-                        .load(remotePhoto)
-                        .placeholder(R.drawable.ic_profile)
-                        .error(R.drawable.ic_profile)
-                        .centerCrop()
-                        .into(profileImage);
+                if (!isFinishing() && !isDestroyed()) {
+                    Glide.with(this)
+                            .load(remotePhoto)
+                            .placeholder(R.drawable.ic_profile)
+                            .error(R.drawable.ic_profile)
+                            .centerCrop()
+                            .into(profileImage);
+                }
             }
         }
 
         activityId = 0;
-        bottomNav = findViewById(R.id.bottomNav);
-        if(bottomNav != null) {
-            bottomNav.setSelectedItemId(R.id.nav_quiz);
-            initNavBar(QuizActivity.this);
-        }
+        initNavBar(QuizActivity.this);
 
         answerInput.setOnItemClickListener((parent, view, position, id) -> {
             checkAnswer();
@@ -218,9 +216,11 @@ public class QuizActivity extends BackgroundActivity {
         progressBar.setProgress((currentQuestion + 1) * 20);
 
         if(currentQuestion == 0){
-            Glide.with(QuizActivity.this)
-                    .load(quizGame.getImg())
-                    .into(imageView);
+            if (!isFinishing() && !isDestroyed()) {
+                Glide.with(QuizActivity.this)
+                        .load(quizGame.getImg())
+                        .into(imageView);
+            }
             imageView.setVisibility(View.VISIBLE);
         } else {
             imageView.setVisibility(View.GONE);

@@ -70,11 +70,7 @@ public class IdentifyActivity extends BackgroundActivity {
 
     private void setupBottomNav() {
         activityId = -1;
-        bottomNav = findViewById(R.id.bottomNav);
-        if(bottomNav != null) {
-            bottomNav.setSelectedItemId(R.id.nav_identify);
-            initNavBar(IdentifyActivity.this);
-        }
+        initNavBar(IdentifyActivity.this);
     }
 
 

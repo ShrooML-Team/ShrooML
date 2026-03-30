@@ -62,11 +62,7 @@ public class IdentifyDetailsActivity extends BackgroundActivity {
         });
 
         activityId = -1;
-        bottomNav = findViewById(R.id.bottomNav);
-        if(bottomNav != null) {
-            bottomNav.setSelectedItemId(R.id.nav_identify);
-            initNavBar(IdentifyDetailsActivity.this);
-        }
+        initNavBar(IdentifyDetailsActivity.this);
 
         api = new ShroomLocService();
 

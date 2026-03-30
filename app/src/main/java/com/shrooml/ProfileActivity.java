@@ -208,11 +208,7 @@ public class ProfileActivity extends BackgroundActivity {
 
     private void setupBottomNavigation() {
         activityId = 2;
-        bottomNav = findViewById(R.id.bottomNav);
-        if(bottomNav != null) {
-            bottomNav.setSelectedItemId(R.id.nav_profile);
-            initNavBar(ProfileActivity.this);
-        }
+        initNavBar(ProfileActivity.this);
     }
 
     private void populateProfile() {

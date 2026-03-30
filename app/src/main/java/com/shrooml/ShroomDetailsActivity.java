@@ -52,11 +52,7 @@ public class ShroomDetailsActivity extends BackgroundActivity {
         backButton.setOnClickListener(v -> finish());
 
         activityId = -1;
-        bottomNav = findViewById(R.id.bottomNav);
-        if(bottomNav != null){
-            bottomNav.setSelectedItemId(R.id.nav_locate);
-            initNavBar(ShroomDetailsActivity.this);
-        }
+        initNavBar(ShroomDetailsActivity.this);
 
         api = new ShroomLocService();
 

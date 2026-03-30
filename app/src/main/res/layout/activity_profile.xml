@@ -360,72 +360,50 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="12dp"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavWrapper"
+        app:layout_constraintBottom_toTopOf="@id/navContainer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/bottomNavWrapper"
-        android:layout_width="0dp"
-        android:layout_height="70dp"
-        android:background="@android:color/transparent"
+        android:id="@+id/navContainer"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:background="@android:color/transparent">
 
         <ImageView
             android:id="@+id/chevronLeft"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:src="@drawable/ic_chevron_left"
-            android:alpha="0.4"
+            android:alpha="0.5"
             android:layout_marginStart="8dp"
+            app:tint="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <HorizontalScrollView
-            android:id="@+id/bottomNavContainer"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/bottomNavRecycler"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:scrollbars="none"
-            android:fillViewport="false"
-            android:background="@android:color/transparent"
-            android:fadingEdge="none"
-            android:requiresFadingEdge="none"
+            android:clipToPadding="false"
+            android:paddingStart="140dp"
+            android:paddingEnd="140dp"
             android:overScrollMode="never"
-            android:scrollbarStyle="insideOverlay"
             app:layout_constraintStart_toEndOf="@id/chevronLeft"
             app:layout_constraintEnd_toStartOf="@id/chevronRight"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
-
-            <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/bottomNav"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@android:color/transparent"
-                android:elevation="0dp"
-                app:elevation="0dp"
-                app:backgroundTint="@android:color/transparent"
-                app:itemIconTint="@color/transparent"
-                app:itemIconSize="0dp"
-                app:itemTextColor="@color/white"
-                android:layout_marginBottom="17dp"
-                app:itemTextAppearanceActive="@style/BottomNavText"
-                app:itemTextAppearanceInactive="@style/BottomNavText"
-                app:menu="@menu/bottom_nav_menu"
-                app:labelVisibilityMode="labeled"/>
-
-        </HorizontalScrollView>
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <ImageView
             android:id="@+id/chevronRight"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:src="@drawable/ic_chevron_right"
-            android:alpha="0.4"
+            android:alpha="0.5"
             android:layout_marginEnd="8dp"
+            app:tint="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
