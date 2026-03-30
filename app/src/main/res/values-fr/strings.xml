@@ -14,10 +14,15 @@
     <string name="quizz_question_4">Dans qu\'elle habitat pousse le %1$s ?</string>
     <string name="quizz_question_5">En qu\'elle saison pousse le %1$s ?</string>
 
-    <string name="summer">été</string>
+    <!--<string name="summer">été</string>
     <string name="winter">hiver</string>
     <string name="spring">printemps</string>
-    <string name="autumn">automne</string>
+    <string name="autumn">automne</string>-->
+
+    <string name="summer">summer</string>
+    <string name="winter">winter</string>
+    <string name="spring">spring</string>
+    <string name="autumn">autumn</string>
 
     <string name="title_1">Vous êtes un champignon Noobs</string>
     <string name="title_2">Vous êtes un champignon novice</string>
