@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- Exclure les préférences chiffrées : la clé Keystore n'est pas sauvegardée,
+         restaurer ce fichier sur un nouvel appareil/réinstallation cause une GeneralSecurityException. -->
+    <exclude domain="sharedpref" path="shrooml_auth.xml" />
+</full-backup-content>

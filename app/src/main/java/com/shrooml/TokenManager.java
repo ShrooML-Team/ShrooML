@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.util.Base64;
 import android.util.Log;
 
+import java.io.File;
+
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
 
@@ -38,28 +40,45 @@ public class TokenManager {
 
     private TokenManager(Context context) throws GeneralSecurityException, IOException {
         Log.d(TAG, "TokenManager constructor appelé");
+        encryptedSharedPref = createEncryptedPrefs(context);
+    }
+
+    private static SharedPreferences createEncryptedPrefs(Context context) throws GeneralSecurityException, IOException {
         try {
-            Log.d(TAG, "Création de la MasterKey...");
             MasterKey masterKey = new MasterKey.Builder(context)
                     .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
                     .build();
-            Log.d(TAG, "MasterKey créée avec succès");
-
-            Log.d(TAG, "Création des EncryptedSharedPreferences...");
-            encryptedSharedPref = EncryptedSharedPreferences.create(
+            return EncryptedSharedPreferences.create(
                     context,
                     PREFERENCES_FILE,
                     masterKey,
                     EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                     EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
             );
-            Log.d(TAG, "EncryptedSharedPreferences créées avec succès");
-        } catch (GeneralSecurityException e) {
-            Log.e(TAG, "ERREUR GeneralSecurityException dans TokenManager init", e);
-            throw e;
-        } catch (IOException e) {
-            Log.e(TAG, "ERREUR IOException dans TokenManager init", e);
-            throw e;
+        } catch (GeneralSecurityException | IOException e) {
+            // Le fichier de préférences est corrompu (clé Keystore supprimée après réinstallation).
+            // On le supprime et on recrée depuis zéro — l'utilisateur devra se reconnecter.
+            Log.w(TAG, "EncryptedSharedPreferences corrompues, suppression et recréation...", e);
+            deletePrefsFile(context);
+            MasterKey masterKey = new MasterKey.Builder(context)
+                    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                    .build();
+            return EncryptedSharedPreferences.create(
+                    context,
+                    PREFERENCES_FILE,
+                    masterKey,
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            );
+        }
+    }
+
+    private static void deletePrefsFile(Context context) {
+        File prefsDir = new File(context.getApplicationInfo().dataDir, "shared_prefs");
+        File prefsFile = new File(prefsDir, PREFERENCES_FILE + ".xml");
+        if (prefsFile.exists()) {
+            boolean deleted = prefsFile.delete();
+            Log.d(TAG, "Fichier de préférences supprimé: " + deleted);
         }
     }
 
