@@ -182,7 +182,7 @@ public class CameraFragment extends Fragment {
                             .getSuggestions().get(0).getName();
                     accuracyIdentify = identification.getResult().getClassification()
                             .getSuggestions().get(0).getProbability();
-                        saveIdentificationToHistory(mushroomIdentify, accuracyIdentify);
+                    saveIdentificationToHistory(mushroomIdentify, accuracyIdentify);
                     Intent intent_id = new Intent(getContext(), IdentifyDetailsActivity.class);
                     intent_id.putExtra("scientificName", mushroomIdentify);
                     intent_id.putExtra("accuracy", accuracyIdentify);
