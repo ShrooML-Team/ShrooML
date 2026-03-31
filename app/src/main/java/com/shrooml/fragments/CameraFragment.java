@@ -92,7 +92,7 @@ public class CameraFragment extends Fragment {
                             callApi(tempFile);
                         } catch (IOException e) {
                             e.printStackTrace();
-                            Toast.makeText(getContext(), "Erreur lecture fichier", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), getString(R.string.camera_file_read_error), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -141,7 +141,7 @@ public class CameraFragment extends Fragment {
             takePhotoLauncher.launch(photoUri);
         } catch (IOException e) {
             e.printStackTrace();
-            Toast.makeText(getContext(), "Impossible de créer le fichier photo", Toast.LENGTH_SHORT).show();
+              Toast.makeText(getContext(), getString(R.string.camera_create_photo_error), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -182,7 +182,7 @@ public class CameraFragment extends Fragment {
                     file.delete();
                     startActivity(intent_id);
                 } else {
-                    Toast.makeText(getContext(), "Cette photo n'est pas un champignon", LENGTH_LONG)
+                        Toast.makeText(getContext(), getString(R.string.camera_not_mushroom), LENGTH_LONG)
                             .show();
                 }
             }
@@ -201,7 +201,7 @@ public class CameraFragment extends Fragment {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 launchCamera();
             } else {
-                Toast.makeText(getContext(), "Permission caméra requise", Toast.LENGTH_SHORT).show();
+                 Toast.makeText(getContext(), getString(R.string.camera_permission_required), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -229,7 +229,7 @@ public class CameraFragment extends Fragment {
                         // 3. Si la lumière est vraiment basse (< 15 lux), on affiche le Toast
                         if (lux < 15) {
                             Toast.makeText(getContext(),
-                                    "Lumière faible, pensez à activer la lampe torche",
+                                        getString(R.string.camera_low_light),
                                     Toast.LENGTH_LONG).show();
                         }
 
