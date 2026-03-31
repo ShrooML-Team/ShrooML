@@ -25,4 +25,15 @@ public interface UserApi {
 
     @GET("users/top-ranking")
     Call<List<UserResponse>> getTopRanking(@Query("limit") int limit);
+
+    @GET("users/me/history")
+    Call<List<IdentificationHistoryResponse>> getCurrentUserHistory(
+            @Query("skip") int skip,
+            @Query("limit") int limit
+    );
+
+        @POST("users/me/history")
+        Call<IdentificationHistoryResponse> createIdentificationHistory(
+            @Body IdentificationHistoryCreateRequest request
+        );
 }

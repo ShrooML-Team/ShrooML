@@ -301,6 +301,47 @@
                     app:layout_constraintEnd_toEndOf="@id/profileFavoriteCommonValue"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <Button
+                android:id="@+id/btnLogoutProfile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/button_white_outline"
+                android:text="@string/profile_logout_button"
+                android:textColor="#FFFFFF"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/dashed_separator"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:fontFamily="@font/sugo_display"
+                android:text="@string/profile_history_title"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/profileHistoryEmpty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/profile_history_loading"
+                android:textColor="#FFFFFF"
+                android:textSize="13sp"/>
+
+            <LinearLayout
+                android:id="@+id/profileHistoryList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical"/>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="3dp"

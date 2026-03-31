@@ -85,6 +85,19 @@
     <string name="profile_email_hint">Email</string>
     <string name="profile_favorite_mushroom_input">Favorite Mushroom</string>
     <string name="profile_save_button">Save</string>
+    <string name="profile_logout_button">Log out</string>
+    <string name="profile_logout_success">Logged out successfully</string>
+    <string name="profile_history_title">Identification history</string>
+    <string name="profile_history_loading">Loading history...</string>
+    <string name="profile_history_empty">No identification yet.</string>
+    <string name="profile_history_unavailable">History unavailable.</string>
+    <string name="profile_history_item_main">• %1$s • %2$s pts</string>
+    <string name="profile_history_today">Today</string>
+    <string name="profile_history_days_ago">%1$d days ago</string>
+    <string name="profile_history_one_month_ago">1 month ago</string>
+    <string name="profile_history_months_ago">%1$d months ago</string>
+    <string name="profile_history_one_year_ago">1 year ago</string>
+    <string name="profile_history_years_ago">%1$d years ago</string>
 
     <!-- Profile Descriptions - Funny short phrases -->
     <string-array name="profile_descriptions">
