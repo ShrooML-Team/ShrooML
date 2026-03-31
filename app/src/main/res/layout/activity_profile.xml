@@ -301,6 +301,15 @@
                     app:layout_constraintEnd_toEndOf="@id/profileFavoriteCommonValue"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <Button
+                android:id="@+id/btnLogoutProfile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/button_white_outline"
+                android:text="@string/profile_logout_button"
+                android:textColor="#FFFFFF"/>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="3dp"

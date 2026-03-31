@@ -29,6 +29,7 @@ import com.shrooml.services.InaturalistService;
 import com.shrooml.services.OAuthService;
 import com.shrooml.services.ShroomLocService;
 import com.shrooml.services.UserService;
+import com.shrooml.services.api.AutoMLRetrofitClient;
 import com.shrooml.services.api.ShroomLocRetrofitClient;
 import com.shrooml.services.api.UpdateUserRequest;
 import com.shrooml.services.api.UserPhotoUploadResponse;
@@ -85,6 +86,7 @@ public class ProfileActivity extends BackgroundActivity {
     private TextView createdAtText;
     private EditText emailInput;
     private AutoCompleteTextView favoriteMushroomInput;
+    private Button logoutButton;
     private Button saveButton;
     private List<MushroomEntity> availableMushrooms = new ArrayList<>();
 
@@ -116,6 +118,7 @@ public class ProfileActivity extends BackgroundActivity {
         favoriteMushroomCard.setOnClickListener(v -> showFavoriteMushroomDialog());
         rangText.setOnClickListener(v -> openRanking());
 
+        logoutButton.setOnClickListener(v -> logoutCurrentUser(false));
         saveButton.setOnClickListener(v -> saveProfileChanges());
     }
 
@@ -145,6 +148,8 @@ public class ProfileActivity extends BackgroundActivity {
         createdAtText = findViewById(R.id.profileCreatedAtValue);
         emailInput = findViewById(R.id.profileEmailInput);
         favoriteMushroomInput = findViewById(R.id.profileFavoriteInput);
+        logoutButton = findViewById(R.id.btnLogoutProfile);
+        saveButton = findViewById(R.id.btnSaveProfile);
     }
 
     private void setupFavoriteMushroomSuggestions() {
@@ -742,11 +747,31 @@ public class ProfileActivity extends BackgroundActivity {
     }
 
     private void redirectToLogin() {
+        logoutCurrentUser(true);
+    }
+
+    private void logoutCurrentUser(boolean sessionExpired) {
+        if (logoutButton != null) {
+            logoutButton.setEnabled(false);
+        }
+
         tokenManager.logout();
+        AutoMLRetrofitClient.getInstance(getApplicationContext()).reset();
+        ShroomLocRetrofitClient.setToken(null);
+
         runOnUiThread(() -> {
-            saveButton.setEnabled(true);
-            saveButton.setText("Sauvegarder");
-            Toast.makeText(ProfileActivity.this, "Session expirée, reconnectez-vous", Toast.LENGTH_SHORT).show();
+            if (saveButton != null) {
+                saveButton.setEnabled(true);
+                saveButton.setText("Sauvegarder");
+            }
+            if (logoutButton != null) {
+                logoutButton.setEnabled(true);
+            }
+            Toast.makeText(
+                    ProfileActivity.this,
+                    sessionExpired ? "Session expirée, reconnectez-vous" : getString(R.string.profile_logout_success),
+                    Toast.LENGTH_SHORT
+            ).show();
             Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

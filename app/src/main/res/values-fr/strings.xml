@@ -93,6 +93,8 @@
     <string name="profile_email_hint">E-mail</string>
     <string name="profile_favorite_mushroom_input">Champignon préféré</string>
     <string name="profile_save_button">Enregistrer</string>
+    <string name="profile_logout_button">Déconnexion</string>
+    <string name="profile_logout_success">Déconnexion réussie</string>
 
     <!-- Profile Descriptions - Phrases rigolotes -->
     <string-array name="profile_descriptions">
