@@ -30,6 +30,7 @@ import com.shrooml.services.OAuthService;
 import com.shrooml.services.ShroomLocService;
 import com.shrooml.services.UserService;
 import com.shrooml.services.api.AutoMLRetrofitClient;
+import com.shrooml.services.api.IdentificationHistoryResponse;
 import com.shrooml.services.api.ShroomLocRetrofitClient;
 import com.shrooml.services.api.UpdateUserRequest;
 import com.shrooml.services.api.UserPhotoUploadResponse;
@@ -58,6 +59,7 @@ public class ProfileActivity extends BackgroundActivity {
 
     private static final String TAG = "ProfileActivity";
     private static final long TOKEN_REFRESH_THRESHOLD_SECONDS = 120L;
+    private static final int HISTORY_LIMIT = 5;
     private static final DecimalFormat SCORE_FORMAT = new DecimalFormat("0.##");
 
     private static final String[] CREATED_AT_PATTERNS = new String[] {
@@ -84,8 +86,10 @@ public class ProfileActivity extends BackgroundActivity {
     private TextView streakText;
     private TextView niveauText;
     private TextView createdAtText;
+    private TextView historyEmptyText;
     private EditText emailInput;
     private AutoCompleteTextView favoriteMushroomInput;
+    private LinearLayout historyList;
     private Button logoutButton;
     private Button saveButton;
     private List<MushroomEntity> availableMushrooms = new ArrayList<>();
@@ -146,8 +150,10 @@ public class ProfileActivity extends BackgroundActivity {
         streakText = findViewById(R.id.profileStreakValue);
         niveauText = findViewById(R.id.profileNiveauValue);
         createdAtText = findViewById(R.id.profileCreatedAtValue);
+        historyEmptyText = findViewById(R.id.profileHistoryEmpty);
         emailInput = findViewById(R.id.profileEmailInput);
         favoriteMushroomInput = findViewById(R.id.profileFavoriteInput);
+        historyList = findViewById(R.id.profileHistoryList);
         logoutButton = findViewById(R.id.btnLogoutProfile);
         saveButton = findViewById(R.id.btnSaveProfile);
     }
@@ -230,7 +236,93 @@ public class ProfileActivity extends BackgroundActivity {
         updateFavoriteMushroomSection(preferredMushroom);
 
         loadProfileImage();
+        loadIdentificationHistory();
 
+    }
+
+    private void loadIdentificationHistory() {
+        String authToken = tokenManager.getToken();
+        if (authToken == null || authToken.isEmpty()) {
+            renderHistoryUnavailable();
+            return;
+        }
+
+        historyList.removeAllViews();
+        historyEmptyText.setVisibility(View.VISIBLE);
+        historyEmptyText.setText(getString(R.string.profile_history_loading));
+
+        UserService userService = new UserService(authToken);
+        userService.getIdentificationHistory(0, HISTORY_LIMIT, new UserService.HistoryListCallback() {
+            @Override
+            public void onSuccess(List<IdentificationHistoryResponse> history) {
+                runOnUiThread(() -> renderIdentificationHistory(history));
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                if ("Session expirée, reconnectez-vous".equals(errorMessage)) {
+                    redirectToLogin();
+                    return;
+                }
+
+                Log.e(TAG, "Erreur chargement historique: " + errorMessage);
+                runOnUiThread(() -> renderHistoryUnavailable());
+            }
+        });
+    }
+
+    private void renderIdentificationHistory(List<IdentificationHistoryResponse> history) {
+        historyList.removeAllViews();
+
+        if (history == null || history.isEmpty()) {
+            historyEmptyText.setVisibility(View.VISIBLE);
+            historyEmptyText.setText(getString(R.string.profile_history_empty));
+            return;
+        }
+
+        historyEmptyText.setVisibility(View.GONE);
+
+        for (IdentificationHistoryResponse entry : history) {
+            if (entry == null) {
+                continue;
+            }
+
+            View row = getLayoutInflater().inflate(R.layout.item_history, historyList, false);
+            ImageView imageView = row.findViewById(R.id.historyMushroomImage);
+            TextView titleText = row.findViewById(R.id.historyMushroomName);
+            TextView metaText = row.findViewById(R.id.historyMeta);
+
+            titleText.setText(valueOrDash(entry.getChampignon()));
+            metaText.setText(formatScore(entry.getScore()) + " pts • " + formatHistoryRelativeTime(entry.getCreated_at()));
+
+            historyList.addView(row);
+
+            String mushroomName = entry.getChampignon();
+            if (mushroomName != null && !mushroomName.trim().isEmpty()) {
+                inaturalistService.getMushroomImage(mushroomName.trim(), new InaturalistService.ImageCallback() {
+                    @Override
+                    public void onSuccess(String imageUrl) {
+                        runOnUiThread(() -> Glide.with(ProfileActivity.this)
+                                .load(imageUrl)
+                                .placeholder(R.drawable.ic_mushroom_placeholder)
+                                .error(R.drawable.ic_mushroom_placeholder)
+                                .centerCrop()
+                                .into(imageView));
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        runOnUiThread(() -> imageView.setImageResource(R.drawable.ic_mushroom_placeholder));
+                    }
+                });
+            }
+        }
+    }
+
+    private void renderHistoryUnavailable() {
+        historyList.removeAllViews();
+        historyEmptyText.setVisibility(View.VISIBLE);
+        historyEmptyText.setText(getString(R.string.profile_history_unavailable));
     }
 
     private void saveProfileChanges() {
@@ -733,6 +825,79 @@ public class ProfileActivity extends BackgroundActivity {
         }
 
         return trimmedValue;
+    }
+
+    private String formatHistoryRelativeTime(String value) {
+        Date identificationDate = parseHistoryDate(value);
+        if (identificationDate == null) {
+            return "-";
+        }
+
+        long now = System.currentTimeMillis();
+        long diffMs = Math.max(0L, now - identificationDate.getTime());
+        long days = diffMs / (24L * 60L * 60L * 1000L);
+
+        if (days == 0L) {
+            return getString(R.string.profile_history_today);
+        }
+
+        if (days < 30L) {
+            return getString(R.string.profile_history_days_ago, days);
+        }
+
+        long months = days / 30L;
+        if (months < 12L) {
+            if (months <= 1L) {
+                return getString(R.string.profile_history_one_month_ago);
+            }
+            return getString(R.string.profile_history_months_ago, months);
+        }
+
+        long years = days / 365L;
+        if (years <= 1L) {
+            return getString(R.string.profile_history_one_year_ago);
+        }
+
+        return getString(R.string.profile_history_years_ago, years);
+    }
+
+    private Date parseHistoryDate(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return null;
+        }
+
+        // Tronquer les microsecondes en millisecondes (ex : .123456 → .123)
+        // SimpleDateFormat rejette les valeurs > 999ms avec lenient=false.
+        String normalized = value.trim().replaceAll("(\\.\\d{3})\\d+", "$1");
+
+        String[] patterns = new String[] {
+                "yyyy-MM-dd'T'HH:mm:ss.SSSXXX",
+                "yyyy-MM-dd'T'HH:mm:ssXXX",
+                "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                "yyyy-MM-dd'T'HH:mm:ss'Z'",
+                "yyyy-MM-dd'T'HH:mm:ss.SSS",
+                "yyyy-MM-dd'T'HH:mm:ss"
+        };
+
+        for (String pattern : patterns) {
+            try {
+                SimpleDateFormat fmt = new SimpleDateFormat(pattern, Locale.US);
+                fmt.setTimeZone(java.util.TimeZone.getTimeZone("UTC"));
+                fmt.setLenient(false);
+                Date parsedDate = fmt.parse(normalized);
+                if (parsedDate != null) {
+                    return parsedDate;
+                }
+            } catch (ParseException ignored) {
+                // Essaie le format suivant.
+            }
+        }
+
+        return null;
+    }
+
+    private int dpToPx(int dp) {
+        return (int) (dp * getResources().getDisplayMetrics().density);
     }
 
     private String valueOrEmpty(String value) {

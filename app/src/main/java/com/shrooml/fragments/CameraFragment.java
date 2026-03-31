@@ -20,13 +20,19 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.shrooml.R;
 import com.shrooml.IdentifyDetailsActivity;
+import com.shrooml.TokenManager;
 import com.shrooml.models.IdentificationEntity;
 import com.shrooml.services.KindwiseService;
+import com.shrooml.services.UserService;
+import com.shrooml.services.api.IdentificationHistoryCreateRequest;
+import com.shrooml.services.api.IdentificationHistoryResponse;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.security.GeneralSecurityException;
+import java.util.Locale;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -176,6 +182,7 @@ public class CameraFragment extends Fragment {
                             .getSuggestions().get(0).getName();
                     accuracyIdentify = identification.getResult().getClassification()
                             .getSuggestions().get(0).getProbability();
+                        saveIdentificationToHistory(mushroomIdentify, accuracyIdentify);
                     Intent intent_id = new Intent(getContext(), IdentifyDetailsActivity.class);
                     intent_id.putExtra("scientificName", mushroomIdentify);
                     intent_id.putExtra("accuracy", accuracyIdentify);
@@ -193,6 +200,50 @@ public class CameraFragment extends Fragment {
                 file.delete();
             }
         });
+    }
+
+    private void saveIdentificationToHistory(String mushroomName, Double probability) {
+        if (getContext() == null || mushroomName == null || mushroomName.trim().isEmpty()) {
+            return;
+        }
+
+        try {
+            TokenManager tokenManager = TokenManager.getInstance(getContext());
+            String authToken = tokenManager.getToken();
+            if (authToken == null || authToken.isEmpty()) {
+                return;
+            }
+
+            float score = 0f;
+            if (probability != null && !probability.isNaN() && !probability.isInfinite()) {
+                score = (float) Math.max(0d, Math.min(100d, probability * 100d));
+            }
+
+            IdentificationHistoryCreateRequest request = new IdentificationHistoryCreateRequest(
+                    mushroomName,
+                    score,
+                    null,
+                    null,
+                    null,
+                    null,
+                    String.format(Locale.US, "Identification camera (%.1f%%)", score)
+            );
+
+            UserService userService = new UserService(authToken);
+            userService.createIdentificationHistory(request, new UserService.HistoryEntryCallback() {
+                @Override
+                public void onSuccess(IdentificationHistoryResponse entry) {
+                    // Enregistrement réussi, aucune action UI requise ici.
+                }
+
+                @Override
+                public void onError(String errorMessage) {
+                    android.util.Log.w("CameraFragment", "Historique non enregistre: " + errorMessage);
+                }
+            });
+        } catch (GeneralSecurityException | IOException e) {
+            android.util.Log.e("CameraFragment", "Impossible d'initialiser TokenManager pour l'historique", e);
+        }
     }
 
     @Override

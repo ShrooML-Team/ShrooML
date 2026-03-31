@@ -95,6 +95,17 @@
     <string name="profile_save_button">Enregistrer</string>
     <string name="profile_logout_button">Déconnexion</string>
     <string name="profile_logout_success">Déconnexion réussie</string>
+    <string name="profile_history_title">Historique d\'identification</string>
+    <string name="profile_history_loading">Chargement de l\'historique...</string>
+    <string name="profile_history_empty">Aucune identification pour le moment.</string>
+    <string name="profile_history_unavailable">Historique indisponible.</string>
+    <string name="profile_history_item_main">• %1$s • %2$s pts</string>
+    <string name="profile_history_today">Aujourd\'hui</string>
+    <string name="profile_history_days_ago">Il y a %1$d jours</string>
+    <string name="profile_history_one_month_ago">Il y a 1 mois</string>
+    <string name="profile_history_months_ago">Il y a %1$d mois</string>
+    <string name="profile_history_one_year_ago">Il y a 1 an</string>
+    <string name="profile_history_years_ago">Il y a %1$d ans</string>
 
     <!-- Profile Descriptions - Phrases rigolotes -->
     <string-array name="profile_descriptions">
