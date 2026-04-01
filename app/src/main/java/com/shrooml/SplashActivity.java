@@ -21,6 +21,7 @@ public class SplashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSharedPreferences("app", MODE_PRIVATE).edit().putBoolean("corrupted", false).apply();
+        getSharedPreferences("app", MODE_PRIVATE).edit().putBoolean("soundOn", true).apply();
         Log.d(TAG, "onCreate() appelé");
 
         try {

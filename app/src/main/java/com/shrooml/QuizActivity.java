@@ -4,16 +4,17 @@ package com.shrooml;
 import static android.widget.Toast.LENGTH_SHORT;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -21,18 +22,27 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
+import android.media.AudioAttributes;
+import android.media.SoundPool;
 
 import com.bumptech.glide.Glide;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.shrooml.games.QuizGame;
 import com.shrooml.services.OAuthService;
 import com.shrooml.services.UserService;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class QuizActivity extends BackgroundActivity {
+
+    private SoundPool soundPool;
+
+    private int soundWinId;
+
+    private int soundLoseId;
+
+    private boolean isSoundLoaded = false;
 
     private static final long TOKEN_REFRESH_THRESHOLD_SECONDS = 120L;
 
@@ -52,10 +62,14 @@ public class QuizActivity extends BackgroundActivity {
 
     private TokenManager tokenManager;
 
+    private ImageButton buttonSound;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
+
+        initSoundPool();
 
         imageView = findViewById(R.id.imageView);
         nextButton = findViewById(R.id.nextButton);
@@ -65,6 +79,16 @@ public class QuizActivity extends BackgroundActivity {
         edibleGroup = findViewById(R.id.edibleGroup);
         correctAnswerText = findViewById(R.id.CorrectAnswerText);
         correctAnswerText.setVisibility(View.GONE);
+
+        buttonSound = findViewById(R.id.btn_sound);
+        SharedPreferences prefs = getSharedPreferences("app", MODE_PRIVATE);
+        AtomicBoolean soundOn = new AtomicBoolean(prefs.getBoolean("soundOn", true));
+        if(soundOn.get()){
+            buttonSound.setAlpha(1.0f);
+        } else {
+            buttonSound.setAlpha(0.5f);
+        }
+
         Button play_again = findViewById(R.id.playAgain);
         Button back_home = findViewById(R.id.backHome);
         ImageView profileImage = findViewById(R.id.profileImage);
@@ -77,6 +101,17 @@ public class QuizActivity extends BackgroundActivity {
         back_home.setOnClickListener(v->{
             startActivity(new Intent(QuizActivity.this, ChoiceIdentifyActivity.class));
             finish();
+        });
+
+        buttonSound.setOnClickListener(v->{
+            soundOn.set(prefs.getBoolean("soundOn", true));
+            if(soundOn.get()){
+                prefs.edit().putBoolean("soundOn", false).apply();
+                buttonSound.setAlpha(0.5f);
+            } else {
+                prefs.edit().putBoolean("soundOn", true).apply();
+                buttonSound.setAlpha(1.0f);
+            }
         });
 
         if (initTokenManager()) {
@@ -165,6 +200,19 @@ public class QuizActivity extends BackgroundActivity {
                         TextView titleEnd = findViewById(R.id.quizTitleEnd);
                         TextView scoreEnd = findViewById(R.id.quizScoreEnd);
                         int score = quizGame.getScore();
+
+                        SharedPreferences prefs = getSharedPreferences("app", MODE_PRIVATE);
+                        boolean soundOn = prefs.getBoolean("soundOn", true);
+                        if(soundOn){
+                            if (isSoundLoaded) {
+                                if(score > 0){
+                                    soundPool.play(soundWinId, 1.0f, 1.0f, 1, 0, 1.0f);
+                                } else {
+                                    soundPool.play(soundLoseId, 1.0f, 1.0f, 1, 0, 1.0f);
+                                }
+                            }
+                        }
+
                         titleEnd.setText(quizGame.getTitre(score));
                         scoreEnd.setText(QuizActivity.this.getString(R.string.score, ""+score));
                         persistScoreToApi(score);
@@ -203,6 +251,15 @@ public class QuizActivity extends BackgroundActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_hello_world, menu);
         return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (soundPool != null) {
+            soundPool.release();
+            soundPool = null;
+        }
     }
 
     private void updateQuestion(){
@@ -386,5 +443,26 @@ public class QuizActivity extends BackgroundActivity {
             Toast.makeText(this, "Erreur d'initialisation du profil", Toast.LENGTH_SHORT).show();
             return false;
         }
+    }
+
+    private void initSoundPool() {
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .build();
+
+        soundPool = new SoundPool.Builder()
+                .setMaxStreams(3)
+                .setAudioAttributes(audioAttributes)
+                .build();
+
+        soundPool.setOnLoadCompleteListener((pool, sampleId, status) -> {
+            if (status == 0) {
+                isSoundLoaded = true;
+            }
+        });
+
+       soundWinId = soundPool.load(this, R.raw.win, 1);
+        soundLoseId = soundPool.load(this, R.raw.lose, 1);
     }
 }
