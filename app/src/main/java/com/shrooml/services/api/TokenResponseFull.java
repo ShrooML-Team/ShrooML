@@ -1,6 +1,5 @@
 package com.shrooml.services.api;
 
-import com.google.gson.annotations.SerializedName;
 
 public class TokenResponseFull {
     private String access_token;

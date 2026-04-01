@@ -1,9 +1,11 @@
 package com.shrooml.services;
 
+import android.widget.Toast;
+
+import com.shrooml.BuildConfig;
 import com.shrooml.models.IdentificationEntity;
 import com.shrooml.services.api.KindwiseApi;
 import com.shrooml.services.api.KindwiseRetrofitClient;
-
 
 import java.io.File;
 
@@ -13,12 +15,13 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 public class KindwiseService {
 
     private final KindwiseApi api;
 
-    private static final String API_KEY = "YSVv2gSPJmgB0MEg47r4KpCyBTSY4x2sM0MPXLlG8wm1nsDFMb";
+    private int num_API_KEY = 0;
+
+    private static  String API_KEY;
 
     public KindwiseService() {
         api = KindwiseRetrofitClient.getApi();
@@ -30,7 +33,12 @@ public class KindwiseService {
     }
 
     public void identificationImg(String imagePath, KindwiseService.IdentificationCallback callback) {
-
+        switch(num_API_KEY){
+            case 0: API_KEY= BuildConfig.KINDWISE_API_KEY_1 ;break;
+            case 1: API_KEY= BuildConfig.KINDWISE_API_KEY_2 ;break;
+            case 2: API_KEY= BuildConfig.KINDWISE_API_KEY_3 ;break;
+        }
+        num_API_KEY = (num_API_KEY + 1) % 3;
         File file = new File(imagePath);
 
         RequestBody requestFile =
