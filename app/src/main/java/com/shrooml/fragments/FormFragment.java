@@ -92,28 +92,28 @@ public class FormFragment extends Fragment {
 
     private void setupSpinners() {
         // Chargement des données des Spinners depuis les ressources ou tableaux en dur
-        setSpinnerOptions(spinnerCapShape, new String[]{"Choose...", "Bell", "Conical", "Convex", "Flat", "Knobbed", "Sunken"});
-        setSpinnerOptions(spinnerCapSurface, new String[]{"Choose...", "Fibrous", "Grooves", "Scaly", "Smooth"});
-        setSpinnerOptions(spinnerCapColor, new String[]{"Choose...", "Brown", "Buff", "Cinnamon", "Gray", "Green", "Pink", "Purple", "Red", "White", "Yellow"});
-        setSpinnerOptions(spinnerBruises, new String[]{"Choose...", "No", "Yes"});
-        setSpinnerOptions(spinnerOdor, new String[]{"Choose...", "Almond", "Anise", "Creosote", "Fishy", "Foul", "Musty", "None", "Pungent", "Spicy"});
-        setSpinnerOptions(spinnerGillAttachment, new String[]{"Choose...", "Attached", "Descending", "Free", "Notched"});
-        setSpinnerOptions(spinnerGillSpacing, new String[]{"Choose...", "Close", "Crowded", "Distant"});
-        setSpinnerOptions(spinnerGillSize, new String[]{"Choose...", "Broad", "Narrow"});
-        setSpinnerOptions(spinnerGillColor, new String[]{"Choose...", "Black", "Brown", "Buff", "Chocolate", "Gray", "Green", "Orange", "Pink", "Purple", "Red", "White", "Yellow"});
-        setSpinnerOptions(spinnerStalkShape, new String[]{"Choose...", "Enlarging", "Tapering"});
-        setSpinnerOptions(spinnerStalkRoot, new String[]{"Choose...", "Bulbous", "Club", "Cup", "Equal", "Rhizomorphs", "Rooted"});
-        setSpinnerOptions(spinnerStalkSurfaceAbove, new String[]{"Choose...", "Fibrous", "Scaly", "Silky", "Smooth"});
-        setSpinnerOptions(spinnerStalkSurfaceBelow, new String[]{"Choose...", "Fibrous", "Scaly", "Silky", "Smooth"});
-        setSpinnerOptions(spinnerStalkColorAbove, new String[]{"Choose...", "Brown", "Buff", "Cinnamon", "Gray", "Orange", "Pink", "Red", "White", "Yellow"});
-        setSpinnerOptions(spinnerStalkColorBelow, new String[]{"Choose...", "Brown", "Buff", "Cinnamon", "Gray", "Orange", "Pink", "Red", "White", "Yellow"});
-        setSpinnerOptions(spinnerVeilType, new String[]{"Choose...", "Partial", "Universal"});
-        setSpinnerOptions(spinnerVeilColor, new String[]{"Choose...", "Brown", "Orange", "White", "Yellow"});
-        setSpinnerOptions(spinnerRingNumber, new String[]{"Choose...", "None", "One", "Two"});
-        setSpinnerOptions(spinnerRingType, new String[]{"Choose...", "Cobwebby", "Evanescent", "Flaring", "Large", "None", "Pendant"});
-        setSpinnerOptions(spinnerSporePrintColor, new String[]{"Choose...", "Black", "Brown", "Buff", "Chocolate", "Green", "Orange", "Purple", "White", "Yellow"});
-        setSpinnerOptions(spinnerPopulation, new String[]{"Choose...", "Abundant", "Clustered", "Numerous", "Scattered", "Several", "Solitary"});
-        setSpinnerOptions(spinnerHabitat, new String[]{"Choose...", "Grasses", "Leaves", "Meadows", "Paths", "Urban", "Waste", "Woods"});
+            setSpinnerOptions(spinnerCapShape, getResources().getStringArray(R.array.spinner_cap_shape));
+            setSpinnerOptions(spinnerCapSurface, getResources().getStringArray(R.array.spinner_cap_surface));
+            setSpinnerOptions(spinnerCapColor, getResources().getStringArray(R.array.spinner_cap_color));
+            setSpinnerOptions(spinnerBruises, getResources().getStringArray(R.array.spinner_bruises));
+            setSpinnerOptions(spinnerOdor, getResources().getStringArray(R.array.spinner_odor));
+            setSpinnerOptions(spinnerGillAttachment, getResources().getStringArray(R.array.spinner_gill_attachment));
+            setSpinnerOptions(spinnerGillSpacing, getResources().getStringArray(R.array.spinner_gill_spacing));
+            setSpinnerOptions(spinnerGillSize, getResources().getStringArray(R.array.spinner_gill_size));
+            setSpinnerOptions(spinnerGillColor, getResources().getStringArray(R.array.spinner_gill_color));
+            setSpinnerOptions(spinnerStalkShape, getResources().getStringArray(R.array.spinner_stalk_shape));
+            setSpinnerOptions(spinnerStalkRoot, getResources().getStringArray(R.array.spinner_stalk_root));
+            setSpinnerOptions(spinnerStalkSurfaceAbove, getResources().getStringArray(R.array.spinner_stalk_surface_above));
+            setSpinnerOptions(spinnerStalkSurfaceBelow, getResources().getStringArray(R.array.spinner_stalk_surface_below));
+            setSpinnerOptions(spinnerStalkColorAbove, getResources().getStringArray(R.array.spinner_stalk_color_above));
+            setSpinnerOptions(spinnerStalkColorBelow, getResources().getStringArray(R.array.spinner_stalk_color_below));
+            setSpinnerOptions(spinnerVeilType, getResources().getStringArray(R.array.spinner_veil_type));
+            setSpinnerOptions(spinnerVeilColor, getResources().getStringArray(R.array.spinner_veil_color));
+            setSpinnerOptions(spinnerRingNumber, getResources().getStringArray(R.array.spinner_ring_number));
+            setSpinnerOptions(spinnerRingType, getResources().getStringArray(R.array.spinner_ring_type));
+            setSpinnerOptions(spinnerSporePrintColor, getResources().getStringArray(R.array.spinner_spore_print_color));
+            setSpinnerOptions(spinnerPopulation, getResources().getStringArray(R.array.spinner_population));
+            setSpinnerOptions(spinnerHabitat, getResources().getStringArray(R.array.spinner_habitat));
     }
 
     private void setSpinnerOptions(Spinner spinner, String[] options) {
@@ -135,7 +135,7 @@ public class FormFragment extends Fragment {
         if (!validateForm()) return;
 
         if (apiClient == null || !apiClient.isAuthenticated()) {
-            Toast.makeText(getContext(), "Please login first", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.form_please_login), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -183,7 +183,7 @@ public class FormFragment extends Fragment {
                             ((IdentifyActivity) getActivity()).showResult(isEdible);
                         }
                     } else {
-                        Toast.makeText(getContext(), "No prediction received", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), getString(R.string.form_no_prediction), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     handleApiError(response);
@@ -193,7 +193,7 @@ public class FormFragment extends Fragment {
             @Override
             public void onFailure(Call<PredictAAResponse> call, Throwable t) {
                 showLoading(false);
-                Toast.makeText(getContext(), "Network error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                 Toast.makeText(getContext(), getString(R.string.form_network_error, t.getMessage()), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -210,11 +210,11 @@ public class FormFragment extends Fragment {
 
         for (Spinner s : allSpinners) {
             if (s == null) {
-                Toast.makeText(getContext(), "Error: View not initialized", Toast.LENGTH_SHORT).show();
+                 Toast.makeText(getContext(), getString(R.string.form_view_not_initialized), Toast.LENGTH_SHORT).show();
                 return false;
             }
             if (s.getSelectedItemPosition() == 0) {
-                Toast.makeText(getContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
+                 Toast.makeText(getContext(), getString(R.string.form_fill_all_fields), Toast.LENGTH_SHORT).show();
                 return false;
             }
         }
@@ -222,7 +222,7 @@ public class FormFragment extends Fragment {
     }
 
     private void handleApiError(Response<PredictAAResponse> response) {
-        String errorMsg = "Prediction failed: " + response.code();
+        String errorMsg = getString(R.string.form_prediction_failed, response.code());
         try {
             if (response.errorBody() != null) {
                 errorMsg += " - " + response.errorBody().string();
@@ -236,7 +236,7 @@ public class FormFragment extends Fragment {
     private void showLoading(boolean show) {
         if (btnIdentifyForm != null) {
             btnIdentifyForm.setEnabled(!show);
-            btnIdentifyForm.setText(show ? "Identifying..." : "Identify");
+              btnIdentifyForm.setText(show ? getString(R.string.form_identifying) : getString(R.string.form_identify));
         }
         if (progressText != null) {
             progressText.setVisibility(show ? View.VISIBLE : View.GONE);

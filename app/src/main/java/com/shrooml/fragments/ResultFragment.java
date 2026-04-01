@@ -49,10 +49,10 @@ public class ResultFragment extends Fragment {
 
     private void setupResult() {
         if (isEdible) {
-            resultText.setText("🍄 Edible");
+              resultText.setText(getString(R.string.result_edible));
             resultText.setTextColor(ContextCompat.getColor(requireContext(), R.color.success));
         } else {
-            resultText.setText("☠️ Inedible");
+              resultText.setText(getString(R.string.result_inedible));
             resultText.setTextColor(ContextCompat.getColor(requireContext(), R.color.error));
         }
     }

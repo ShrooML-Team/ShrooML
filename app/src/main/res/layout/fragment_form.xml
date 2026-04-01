@@ -14,7 +14,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="What is the shape of the cap ?"
+            android:text="@string/form_question_cap_shape"
             android:textSize="14sp"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="8dp" />
@@ -30,7 +30,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="What is the surface of the cap ?"
+            android:text="@string/form_question_cap_surface"
             android:textSize="14sp"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="8dp" />
@@ -46,7 +46,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="What is the color of the cap ?"
+            android:text="@string/form_question_cap_color"
             android:textSize="14sp"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="8dp" />
@@ -62,7 +62,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Does it bruise when touched ?"
+            android:text="@string/form_question_bruises"
             android:textSize="14sp"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="8dp" />
@@ -78,7 +78,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="What is the odor ?"
+            android:text="@string/form_question_odor"
             android:textSize="14sp"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="8dp" />
@@ -94,7 +94,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="How are the gills attached ?"
+            android:text="@string/form_question_gill_attachment"
             android:textSize="14sp"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="8dp" />
@@ -110,7 +110,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="What is the gill spacing ?"
+            android:text="@string/form_question_gill_spacing"
             android:textSize="14sp"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="8dp" />
@@ -126,7 +126,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="What is the gill size ?"
+            android:text="@string/form_question_gill_size"
             android:textSize="14sp"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="8dp" />
@@ -142,7 +142,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="What is the gill color ?"
+            android:text="@string/form_question_gill_color"
             android:textSize="14sp"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="8dp" />
@@ -158,7 +158,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="What is the shape of the stalk ?"
+            android:text="@string/form_question_stalk_shape"
             android:textSize="14sp"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="8dp" />
@@ -174,7 +174,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="What is the stalk root like ?"
+            android:text="@string/form_question_stalk_root"
             android:textSize="14sp"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="8dp" />
@@ -190,7 +190,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Stalk surface above ring ?"
+            android:text="@string/form_question_stalk_surface_above"
             android:textSize="14sp"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="8dp" />
@@ -206,7 +206,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Stalk surface below ring ?"
+            android:text="@string/form_question_stalk_surface_below"
             android:textSize="14sp"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="8dp" />
@@ -222,7 +222,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="What is the color of the foot ?"
+            android:text="@string/form_question_stalk_color_above"
             android:textSize="14sp"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="8dp" />
@@ -238,7 +238,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Stalk color below ring ?"
+            android:text="@string/form_question_stalk_color_below"
             android:textSize="14sp"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="8dp" />
@@ -254,7 +254,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="What type of veil ?"
+            android:text="@string/form_question_veil_type"
             android:textSize="14sp"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="8dp" />
@@ -270,7 +270,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="What is the color of the veil ?"
+            android:text="@string/form_question_veil_color"
             android:textSize="14sp"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="8dp" />
@@ -286,7 +286,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="How many rings ?"
+            android:text="@string/form_question_ring_number"
             android:textSize="14sp"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="8dp" />
@@ -302,7 +302,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="What type of ring ?"
+            android:text="@string/form_question_ring_type"
             android:textSize="14sp"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="8dp" />
@@ -318,7 +318,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="What is the spore print color ?"
+            android:text="@string/form_question_spore_print_color"
             android:textSize="14sp"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="8dp" />
@@ -334,7 +334,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="What is the population ?"
+            android:text="@string/form_question_population"
             android:textSize="14sp"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="8dp" />
@@ -350,7 +350,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="What is the habitat ?"
+            android:text="@string/form_question_habitat"
             android:textSize="14sp"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="8dp" />
@@ -367,7 +367,7 @@
             android:id="@+id/progress_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Identifying..."
+            android:text="@string/form_identifying"
             android:textSize="14sp"
             android:textColor="#FFFFFF"
             android:gravity="center"
@@ -379,7 +379,7 @@
             android:id="@+id/btn_identify_form"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="Identify"
+            android:text="@string/form_identify"
             android:textSize="16sp"
             android:textColor="#C98D63"
             android:gravity="center"

@@ -135,4 +135,239 @@
     <string name="backHome">Accueil</string>
     <string name="nextButton">Suivant</string>
     <string name="score">Score : %1$s/5</string>
+
+    <!-- ResultFragment strings -->
+    <string name="result_edible">🍄 Comestible</string>
+    <string name="result_inedible">☠️ Non comestible</string>
+
+    <!-- CameraFragment strings -->
+    <string name="camera_file_read_error">Erreur lecture fichier</string>
+    <string name="camera_create_photo_error">Impossible de créer le fichier photo</string>
+    <string name="camera_not_mushroom">Cette photo n\'est pas un champignon</string>
+    <string name="camera_permission_required">Permission caméra requise</string>
+    <string name="camera_low_light">Lumière faible, pensez à activer la lampe torche</string>
+
+    <!-- FormFragment strings -->
+    <string name="form_please_login">Veuillez vous connecter d\'abord</string>
+    <string name="form_no_prediction">Aucune prédiction reçue</string>
+    <string name="form_network_error">Erreur réseau : %s</string>
+    <string name="form_view_not_initialized">Erreur : vue non initialisée</string>
+    <string name="form_fill_all_fields">Veuillez remplir tous les champs</string>
+    <string name="form_identifying">Identification…</string>
+    <string name="form_identify">Identifier</string>
+    <string name="form_prediction_failed">Prédiction échouée : %d</string>
+    <string name="form_question_cap_shape">Quelle est la forme du chapeau ?</string>
+    <string name="form_question_cap_surface">Quelle est la surface du chapeau ?</string>
+    <string name="form_question_cap_color">Quelle est la couleur du chapeau ?</string>
+    <string name="form_question_bruises">Se tache-t-il au toucher ?</string>
+    <string name="form_question_odor">Quelle est l\'odeur ?</string>
+    <string name="form_question_gill_attachment">Comment les lamelles sont-elles attachées ?</string>
+    <string name="form_question_gill_spacing">Quel est l\'espacement des lamelles ?</string>
+    <string name="form_question_gill_size">Quelle est la taille des lamelles ?</string>
+    <string name="form_question_gill_color">Quelle est la couleur des lamelles ?</string>
+    <string name="form_question_stalk_shape">Quelle est la forme du pied ?</string>
+    <string name="form_question_stalk_root">À quoi ressemble la base du pied ?</string>
+    <string name="form_question_stalk_surface_above">Surface du pied au-dessus de l\'anneau ?</string>
+    <string name="form_question_stalk_surface_below">Surface du pied en dessous de l\'anneau ?</string>
+    <string name="form_question_stalk_color_above">Quelle est la couleur du pied ?</string>
+    <string name="form_question_stalk_color_below">Couleur du pied en dessous de l\'anneau ?</string>
+    <string name="form_question_veil_type">Quel type de voile ?</string>
+    <string name="form_question_veil_color">Quelle est la couleur du voile ?</string>
+    <string name="form_question_ring_number">Combien d\'anneaux ?</string>
+    <string name="form_question_ring_type">Quel type d\'anneau ?</string>
+    <string name="form_question_spore_print_color">Quelle est la couleur de la sporée ?</string>
+    <string name="form_question_population">Quelle est la population ?</string>
+    <string name="form_question_habitat">Quel est l\'habitat ?</string>
+
+    <!-- FormFragment spinner arrays -->
+    <string-array name="spinner_cap_shape">
+        <item>Choisir…</item>
+        <item>Bombé</item>
+        <item>Conique</item>
+        <item>Convexe</item>
+        <item>Plat</item>
+        <item>Mamelonné</item>
+        <item>Déprimé</item>
+    </string-array>
+    <string-array name="spinner_cap_surface">
+        <item>Choisir…</item>
+        <item>Fibreux</item>
+        <item>Sillonné</item>
+        <item>Écailleux</item>
+        <item>Lisse</item>
+    </string-array>
+    <string-array name="spinner_cap_color">
+        <item>Choisir…</item>
+        <item>Brun</item>
+        <item>Beige</item>
+        <item>Cannelle</item>
+        <item>Gris</item>
+        <item>Vert</item>
+        <item>Rose</item>
+        <item>Violet</item>
+        <item>Rouge</item>
+        <item>Blanc</item>
+        <item>Jaune</item>
+    </string-array>
+    <string-array name="spinner_bruises">
+        <item>Choisir…</item>
+        <item>Non</item>
+        <item>Oui</item>
+    </string-array>
+    <string-array name="spinner_odor">
+        <item>Choisir…</item>
+        <item>Amande</item>
+        <item>Anis</item>
+        <item>Créosote</item>
+        <item>Poissonneux</item>
+        <item>Nauséabond</item>
+        <item>Moisi</item>
+        <item>Aucune</item>
+        <item>Piquant</item>
+        <item>Épicé</item>
+    </string-array>
+    <string-array name="spinner_gill_attachment">
+        <item>Choisir…</item>
+        <item>Attachée</item>
+        <item>Descendante</item>
+        <item>Libre</item>
+        <item>Échancrée</item>
+    </string-array>
+    <string-array name="spinner_gill_spacing">
+        <item>Choisir…</item>
+        <item>Serré</item>
+        <item>Dense</item>
+        <item>Espacé</item>
+    </string-array>
+    <string-array name="spinner_gill_size">
+        <item>Choisir…</item>
+        <item>Large</item>
+        <item>Étroit</item>
+    </string-array>
+    <string-array name="spinner_gill_color">
+        <item>Choisir…</item>
+        <item>Noir</item>
+        <item>Brun</item>
+        <item>Beige</item>
+        <item>Chocolat</item>
+        <item>Gris</item>
+        <item>Vert</item>
+        <item>Orange</item>
+        <item>Rose</item>
+        <item>Violet</item>
+        <item>Rouge</item>
+        <item>Blanc</item>
+        <item>Jaune</item>
+    </string-array>
+    <string-array name="spinner_stalk_shape">
+        <item>Choisir…</item>
+        <item>Renflé</item>
+        <item>Effilé</item>
+    </string-array>
+    <string-array name="spinner_stalk_root">
+        <item>Choisir…</item>
+        <item>Bulbeux</item>
+        <item>En massue</item>
+        <item>En coupe</item>
+        <item>Égal</item>
+        <item>Rhizomorphes</item>
+        <item>Enraciné</item>
+    </string-array>
+    <string-array name="spinner_stalk_surface_above">
+        <item>Choisir…</item>
+        <item>Fibreux</item>
+        <item>Écailleux</item>
+        <item>Soyeux</item>
+        <item>Lisse</item>
+    </string-array>
+    <string-array name="spinner_stalk_surface_below">
+        <item>Choisir…</item>
+        <item>Fibreux</item>
+        <item>Écailleux</item>
+        <item>Soyeux</item>
+        <item>Lisse</item>
+    </string-array>
+    <string-array name="spinner_stalk_color_above">
+        <item>Choisir…</item>
+        <item>Brun</item>
+        <item>Beige</item>
+        <item>Cannelle</item>
+        <item>Gris</item>
+        <item>Orange</item>
+        <item>Rose</item>
+        <item>Rouge</item>
+        <item>Blanc</item>
+        <item>Jaune</item>
+    </string-array>
+    <string-array name="spinner_stalk_color_below">
+        <item>Choisir…</item>
+        <item>Brun</item>
+        <item>Beige</item>
+        <item>Cannelle</item>
+        <item>Gris</item>
+        <item>Orange</item>
+        <item>Rose</item>
+        <item>Rouge</item>
+        <item>Blanc</item>
+        <item>Jaune</item>
+    </string-array>
+    <string-array name="spinner_veil_type">
+        <item>Choisir…</item>
+        <item>Partiel</item>
+        <item>Universel</item>
+    </string-array>
+    <string-array name="spinner_veil_color">
+        <item>Choisir…</item>
+        <item>Brun</item>
+        <item>Orange</item>
+        <item>Blanc</item>
+        <item>Jaune</item>
+    </string-array>
+    <string-array name="spinner_ring_number">
+        <item>Choisir…</item>
+        <item>Aucun</item>
+        <item>Un</item>
+        <item>Deux</item>
+    </string-array>
+    <string-array name="spinner_ring_type">
+        <item>Choisir…</item>
+        <item>Arachnéen</item>
+        <item>Évanescent</item>
+        <item>Évasé</item>
+        <item>Grand</item>
+        <item>Aucun</item>
+        <item>Pendant</item>
+    </string-array>
+    <string-array name="spinner_spore_print_color">
+        <item>Choisir…</item>
+        <item>Noir</item>
+        <item>Brun</item>
+        <item>Beige</item>
+        <item>Chocolat</item>
+        <item>Vert</item>
+        <item>Orange</item>
+        <item>Violet</item>
+        <item>Blanc</item>
+        <item>Jaune</item>
+    </string-array>
+    <string-array name="spinner_population">
+        <item>Choisir…</item>
+        <item>Abondant</item>
+        <item>En groupes</item>
+        <item>Nombreux</item>
+        <item>Dispersé</item>
+        <item>Plusieurs</item>
+        <item>Solitaire</item>
+    </string-array>
+    <string-array name="spinner_habitat">
+        <item>Choisir…</item>
+        <item>Prairies</item>
+        <item>Feuilles</item>
+        <item>Prés</item>
+        <item>Sentiers</item>
+        <item>Urbain</item>
+        <item>Déchets</item>
+        <item>Forêts</item>
+    </string-array>
+
 </resources>
