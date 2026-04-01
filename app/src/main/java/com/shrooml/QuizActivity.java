@@ -69,6 +69,7 @@ public class QuizActivity extends BackgroundActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
 
+        setVolumeControlStream(android.media.AudioManager.STREAM_MUSIC);
         initSoundPool();
 
         imageView = findViewById(R.id.imageView);
@@ -447,8 +448,8 @@ public class QuizActivity extends BackgroundActivity {
 
     private void initSoundPool() {
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
-                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                 .build();
 
         soundPool = new SoundPool.Builder()
