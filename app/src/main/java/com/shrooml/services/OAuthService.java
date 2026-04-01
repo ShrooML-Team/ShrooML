@@ -8,6 +8,7 @@ import com.shrooml.services.api.TokenResponseFull;
 import com.shrooml.services.api.LoginRequest;
 import com.shrooml.services.api.RegisterRequest;
 
+import java.io.IOException;
 import java.util.List;
 
 import retrofit2.Call;
@@ -126,7 +127,14 @@ public class OAuthService {
                     callback.onSuccess(response.body());
 
                 } else {
-                    callback.onError("Erreur Google Sign-In : " + response.code() + " - " + response.message());
+                    String errorDetail = response.message();
+                    try {
+                        if (response.errorBody() != null) {
+                            errorDetail = response.errorBody().string();
+                        }
+                    } catch (IOException ignored) {
+                    }
+                    callback.onError("Erreur Google Sign-In : " + response.code() + " - " + errorDetail);
                 }
             }
 

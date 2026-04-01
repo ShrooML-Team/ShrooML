@@ -25,8 +25,8 @@ public class LoginActivity extends AppCompatActivity {
     private TokenManager tokenManager;
     private GoogleSignInManager googleSignInManager;
 
-    // Google OAuth Client ID (REMPLACER PAR VOTRE CLIENT ID ANDROID)
-    private static final String GOOGLE_CLIENT_ID = "169318318099-gutemkeimf2vho3hafrsdmuv23lnfdhm.apps.googleusercontent.com";
+    // requestIdToken attend le client OAuth "Web application", pas le client Android.
+    private static final String GOOGLE_WEB_CLIENT_ID = "169318318099-oime7n53bvh52fau2k4302e2svcqhghd.apps.googleusercontent.com";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             // Initialize Google Sign-In Manager
-            googleSignInManager = new GoogleSignInManager(this, GOOGLE_CLIENT_ID);
+            googleSignInManager = new GoogleSignInManager(this, GOOGLE_WEB_CLIENT_ID);
             Log.d(TAG, "GoogleSignInManager créé");
 
             // Google Sign-In est maintenant activé
