@@ -1,7 +1,5 @@
 package com.shrooml.services;
 
-import android.widget.Toast;
-
 import com.shrooml.BuildConfig;
 import com.shrooml.models.IdentificationEntity;
 import com.shrooml.services.api.KindwiseApi;

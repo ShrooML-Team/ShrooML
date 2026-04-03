@@ -88,17 +88,17 @@ public class ShroomDetailsActivity extends BackgroundActivity {
                 // Badge toxicité
                 switch (m.getEdibility()) {
                     case "inedible":
-                        detailsBadge.setText("Toxique");
+                        translateDynamicText("Toxique",detailsBadge);
                         detailsBadge.setBackgroundColor(0xFFD32F2F);
                         break;
 
                     case "medicinal":
-                        detailsBadge.setText("Médicinal");
+                        translateDynamicText("Médicinal",detailsBadge);
                         detailsBadge.setBackgroundColor(0xFF1976D2);
                         break;
 
                     default:
-                        detailsBadge.setText("Comestible");
+                        translateDynamicText("Comestible",detailsBadge);
                         detailsBadge.setBackgroundColor(0xFF388E3C);
                         break;
                 }
@@ -109,8 +109,7 @@ public class ShroomDetailsActivity extends BackgroundActivity {
                         "Nom commun : " + m.getCommonName() + "\n" +
                                 "Comestibilité : " + m.getEdibility() + "\n" +
                                 "Psychoactif : " + (m.isPsychoactive() ? "Oui" : "Non");
-
-                detailsGeneral.setText(general);
+                translateDynamicText(general, detailsGeneral);
 
                 // Écologie
                 String ecology =
@@ -119,22 +118,23 @@ public class ShroomDetailsActivity extends BackgroundActivity {
                                 "Température : " + m.getMinTemp() + "°C à " + m.getMaxTemp() + "°C\n" +
                                 "Humidité minimale : " + m.getMinHumidity() + "%\n" +
                                 "Notes : " + m.getNotes();
-
-                detailsEcology.setText(ecology);
+                translateDynamicText(ecology, detailsEcology);
 
                 // Recette
                 RecipeEntity r = m.getRecipe();
                 if (r != null) {
                     recipeSection.setVisibility(LinearLayout.VISIBLE);
-
-                    recipeTitle.setText(r.getName());
+                    translateDynamicText(r.getName(), recipeTitle);
 
                     Glide.with(ShroomDetailsActivity.this)
                             .load(r.getImage())
                             .into(recipeImage);
 
-                    recipeIngredients.setText("Ingrédients :\n- " + String.join("\n- ", r.getIngredients()));
-                    recipeInstructions.setText("Instructions :\n" + r.getInstructions());
+                    String txt1 = "Ingrédients :\n- " + String.join("\n- ", r.getIngredients());
+                    String txt2 = "Instructions :\n" + r.getInstructions();
+                    recipeIngredients.setText(txt1);
+                    recipeInstructions.setText(txt2);
+
                 }
             }
 

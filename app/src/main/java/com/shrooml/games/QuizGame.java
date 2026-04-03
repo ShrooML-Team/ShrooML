@@ -4,10 +4,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import android.content.Context;
+
+import com.google.mlkit.nl.languageid.LanguageIdentification;
+import com.google.mlkit.nl.translate.Translator;
 import com.shrooml.R;
 import com.shrooml.models.MushroomEntity;
 import com.shrooml.services.InaturalistService;
@@ -35,17 +40,33 @@ public class QuizGame {
 
     private int score =0;
 
+    private Translator engToLang;
+
+    private Translator frToLang;
+
+    public interface TranslationCallback {
+        void onTranslated(String translatedText);
+    }
+
+    public interface AnswerCheckCallback {
+        void onResult(boolean isCorrect);
+    }
+
     public interface QuizCallback {
         void onQuizReady();
         void onError(String errorMessage);
     }
 
-    public QuizGame(Context context, QuizCallback callback){
+    public QuizGame(Context context, Translator engtolanguage, Translator frtolanguage, QuizCallback callback){
         ShroomLocService repo = new ShroomLocService();
+        engToLang = engtolanguage;
+        frToLang = frtolanguage;
 
         repo.getAll(new ShroomLocService.MushroomsCallback() {
             @Override
             public void onSuccess(List<MushroomEntity> mushrooms) {
+
+                List<String> habunique = new ArrayList<>();
 
                 if (mushrooms == null || mushrooms.isEmpty()) {
                     callback.onError("Liste de champignons vide");
@@ -53,13 +74,26 @@ public class QuizGame {
                 }
 
                 for (MushroomEntity mush : mushrooms){
-                    allCommonName.add(mush.getCommon_name());
+                    // Le nom scientifique est en latin, pas besoin de le traduire !
                     allScientName.add(mush.getScientific_name());
+
+                    // Remplissage asynchrone pour le nom commun
+                    translateDynamicText(mush.getCommon_name(), translatedName -> {
+                        allCommonName.add(translatedName);
+                    });
+
+                    // Remplissage asynchrone pour les habitats
                     for (String hab : mush.getHabitat()){
-                        if (!allHabitat.contains(hab)) {
-                             allHabitat.add(hab);
+                        if(!habunique.contains(hab)){
+                            habunique.add(hab);
                         }
                     }
+                }
+
+                for (String hab : habunique){
+                    translateDynamicText(hab, translatedHab -> {
+                        allHabitat.add(translatedHab);
+                    });
                 }
 
                 allSeason.add(context.getString(R.string.autumn));
@@ -154,43 +188,72 @@ public class QuizGame {
         return allHabitat;
     }
 
-    public boolean checkAnswer(int question, String answer, Context contexte){
+    public void checkAnswer(int question, String answer, Context contexte, AnswerCheckCallback callback){
+        boolean correct = false;
+        List<String> answtranslate = new ArrayList<>();
 
         switch(question){
 
             case 0:
-                this.currentAnswer = new ArrayList<>(Collections.singleton(mushroom.getCommon_name()));
-                return answer.equalsIgnoreCase(mushroom.getCommon_name());
+                //String translateName = translateDynamicText(mushroom.getCommon_name());
+                translateDynamicText(mushroom.getCommon_name(), translatedName -> {
+                    this.currentAnswer = new ArrayList<>(Collections.singletonList(translatedName));
+                    callback.onResult(answer.equalsIgnoreCase(translatedName));
+                });break;
 
             case 1:
                 this.currentAnswer = new ArrayList<>(Collections.singleton(mushroom.getScientific_name()));
-                return answer.equalsIgnoreCase(mushroom.getScientific_name());
+                callback.onResult(answer.equalsIgnoreCase(mushroom.getScientific_name()));
+                break;
 
             case 2:
                 if(mushroom.getEdibility().equals("edible")){
                     this.currentAnswer = new ArrayList<>(Collections.singleton(contexte.getString(R.string.trueAnswer)));
-                    return answer.equalsIgnoreCase("true");
+                    callback.onResult(answer.equalsIgnoreCase("true"));
                 } else {
                     this.currentAnswer = new ArrayList<>(Collections.singleton(contexte.getString(R.string.falseAnswer)));
-                    return answer.equalsIgnoreCase("false");
+                    callback.onResult( answer.equalsIgnoreCase("false"));
                 }
+                break;
 
             case 3:
-                this.currentAnswer = Arrays.asList(mushroom.getHabitat());
+                // Astuce DevOps : Compter les tâches asynchrones pour savoir quand on a fini
+                AtomicInteger countHab = new AtomicInteger(0);
+                boolean[] isCorrectHab = {false}; // Tableau à 1 élément pour être modifiable dans le callback
+
                 for(String h : mushroom.getHabitat()){
-                    if(h.equalsIgnoreCase(answer)) return true;
+                    translateDynamicText(h, habtranslate -> {
+                        answtranslate.add(habtranslate);
+                        if(habtranslate.equalsIgnoreCase(answer)) isCorrectHab[0] = true;
+
+                        // Si on a traduit le dernier habitat, on renvoie le résultat !
+                        if(countHab.incrementAndGet() == mushroom.getHabitat().length){
+                            this.currentAnswer = answtranslate;
+                            callback.onResult(isCorrectHab[0]);
+                        }
+                    });
                 }
-                return false;
+                break;
 
             case 4:
-                this.currentAnswer = Arrays.asList(mushroom.getSeason());
-                for(String s : mushroom.getSeason()){
-                    if(s.equalsIgnoreCase(answer)) return true;
-                }
-                return false;
-        }
+                AtomicInteger countSeason = new AtomicInteger(0);
+                boolean[] isCorrectSeason = {false};
 
-        return false;
+                for(String s : mushroom.getSeason()){
+                    translateDynamicText(s, seasontranslate -> {
+                        answtranslate.add(seasontranslate);
+                        if(seasontranslate.equalsIgnoreCase(answer)) isCorrectSeason[0] = true;
+
+                        if(countSeason.incrementAndGet() == mushroom.getSeason().length){
+                            this.currentAnswer = answtranslate;
+                            callback.onResult(isCorrectSeason[0]);
+                        }
+                    });
+                }
+                break;
+            default:callback.onResult(false);break;
+        }
+        return;
     }
 
     public void upScore(){
@@ -207,5 +270,37 @@ public class QuizGame {
 
     public List<String> getCurrentAnswer(){
         return this.currentAnswer;
+    }
+
+    protected void translateDynamicText(String text, TranslationCallback callback) {
+        if (text == null || text.isEmpty()) {
+            callback.onTranslated("");
+            return;
+        }
+
+        String textWithPlaceholders = text.replace("\n", " Br_tag ");
+
+        LanguageIdentification.getClient().identifyLanguage(textWithPlaceholders)
+                .addOnSuccessListener(languageCode -> {
+                    String deviceLang = Locale.getDefault().getLanguage();
+
+                    if (languageCode.equals(deviceLang)) {
+                        callback.onTranslated(textWithPlaceholders.replace(" Br_tag ", "\n"));
+                    }
+                    else if (languageCode.equals("en") && engToLang != null) {
+                        engToLang.translate(textWithPlaceholders)
+                                .addOnSuccessListener(res -> callback.onTranslated(res.replace(" Br_tag ", "\n")))
+                                .addOnFailureListener(e -> callback.onTranslated(textWithPlaceholders.replace(" Br_tag ", "\n")));
+                    }
+                    else if (languageCode.equals("fr") && frToLang != null) {
+                        frToLang.translate(textWithPlaceholders)
+                                .addOnSuccessListener(res -> callback.onTranslated(res.replace(" Br_tag ", "\n")))
+                                .addOnFailureListener(e -> callback.onTranslated(textWithPlaceholders.replace(" Br_tag ", "\n")));
+                    }
+                    else {
+                        callback.onTranslated(textWithPlaceholders.replace(" Br_tag ", "\n"));
+                    }
+                })
+                .addOnFailureListener(e -> callback.onTranslated(textWithPlaceholders.replace(" Br_tag ", "\n")));
     }
 }

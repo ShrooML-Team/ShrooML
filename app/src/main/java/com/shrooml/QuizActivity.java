@@ -146,7 +146,7 @@ public class QuizActivity extends BackgroundActivity {
         });
 
         final QuizGame[] quizGameHolder = new QuizGame[1]; // conteneur pour Java
-        quizGameHolder[0] = new QuizGame(QuizActivity.this, new QuizGame.QuizCallback() {
+        quizGameHolder[0] = new QuizGame(QuizActivity.this,englishToDeviceTranslator , frenchToDeviceTranslator,new QuizGame.QuizCallback() {
             @Override
             public void onQuizReady() {
                 quizGame = quizGameHolder[0];
@@ -311,7 +311,6 @@ public class QuizActivity extends BackgroundActivity {
 
     private void checkAnswer() {
         String answer;
-        String answerText = "";
 
         if(currentQuestion == 2){ // question comestible
             if(edibleGroup.getCheckedRadioButtonId() == -1){
@@ -334,28 +333,29 @@ public class QuizActivity extends BackgroundActivity {
             answer = answerInput.getText().toString().trim();
         }
 
-        boolean result = quizGame.checkAnswer(currentQuestion, answer, QuizActivity.this);
-
-        if(currentQuestion <= 2){
-            answerText = quizGame.getCurrentAnswer().get(0);
-        }
-        else {
-            for(String str : quizGame.getCurrentAnswer()){
-                answerText = answerText.concat(str + ", ");
+        quizGame.checkAnswer(currentQuestion, answer, QuizActivity.this, isCorrect -> {
+            String answerText = "";
+            if(currentQuestion <= 2){
+                answerText = quizGame.getCurrentAnswer().get(0);
             }
-        }
+            else {
+                for(String str : quizGame.getCurrentAnswer()){
+                    answerText = answerText.concat(str + ", ");
+                }
+            }
 
-        correctAnswerText.setText(this.getString(R.string.CorrectAnswer, answerText));
-        correctAnswerText.setVisibility(View.VISIBLE);
+            correctAnswerText.setText(this.getString(R.string.CorrectAnswer, answerText));
+            correctAnswerText.setVisibility(View.VISIBLE);
 
-        if(result){
-            answerInput.setBackgroundColor(Color.parseColor("#A5D6A7")); // vert
-            quizGame.upScore();
-        } else {
-            answerInput.setBackgroundColor(Color.parseColor("#EF9A9A")); // rouge
-        }
+            if(isCorrect){
+                answerInput.setBackgroundColor(Color.parseColor("#A5D6A7")); // vert
+                quizGame.upScore();
+            } else {
+                answerInput.setBackgroundColor(Color.parseColor("#EF9A9A")); // rouge
+            }
 
-        nextButton.setEnabled(true);
+            nextButton.setEnabled(true);
+        });
     }
 
     private void persistScoreToApi(int scoreToAdd) {

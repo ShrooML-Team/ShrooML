@@ -12,6 +12,7 @@ import com.shrooml.services.api.ShroomLocRetrofitClient;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import com.shrooml.BuildConfig;
 
 public class SplashActivity extends Activity {
     private static final String TAG = "SplashActivity";
@@ -91,7 +92,7 @@ public class SplashActivity extends Activity {
             Log.d(TAG, "isTokenValid() retourné: " + isValid);
 
             OAuthService authService = new OAuthService();
-            authService.login("admin", "password123", new OAuthService.OAuthCallback() {
+            authService.login(BuildConfig.LOGIN_OAUTH, BuildConfig.PWD_OAUTH, new OAuthService.OAuthCallback() {
                 @Override
                 public void onSuccess(String token) {
                     ShroomLocRetrofitClient.setToken(token);

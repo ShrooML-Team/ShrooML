@@ -20,6 +20,8 @@ android {
         buildConfigField "String", "KINDWISE_API_KEY_1", "\"${KINDWISE_API_KEY_1}\""
         buildConfigField "String", "KINDWISE_API_KEY_2", "\"${KINDWISE_API_KEY_2}\""
         buildConfigField "String", "KINDWISE_API_KEY_3", "\"${KINDWISE_API_KEY_3}\""
+        buildConfigField "String", "LOGIN_OAUTH", "\"${LOGIN_OAUTH}\""
+        buildConfigField "String", "PWD_OAUTH", "\"${PWD_OAUTH}\""
     }
 
     compileOptions {
@@ -45,5 +47,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.security:security-crypto:1.1.0-alpha06'
     implementation 'com.google.android.gms:play-services-auth:20.7.0'
+    implementation 'com.google.mlkit:language-id-common:16.1.0'
+    implementation 'com.google.mlkit:language-id:17.0.6'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'
+    implementation 'com.google.mlkit:translate:17.0.2'
 }

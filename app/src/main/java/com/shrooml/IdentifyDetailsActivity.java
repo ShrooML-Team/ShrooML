@@ -116,17 +116,17 @@ public class IdentifyDetailsActivity extends BackgroundActivity {
                 // Badge toxicité
                 switch (m.getEdibility()) {
                     case "inedible":
-                        detailsBadge.setText("Toxique");
+                        translateDynamicText("Toxique", detailsBadge);
                         detailsBadge.setBackgroundColor(0xFFD32F2F);
                         break;
 
                     case "medicinal":
-                        detailsBadge.setText("Médicinal");
+                        translateDynamicText("Médicinal", detailsBadge);
                         detailsBadge.setBackgroundColor(0xFF1976D2);
                         break;
 
                     default:
-                        detailsBadge.setText("Comestible");
+                        translateDynamicText("Comestible", detailsBadge);
                         detailsBadge.setBackgroundColor(0xFF388E3C);
                         break;
                 }
@@ -137,7 +137,7 @@ public class IdentifyDetailsActivity extends BackgroundActivity {
                                 "Comestibilité : " + m.getEdibility() + "\n" +
                                 "Psychoactif : " + (m.isPsychoactive() ? "Oui" : "Non");
 
-                detailsGeneral.setText(general);
+                translateDynamicText(general,detailsGeneral);
 
                 // Écologie
                 String ecology =
@@ -147,21 +147,21 @@ public class IdentifyDetailsActivity extends BackgroundActivity {
                                 "Humidité minimale : " + m.getMinHumidity() + "%\n" +
                                 "Notes : " + m.getNotes();
 
-                detailsEcology.setText(ecology);
+                translateDynamicText(ecology,detailsEcology);
+                //detailsEcology.setText(ecology);
 
                 // Recette
                 RecipeEntity r = m.getRecipe();
                 if (r != null) {
                     recipeSection.setVisibility(LinearLayout.VISIBLE);
-
-                    recipeTitle.setText(r.getName());
+                    translateDynamicText(r.getName(),recipeTitle);
 
                     Glide.with(IdentifyDetailsActivity.this)
                             .load(r.getImage())
                             .into(recipeImage);
 
-                    recipeIngredients.setText("Ingrédients :\n- " + String.join("\n- ", r.getIngredients()));
-                    recipeInstructions.setText("Instructions :\n" + r.getInstructions());
+                    translateDynamicText("Ingrédients :\n- " + String.join("\n- ", r.getIngredients()),recipeIngredients);
+                    translateDynamicText("Instructions :\n" + r.getInstructions(),recipeInstructions);
                 }
             }
 

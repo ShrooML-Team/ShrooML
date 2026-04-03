@@ -15,7 +15,6 @@ import android.os.Handler;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
@@ -30,10 +29,15 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SnapHelper;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.shrooml.adapters.NavbarAdapter;
+
+import com.google.mlkit.common.model.DownloadConditions;
+import com.google.mlkit.nl.translate.TranslateLanguage;
+import com.google.mlkit.nl.translate.Translation;
+import com.google.mlkit.nl.translate.Translator;
+import com.google.mlkit.nl.translate.TranslatorOptions;
+import com.google.mlkit.nl.languageid.LanguageIdentification;
+import com.google.mlkit.nl.languageid.LanguageIdentifier;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,6 +49,12 @@ public class BackgroundActivity extends AppCompatActivity {
 
     private SpeechRecognizer speechRecognizer;
 
+    protected Translator englishToDeviceTranslator;
+
+    protected Translator frenchToDeviceTranslator;
+
+    protected LanguageIdentifier languageIdentifier;
+
     private TextView title;
 
     protected int activityId = -1;
@@ -52,6 +62,8 @@ public class BackgroundActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        initTranslators();
 
         if (SpeechRecognizer.isRecognitionAvailable(this)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) { // Android 12+
@@ -418,4 +430,86 @@ public class BackgroundActivity extends AppCompatActivity {
                             | View.SYSTEM_UI_FLAG_FULLSCREEN);
         }
     }
+
+    protected void initTranslators() {
+        String targetLang = TranslateLanguage.fromLanguageTag(Locale.getDefault().getLanguage());
+        languageIdentifier = LanguageIdentification.getClient();
+        if(targetLang == null){
+            return;
+        }
+        if (targetLang.equals(TranslateLanguage.ENGLISH)) {
+            // Configuration pour les sources Françaises
+            frenchToDeviceTranslator = Translation.getClient(new TranslatorOptions.Builder()
+                    .setSourceLanguage(TranslateLanguage.FRENCH)
+                    .setTargetLanguage(targetLang)
+                    .build());
+        } else if (targetLang.equals(TranslateLanguage.FRENCH)) {
+            // Configuration pour les sources Anglaises
+            englishToDeviceTranslator = Translation.getClient(new TranslatorOptions.Builder()
+                    .setSourceLanguage(TranslateLanguage.ENGLISH)
+                    .setTargetLanguage(targetLang)
+                    .build());
+        } else {
+            frenchToDeviceTranslator = Translation.getClient(new TranslatorOptions.Builder()
+                    .setSourceLanguage(TranslateLanguage.FRENCH)
+                    .setTargetLanguage(targetLang)
+                    .build());
+
+            englishToDeviceTranslator = Translation.getClient(new TranslatorOptions.Builder()
+                    .setSourceLanguage(TranslateLanguage.ENGLISH)
+                    .setTargetLanguage(targetLang)
+                    .build());
+        }
+
+        if(englishToDeviceTranslator != null){
+            // Téléchargement des deux modèles (ML Kit gère l'attente intelligemment)
+            DownloadConditions conditions = new DownloadConditions.Builder().requireWifi().build();
+            englishToDeviceTranslator.downloadModelIfNeeded(conditions);
+            if(frenchToDeviceTranslator != null){
+                frenchToDeviceTranslator.downloadModelIfNeeded(conditions);
+            }
+        } else if(frenchToDeviceTranslator != null){
+            // Téléchargement des deux modèles (ML Kit gère l'attente intelligemment)
+            DownloadConditions conditions = new DownloadConditions.Builder().requireWifi().build();
+            frenchToDeviceTranslator.downloadModelIfNeeded(conditions);
+        }
+    }
+
+    protected void translateDynamicText(String text, TextView targetTextView) {
+        if (text == null || text.isEmpty()) return;
+
+        String textWithPlaceholders = text.replace("\n", " __ ");
+
+        // 1. Détecter la langue du texte qui arrive de l'API
+        languageIdentifier.identifyLanguage(textWithPlaceholders)
+            .addOnSuccessListener(languageCode -> {
+                String deviceLang = Locale.getDefault().getLanguage(); // ex: "fr"
+
+                // CAS A : Le texte est déjà dans la langue du téléphone -> On affiche direct
+                if (languageCode.equals(deviceLang)) {
+                    targetTextView.setText(textWithPlaceholders.replace(" __ ", "\n"));
+                }
+                // CAS B : Le texte est en ANGLAIS et le tél est en FRANÇAIS (ou autre)
+                else if (languageCode.equals("en") && englishToDeviceTranslator != null) {
+                    englishToDeviceTranslator.translate(textWithPlaceholders)
+                            .addOnSuccessListener(translatedtext -> {
+                                String finaltext = translatedtext.replace(" __ ", "\n");
+                                targetTextView.setText(finaltext);
+                            });
+                }
+                // CAS C : Le texte est en FRANÇAIS et le tél est en ANGLAIS (ou autre)
+                else if (languageCode.equals("fr") && frenchToDeviceTranslator != null) {
+                    frenchToDeviceTranslator.translate(textWithPlaceholders)
+                            .addOnSuccessListener(translatedtext -> {
+                                String finaltext = translatedtext.replace(" __ ", "\n");
+                                targetTextView.setText(finaltext);
+                            });
+                }
+                // CAS D : Cas inconnu -> On affiche l'original par sécurité
+                else {
+                    targetTextView.setText(textWithPlaceholders.replace(" __ ", "\n"));
+                }
+            });
+    }
+
 }

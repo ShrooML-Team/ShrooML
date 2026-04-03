@@ -388,7 +388,6 @@ public class ShroomLocateActivity extends BackgroundActivity {
         }
     }
 
-    // Dans ShroomLocateActivity.java
     @Override
     protected void onCorruptedStateChanged() {
         super.onCorruptedStateChanged();
