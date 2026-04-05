@@ -1,25 +1,13 @@
 package com.shrooml.services;
 
-import android.content.Context;
-import android.content.res.Resources;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 import com.shrooml.models.MushroomCompleteEntity;
 import com.shrooml.models.MushroomEntity;
-import com.shrooml.R;
 import com.shrooml.services.api.ShroomLocApi;
 import com.shrooml.services.api.ShroomLocRetrofitClient;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -27,13 +15,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ShroomLocService {
-    private List<MushroomEntity> mushrooms;
 
-    private final ShroomLocApi api;
+    private static final ShroomLocApi api = ShroomLocRetrofitClient.getApi();
 
-    public ShroomLocService() {
-        api = ShroomLocRetrofitClient.getApi();
-    }
+    public ShroomLocService() {}
 
     public interface MushroomsCallback {
         void onSuccess(List<MushroomEntity> mushrooms);

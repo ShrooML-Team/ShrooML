@@ -1,6 +1,8 @@
 package com.shrooml.games;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
@@ -28,6 +30,8 @@ public class QuizGame {
     private final String[] questions = new String[5];
 
     private final String[] titres = new String[6];
+
+    private List<String> currentAnswer = null;
 
     private int score =0;
 
@@ -150,27 +154,36 @@ public class QuizGame {
         return allHabitat;
     }
 
-    public boolean checkAnswer(int question, String answer){
+    public boolean checkAnswer(int question, String answer, Context contexte){
 
         switch(question){
 
             case 0:
+                this.currentAnswer = new ArrayList<>(Collections.singleton(mushroom.getCommon_name()));
                 return answer.equalsIgnoreCase(mushroom.getCommon_name());
 
             case 1:
+                this.currentAnswer = new ArrayList<>(Collections.singleton(mushroom.getScientific_name()));
                 return answer.equalsIgnoreCase(mushroom.getScientific_name());
 
             case 2:
-                return (answer.equalsIgnoreCase("true") && mushroom.getEdibility().equals("edible")) ||
-                        (answer.equalsIgnoreCase("false") && !mushroom.getEdibility().equals("edible")) ;
+                if(mushroom.getEdibility().equals("edible")){
+                    this.currentAnswer = new ArrayList<>(Collections.singleton(contexte.getString(R.string.trueAnswer)));
+                    return answer.equalsIgnoreCase("true");
+                } else {
+                    this.currentAnswer = new ArrayList<>(Collections.singleton(contexte.getString(R.string.falseAnswer)));
+                    return answer.equalsIgnoreCase("false");
+                }
 
             case 3:
+                this.currentAnswer = Arrays.asList(mushroom.getHabitat());
                 for(String h : mushroom.getHabitat()){
                     if(h.equalsIgnoreCase(answer)) return true;
                 }
                 return false;
 
             case 4:
+                this.currentAnswer = Arrays.asList(mushroom.getSeason());
                 for(String s : mushroom.getSeason()){
                     if(s.equalsIgnoreCase(answer)) return true;
                 }
@@ -190,5 +203,9 @@ public class QuizGame {
 
     public String getTitre(int sco){
         return titres[sco];
+    }
+
+    public List<String> getCurrentAnswer(){
+        return this.currentAnswer;
     }
 }

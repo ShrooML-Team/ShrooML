@@ -1,21 +1,24 @@
 package com.shrooml;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.shrooml.models.MushroomCompleteEntity;
 import com.shrooml.models.RecipeEntity;
 import com.shrooml.services.ShroomLocService;
 
 import java.net.URLEncoder;
 
-public class ShroomDetailsActivity extends AppCompatActivity {
+public class ShroomDetailsActivity extends BackgroundActivity {
 
     private TextView detailsTitle, detailsBadge, detailsGeneral, detailsEcology;
     private ImageView detailsImage;
@@ -47,6 +50,9 @@ public class ShroomDetailsActivity extends AppCompatActivity {
         // Dans onCreate(), après findViewById :
         ImageView backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> finish());
+
+        activityId = -1;
+        initNavBar(ShroomDetailsActivity.this);
 
         api = new ShroomLocService();
 
@@ -80,20 +86,23 @@ public class ShroomDetailsActivity extends AppCompatActivity {
                         .into(detailsImage);
 
                 // Badge toxicité
-                switch (m.getToxicity()) {
-                    case "toxic":
-                        detailsBadge.setText("☠️ Toxique");
+                switch (m.getEdibility()) {
+                    case "inedible":
+                        detailsBadge.setText("Toxique");
                         detailsBadge.setBackgroundColor(0xFFD32F2F);
                         break;
-                    case "inedible":
-                        detailsBadge.setText("⚠️ Non comestible");
-                        detailsBadge.setBackgroundColor(0xFFFBC02D);
+
+                    case "medicinal":
+                        detailsBadge.setText("Médicinal");
+                        detailsBadge.setBackgroundColor(0xFF1976D2);
                         break;
+
                     default:
-                        detailsBadge.setText("🟢 Comestible");
+                        detailsBadge.setText("Comestible");
                         detailsBadge.setBackgroundColor(0xFF388E3C);
                         break;
                 }
+
 
                 // Informations générales
                 String general =

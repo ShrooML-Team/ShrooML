@@ -1,16 +1,27 @@
 package com.shrooml;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
 import com.shrooml.services.OAuthService;
+import com.shrooml.services.api.AutoMLApi;
+import com.shrooml.services.api.AutoMLRetrofitClient;
+import com.shrooml.services.api.Requests.RegisterAARequest;
+import com.shrooml.services.api.Response.LoginAAResponse;
+
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
-public class RegisterActivity extends AppCompatActivity {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class RegisterActivity extends BackgroundActivity {
 
     private EditText identifiantInput;
     private EditText emailInput;
@@ -20,7 +31,8 @@ public class RegisterActivity extends AppCompatActivity {
     private Button backButton;
     private OAuthService oAuthService;
     private TokenManager tokenManager;
-
+    private AutoMLApi autoMLApi;
+    private AutoMLRetrofitClient autoMLClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +54,13 @@ public class RegisterActivity extends AppCompatActivity {
             e.printStackTrace();
             Toast.makeText(this, "Erreur d'initialisation", Toast.LENGTH_SHORT).show();
         }
-
+        try {
+            autoMLClient = AutoMLRetrofitClient.getInstance(this);
+            autoMLApi = autoMLClient.getAutoMLApi();
+            Log.d(TAG, "AutoML API client initialisé");
+        } catch (Exception e) {
+            Log.e(TAG, "ERREUR AutoML client", e);
+        }
         // Set up register button click listener
         registerButton.setOnClickListener(v -> handleRegister());
 
@@ -95,11 +113,11 @@ public class RegisterActivity extends AppCompatActivity {
                             response.getUser().getId(),
                             response.getUser().getIdentifiant()
                     );
+                        tokenManager.saveUserProfile(response.getUser());
                     Toast.makeText(RegisterActivity.this, "Inscription réussie!", Toast.LENGTH_SHORT).show();
+                    registerInAutoML(identifiant, motDePasse);
                     
-                    Intent intent = new Intent(RegisterActivity.this, QuizActivity.class);
-                    startActivity(intent);
-                    finish();
+                    goToMainActivity();
                 } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(RegisterActivity.this, "Erreur: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -116,5 +134,37 @@ public class RegisterActivity extends AppCompatActivity {
                 registerButton.setText("S'inscrire");
             }
         });
+    }
+    private void registerInAutoML(String username, String password) {
+        RegisterAARequest registerAARequest = new RegisterAARequest(username, password);
+        Call<LoginAAResponse> registerCall = autoMLApi.register(registerAARequest);
+
+        registerCall.enqueue(new Callback<LoginAAResponse>() {
+            @Override
+            public void onResponse(Call<LoginAAResponse> call, Response<LoginAAResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    String token = response.body().getAccessToken();
+                    autoMLClient.setAuthToken(token);
+                    Log.d(TAG, "AutoML compte créé avec succès");
+                    Toast.makeText(RegisterActivity.this, "Compte AutoML créé", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.e(TAG, "AutoML registration failed: " + response.code());
+                }
+                goToMainActivity();
+            }
+
+            @Override
+            public void onFailure(Call<LoginAAResponse> call, Throwable t) {
+                Log.e(TAG, "AutoML registration error: " + t.getMessage());
+                goToMainActivity();
+
+            }
+
+        });
+    }
+    private void goToMainActivity(){
+        Intent intent = new Intent(RegisterActivity.this, ChoiceIdentifyActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

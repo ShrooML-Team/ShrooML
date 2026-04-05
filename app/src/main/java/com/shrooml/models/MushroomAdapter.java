@@ -1,6 +1,8 @@
 package com.shrooml.models;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,18 +57,32 @@ public class MushroomAdapter extends RecyclerView.Adapter<MushroomAdapter.ViewHo
                 .load(m.getImageUrl())
                 .into(holder.image);
 
-        // Icône selon toxicité
-        if ("toxic".equalsIgnoreCase(m.getToxicity())) {
+        // Icône selon comestibilité
+        String ed = m.getEdibility().toLowerCase();
+        if (ed.equals("inedible")) {
             holder.statusIcon.setImageResource(R.drawable.ic_skull);
+        } else if (ed.equals("medicinal")) {
+            holder.statusIcon.setImageResource(R.drawable.ic_medicinal);
         } else {
             holder.statusIcon.setImageResource(R.drawable.ic_check);
         }
+
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onMushroomClick(m);
             }
         });
+
+        SharedPreferences prefs = holder.itemView.getContext().getSharedPreferences("app", Context.MODE_PRIVATE);
+        boolean corrupted = prefs.getBoolean("corrupted", false);
+
+        int itemColor = corrupted ? Color.parseColor("#4f004f") : Color.parseColor("#A06A42");
+
+        android.graphics.drawable.Drawable background = holder.itemView.getBackground();
+        if (background instanceof android.graphics.drawable.GradientDrawable) {
+            ((android.graphics.drawable.GradientDrawable) background.mutate()).setColor(itemColor);
+        }
 
     }
 
