@@ -96,4 +96,20 @@ public class ShroomLocApiConnectionTest {
         assertNotNull(response.body());
         assertEquals("Amanita muscaria", response.body().getScientificName());
     }
+
+    @Test
+    public void getMushroomByName_whenNotFound_returnsHttp404() throws Exception {
+        mockWebServer.enqueue(new MockResponse()
+                .setResponseCode(404)
+                .setBody("{\"detail\":\"Not found\"}")
+                .addHeader("Content-Type", "application/json"));
+
+        Response<MushroomCompleteEntity> response = api.getMushroomsByName("Unknown%20name").execute();
+        RecordedRequest request = mockWebServer.takeRequest();
+
+        assertEquals("GET", request.getMethod());
+        assertEquals("/mushrooms/Unknown%20name", request.getPath());
+        assertEquals(404, response.code());
+        assertTrue(!response.isSuccessful());
+    }
 }
