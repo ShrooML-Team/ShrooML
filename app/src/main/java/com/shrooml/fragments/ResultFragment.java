@@ -9,7 +9,6 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import com.shrooml.IdentifyActivity;
 import com.shrooml.R;
 
 public class ResultFragment extends Fragment {
@@ -47,7 +46,6 @@ public class ResultFragment extends Fragment {
     }
 
     private void setupResult() {
-        isEdible = true;
         if (isEdible) {
             resultText.setText("Edible");
             resultText.setTextColor(ContextCompat.getColor(requireContext(), R.color.success));
