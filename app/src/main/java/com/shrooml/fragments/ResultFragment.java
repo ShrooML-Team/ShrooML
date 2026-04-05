@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -14,7 +15,7 @@ import com.shrooml.R;
 public class ResultFragment extends Fragment {
 
     private TextView resultText;
-    private TextView btnNewPrediction;
+    private ImageView resultImage;
     private boolean isEdible;
 
     public static ResultFragment newInstance(boolean isEdible) {
@@ -36,37 +37,26 @@ public class ResultFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_result, container, false);
+        View view = inflater.inflate(R.layout.activity_simulation_result, container, false);
 
         resultText = view.findViewById(R.id.result_text);
-        btnNewPrediction = view.findViewById(R.id.btn_new_prediction);
+        resultImage = view.findViewById(R.id.result_image);
 
         setupResult();
-        setupListeners();
-
         return view;
     }
 
     private void setupResult() {
+        isEdible = true;
         if (isEdible) {
-              resultText.setText(getString(R.string.result_edible));
+            resultText.setText("Edible");
             resultText.setTextColor(ContextCompat.getColor(requireContext(), R.color.success));
+            resultImage.setImageResource(R.drawable.ic_edible);
         } else {
-              resultText.setText(getString(R.string.result_inedible));
+            resultText.setText("Inedible");
             resultText.setTextColor(ContextCompat.getColor(requireContext(), R.color.error));
+            resultImage.setImageResource(R.drawable.ic_inedible);
         }
     }
 
-    private void setupListeners() {
-        btnNewPrediction.setOnClickListener(v -> {
-            // Retour au formulaire
-            if (getActivity() != null) {
-                FormFragment formFragment = new FormFragment();
-                ((IdentifyActivity) getActivity()).loadFragment(formFragment);
-                // Mettre à jour l'icône du toggle
-                ((IdentifyActivity) getActivity()).setToggleIconToForm();
-                ((IdentifyActivity) getActivity()).setCameraMode(false);
-            }
-        });
-    }
 }

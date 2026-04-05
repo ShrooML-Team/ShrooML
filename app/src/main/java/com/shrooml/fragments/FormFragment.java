@@ -34,7 +34,7 @@ public class FormFragment extends Fragment {
             spinnerVeilType, spinnerVeilColor, spinnerRingNumber, spinnerRingType,
             spinnerSporePrintColor, spinnerPopulation, spinnerHabitat;
 
-    private static final Integer Edible = 1;
+    private static final Integer Edible = -1;
     private TextView btnIdentifyForm;
     private TextView progressText;
 

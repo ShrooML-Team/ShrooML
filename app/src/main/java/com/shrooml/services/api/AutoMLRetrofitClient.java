@@ -24,7 +24,6 @@ import java.util.Arrays;
 public class AutoMLRetrofitClient {
 
     private static final String TAG = "AutoMLRetrofitClient";
-    // Utilisation de 10.0.2.2 pour l'émulateur
     private static final String BASE_URL = "https://automl.shrooml.duckdns.org/";
 
     private static AutoMLRetrofitClient instance;
@@ -148,6 +147,7 @@ public class AutoMLRetrofitClient {
      * @return Le token, ou null si non défini
      */
     public String getAuthToken() {
+        Log.d(TAG, "getAuthToken:Token Bearer: " + autoMLAuthToken.substring(0, Math.min(50, autoMLAuthToken.length())) + "...");
         return autoMLAuthToken;
     }
 
