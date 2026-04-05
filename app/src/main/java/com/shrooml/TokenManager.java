@@ -21,6 +21,7 @@ public class TokenManager {
     private static final String TAG = "TokenManager";
     private static final String PREFERENCES_FILE = "shrooml_auth";
     private static final String TOKEN_KEY = "access_token";
+    private static final String AUTOML_TOKEN_KEY = "automl_access_token";
     private static final String USER_ID_KEY = "user_id";
     private static final String USER_IDENTIFIANT_KEY = "user_identifiant";
     private static final String USER_EMAIL_KEY = "user_email";
@@ -170,6 +171,26 @@ public class TokenManager {
 
         encryptedSharedPref.edit()
                 .putString(TOKEN_KEY, token)
+                .apply();
+    }
+
+    public void saveAutoMLToken(String token) {
+        if (token == null || token.isEmpty()) {
+            return;
+        }
+
+        encryptedSharedPref.edit()
+                .putString(AUTOML_TOKEN_KEY, token)
+                .apply();
+    }
+
+    public String getAutoMLToken() {
+        return encryptedSharedPref.getString(AUTOML_TOKEN_KEY, null);
+    }
+
+    public void clearAutoMLToken() {
+        encryptedSharedPref.edit()
+                .remove(AUTOML_TOKEN_KEY)
                 .apply();
     }
 
@@ -324,6 +345,7 @@ public class TokenManager {
         try {
             encryptedSharedPref.edit()
                     .remove(TOKEN_KEY)
+                    .remove(AUTOML_TOKEN_KEY)
                     .remove(USER_ID_KEY)
                     .remove(USER_IDENTIFIANT_KEY)
                     .remove(USER_EMAIL_KEY)

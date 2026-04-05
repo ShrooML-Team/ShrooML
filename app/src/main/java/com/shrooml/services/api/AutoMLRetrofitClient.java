@@ -47,6 +47,13 @@ public class AutoMLRetrofitClient {
             Log.e(TAG, "Erreur lors de l'initialisation du TokenManager", e);
             tokenManager = null;
         }
+
+        autoMLAuthToken = tokenManager != null ? tokenManager.getAutoMLToken() : null;
+
+        if (autoMLAuthToken != null && !autoMLAuthToken.isEmpty()) {
+            Log.d(TAG, "Token AutoML charge depuis le stockage local");
+        }
+
         retrofit = getRetrofit();
         api = retrofit.create(AutoMLApi.class);
     }
@@ -67,7 +74,17 @@ public class AutoMLRetrofitClient {
                 Request original = chain.request();
 
                 String token = autoMLAuthToken;
+                if (token == null || token.isEmpty()) {
+                    token = tokenManager != null ? tokenManager.getAutoMLToken() : null;
+                    autoMLAuthToken = token;
+                }
+
                 if(token != null && !token.isEmpty()){
+                    if (isLikelyShroomleurToken(token)) {
+                        Log.e(TAG, "Token Shroomleur detecte dans le client AutoML, requete envoyee sans Authorization");
+                        return chain.proceed(original);
+                    }
+
                     Log.d(TAG, "Token length: " + token.length());
                     Log.d(TAG, "Token bytes: " + Arrays.toString(token.getBytes()));
                     Log.d(TAG, "Token starts with 'eyJ': " + token.startsWith("eyJ"));
@@ -137,9 +154,34 @@ public class AutoMLRetrofitClient {
      * @param token Le token JWT reçu du serveur
      */
     public void setAuthToken(String token) {
-        if (token != null && !token.isEmpty()) {
-            autoMLAuthToken = token;
-            Log.d(TAG, "Token Bearer défini: " + token.substring(0, Math.min(50, token.length())) + "...");
+        if (token == null || token.isEmpty()) {
+            clearAuthToken();
+            return;
+        }
+
+        if (isLikelyShroomleurToken(token)) {
+            Log.e(TAG, "Refus du token AutoML: le token correspond au token Shroomleur persiste");
+            return;
+        }
+
+        autoMLAuthToken = token;
+        if (tokenManager != null) {
+            tokenManager.saveAutoMLToken(token);
+        }
+        Log.d(TAG, "Token Bearer défini: " + token.substring(0, Math.min(50, token.length())) + "...");
+    }
+
+    private static boolean isLikelyShroomleurToken(String token) {
+        if (token == null || token.isEmpty() || tokenManager == null) {
+            return false;
+        }
+
+        try {
+            String shroomleurToken = tokenManager.getToken();
+            return shroomleurToken != null && shroomleurToken.equals(token);
+        } catch (Exception e) {
+            Log.w(TAG, "Impossible de verifier la provenance du token", e);
+            return false;
         }
     }
 
@@ -148,6 +190,16 @@ public class AutoMLRetrofitClient {
      * @return Le token, ou null si non défini
      */
     public String getAuthToken() {
+        if (autoMLAuthToken == null || autoMLAuthToken.isEmpty()) {
+            autoMLAuthToken = tokenManager != null ? tokenManager.getAutoMLToken() : null;
+        }
+
+        if (isLikelyShroomleurToken(autoMLAuthToken)) {
+            Log.e(TAG, "Token AutoML invalide: correspond au token Shroomleur, purge locale");
+            clearAuthToken();
+            return null;
+        }
+
         return autoMLAuthToken;
     }
 
@@ -165,6 +217,9 @@ public class AutoMLRetrofitClient {
      */
     public void clearAuthToken() {
         autoMLAuthToken = null;
+        if (tokenManager != null) {
+            tokenManager.clearAutoMLToken();
+        }
         Log.d(TAG, "Token Bearer effacé");
     }
 
