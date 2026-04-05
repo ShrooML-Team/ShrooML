@@ -108,4 +108,43 @@ public class OAuthApiConnectionTest {
         assertEquals("new-token", response.body().getAccess_token());
         assertEquals("new_user", response.body().getUser().getIdentifiant());
     }
+
+    @Test
+    public void exchangeGoogleToken_postsJsonBodyToGoogleEndpoint() throws Exception {
+        mockWebServer.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody("{\"access_token\":\"google-token\",\"token_type\":\"bearer\",\"user\":{\"id\":99,\"identifiant\":\"google_user\"}}")
+                .addHeader("Content-Type", "application/json"));
+
+        Response<TokenResponseFull> response = api.exchangeGoogleToken(new GoogleTokenRequest("id-token-value", "android")).execute();
+        RecordedRequest request = mockWebServer.takeRequest();
+        String body = request.getBody().readUtf8();
+
+        assertEquals("POST", request.getMethod());
+        assertEquals("/auth/google/idtoken", request.getPath());
+        assertTrue(body.contains("\"idToken\":\"id-token-value\""));
+        assertTrue(body.contains("\"platform\":\"android\""));
+
+        assertTrue(response.isSuccessful());
+        assertNotNull(response.body());
+        assertEquals("google-token", response.body().getAccess_token());
+        assertEquals("google_user", response.body().getUser().getIdentifiant());
+    }
+
+    @Test
+    public void loginFull_whenUnauthorized_returnsErrorResponse() throws Exception {
+        mockWebServer.enqueue(new MockResponse()
+                .setResponseCode(401)
+                .setBody("{\"detail\":\"Unauthorized\"}")
+                .addHeader("Content-Type", "application/json"));
+
+        Response<TokenResponseFull> response = api.login(new LoginRequest("alice", "bad-password")).execute();
+        RecordedRequest request = mockWebServer.takeRequest();
+
+        assertEquals("POST", request.getMethod());
+        assertEquals("/auth/login", request.getPath());
+        assertTrue(response.code() == 401);
+        assertTrue(!response.isSuccessful());
+        assertNotNull(response.errorBody());
+    }
 }

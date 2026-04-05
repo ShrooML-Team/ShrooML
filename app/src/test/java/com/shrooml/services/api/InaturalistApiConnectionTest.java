@@ -63,4 +63,22 @@ public class InaturalistApiConnectionTest {
         assertNotNull(response.body());
         assertEquals(1, response.body().getAsJsonArray("results").size());
     }
+
+    @Test
+    public void getObservation_whenServerError_returns500AndEncodedQuery() throws Exception {
+        mockWebServer.enqueue(new MockResponse()
+                .setResponseCode(500)
+                .setBody("{\"error\":\"upstream\"}")
+                .addHeader("Content-Type", "application/json"));
+
+        Response<JsonObject> response = api.getObservation("Cantharellus cibarius", true, 3, "any").execute();
+        RecordedRequest request = mockWebServer.takeRequest();
+
+        assertEquals("GET", request.getMethod());
+        assertTrue(request.getPath().startsWith("/observations?"));
+        assertTrue(request.getPath().contains("taxon_name=Cantharellus%20cibarius"));
+        assertTrue(request.getPath().contains("per_page=3"));
+        assertEquals(500, response.code());
+        assertTrue(!response.isSuccessful());
+    }
 }
