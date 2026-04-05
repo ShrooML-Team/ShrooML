@@ -12,16 +12,15 @@ public class MushroomEntityTest {
         String[] season = {"spring", "autumn"};
         String[] habitat = {"forest", "meadow"};
 
-        MushroomEntity entity = new MushroomEntity(
-                "Agaricus bisporus",
-                "Champignon de Paris",
-                "edible",
-                season,
-                12,
-                24,
-                60,
-                habitat
-        );
+        MushroomEntity entity = new MushroomEntity();
+        entity.setScientific_name("Agaricus bisporus");
+        entity.setCommon_name("Champignon de Paris");
+        entity.setEdibility("edible");
+        entity.setSeason(season);
+        entity.setMin_temp(12);
+        entity.setMax_temp(24);
+        entity.setMin_humidity(60);
+        entity.setHabitat(habitat);
 
         assertEquals("Agaricus bisporus", entity.getScientific_name());
         assertEquals("Champignon de Paris", entity.getCommon_name());
