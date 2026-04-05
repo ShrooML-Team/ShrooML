@@ -62,11 +62,12 @@ public class ApiDtoTest {
         user.setIdentifiant("alice");
         user.setEmail("alice@test.com");
         user.setPhoto_profil("https://img");
-        user.setDescription("hello");
+        user.setDescription_index(4);
         user.setChampignon_prefere("Cep");
         user.setScoring(12.5f);
         user.setStreak(3);
         user.setNiveau(2);
+        user.setRang(8);
         user.setCreated_at("2026-01-01T10:00:00Z");
         user.setIs_active(true);
 
@@ -82,11 +83,12 @@ public class ApiDtoTest {
         assertEquals("alice", token.getUser().getIdentifiant());
         assertEquals("alice@test.com", token.getUser().getEmail());
         assertEquals("https://img", token.getUser().getPhoto_profil());
-        assertEquals("hello", token.getUser().getDescription());
+        assertEquals(Integer.valueOf(4), token.getUser().getDescription_index());
         assertEquals("Cep", token.getUser().getChampignon_prefere());
         assertEquals(12.5f, token.getUser().getScoring(), 0.0001f);
         assertEquals(3, token.getUser().getStreak());
         assertEquals(2, token.getUser().getNiveau());
+        assertEquals(8, token.getUser().getRang());
         assertEquals("2026-01-01T10:00:00Z", token.getUser().getCreated_at());
         assertTrue(token.getUser().isIs_active());
     }
