@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- fond transparent -->
+    <solid android:color="@android:color/transparent"/>
+
+    <!-- contour blanc -->
+    <stroke
+        android:width="3dp"
+        android:color="#FFFFFF"/>
+
+    <!-- forme capsule -->
+    <corners android:radius="100dp"/>
+
+</shape>

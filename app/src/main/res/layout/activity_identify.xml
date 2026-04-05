@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/rootLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -32,6 +33,21 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
+        <ImageButton
+            android:id="@+id/btn_toggle_mode"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="52dp"
+            android:background="@drawable/circle_button"
+            android:backgroundTint="#80FFFFFF"
+            android:contentDescription="Switch to form mode"
+            android:padding="8dp"
+            android:src="@drawable/ic_edit"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
         <ImageView
             android:id="@+id/titleIcon"
             android:layout_width="35sp"
@@ -42,7 +58,6 @@
             app:layout_constraintTop_toTopOf="@id/title"
             app:layout_constraintBottom_toBottomOf="@id/title"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     <!-- Séparateur sous le titre -->
     <View
@@ -57,8 +72,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/imageContainer"
+    <!-- Container pour les fragments (Camera ou Form) -->
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="30dp"
@@ -68,68 +85,10 @@
         app:layout_constraintTop_toBottomOf="@id/separatorTitle"
         app:layout_constraintBottom_toTopOf="@id/separator2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <!-- Image -->
-        <ImageView
-            android:id="@+id/mushroomImage"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="#33FFFFFF"
-            android:scaleType="centerCrop"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-        <ImageButton
-            android:id="@+id/btnZoom"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_margin="12dp"
-            android:background="@drawable/circle_button"
-            android:backgroundTint="#FC000000"
-            android:padding="2dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_zoom"
-            android:contentDescription="Zoom image"
-
-            app:layout_constraintTop_toTopOf="@id/mushroomImage"
-            app:layout_constraintEnd_toEndOf="@id/mushroomImage"/>
+        app:layout_constraintEnd_toEndOf="parent"/>
 
         <!-- Container des boutons -->
-        <LinearLayout
-            android:id="@+id/buttonContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
 
-            <ImageButton
-                android:id="@+id/btnGallery"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/circle_button"
-                android:padding="4dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_gallery" />
-
-            <ImageButton
-                android:id="@+id/btnTakePhoto"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@drawable/circle_button"
-                android:padding="8dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_camera" />
-
-        </LinearLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Séparateur 2 -->
     <View
@@ -140,81 +99,54 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="12dp"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavWrapper"
+        app:layout_constraintBottom_toTopOf="@id/navContainer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/bottomNavWrapper"
-        android:layout_width="0dp"
-        android:layout_height="70dp"
-        android:background="@android:color/transparent"
+        android:id="@+id/navContainer"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:background="@android:color/transparent">
 
-        <!-- Chevron gauche -->
         <ImageView
             android:id="@+id/chevronLeft"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:src="@drawable/ic_chevron_left"
-            android:alpha="0.4"
+            android:alpha="0.5"
             android:layout_marginStart="8dp"
+            app:tint="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <!-- Scroll horizontal -->
-        <HorizontalScrollView
-            android:id="@+id/bottomNavContainer"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/bottomNavRecycler"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:scrollbars="none"
-            android:fillViewport="false"
-            android:background="@android:color/transparent"
-            android:fadingEdge="none"
-            android:requiresFadingEdge="none"
+            android:clipToPadding="false"
+            android:paddingStart="140dp"
+            android:paddingEnd="140dp"
             android:overScrollMode="never"
-            android:scrollbarStyle="insideOverlay"
             app:layout_constraintStart_toEndOf="@id/chevronLeft"
             app:layout_constraintEnd_toStartOf="@id/chevronRight"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
-            <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/bottomNav"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@android:color/transparent"
-                android:elevation="0dp"
-                app:elevation="0dp"
-                app:backgroundTint="@android:color/transparent"
-                app:itemIconTint="@color/transparent"
-                app:itemIconSize="0dp"
-                app:itemTextColor="@color/white"
-                android:layout_marginBottom="17dp"
-                app:itemTextAppearanceActive="@style/BottomNavText"
-                app:itemTextAppearanceInactive="@style/BottomNavText"
-                app:menu="@menu/bottom_nav_menu"
-                app:labelVisibilityMode="labeled"/>
-
-
-        </HorizontalScrollView>
-
-        <!-- Chevron droit -->
         <ImageView
             android:id="@+id/chevronRight"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:src="@drawable/ic_chevron_right"
-            android:alpha="0.4"
+            android:alpha="0.5"
             android:layout_marginEnd="8dp"
+            app:tint="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

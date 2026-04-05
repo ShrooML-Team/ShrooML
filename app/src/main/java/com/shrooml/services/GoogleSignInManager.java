@@ -8,10 +8,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import android.util.Log;
 import com.shrooml.services.api.TokenResponseFull;
 
 public class GoogleSignInManager {
     public static final int RC_SIGN_IN = 9001;
+    private static final String TAG = "GoogleSignInManager";
 
     private GoogleSignInClient mGoogleSignInClient;
     private OAuthService oAuthService;
@@ -23,6 +25,8 @@ public class GoogleSignInManager {
 
     public GoogleSignInManager(Context context, String googleClientId) {
         this.oAuthService = new OAuthService(true);
+
+        Log.d(TAG, "Initialisation Google Sign-In avec un client OAuth Web configuré: " + (googleClientId != null && !googleClientId.isEmpty()));
 
         // Configurer Google Sign-In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -61,6 +65,11 @@ public class GoogleSignInManager {
                 callback.onError("Compte Google introuvable");
             }
         } catch (ApiException e) {
+            Log.e(TAG, "Echec Google Sign-In, code=" + e.getStatusCode(), e);
+            if (e.getStatusCode() == 10) {
+                callback.onError("Erreur Google Sign-In 10: utilisez le client OAuth Web dans requestIdToken et verifiez le package com.shrooml ainsi que le SHA-1 de la cle de signature.");
+                return;
+            }
             callback.onError("Erreur Google Sign-In: " + e.getStatusCode() + " - " + e.getMessage());
         }
     }

@@ -4,6 +4,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 public interface OAuthApi {
@@ -20,6 +21,9 @@ public interface OAuthApi {
 
     @POST("auth/register")
     Call<TokenResponseFull> register(@Body RegisterRequest request);
+
+    @POST("auth/refresh")
+    Call<TokenResponseFull> refresh(@Header("Authorization") String authorization);
 
     @POST("auth/google/idtoken")
     Call<TokenResponseFull> exchangeGoogleToken(@Body GoogleTokenRequest request);

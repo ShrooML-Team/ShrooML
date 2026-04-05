@@ -1,6 +1,6 @@
 package com.shrooml.services.api;
 
-public class GoogleTokenRequest {
+public class    GoogleTokenRequest {
     private String idToken;
     private String platform;
 

@@ -8,6 +8,7 @@ import com.shrooml.services.api.TokenResponseFull;
 import com.shrooml.services.api.LoginRequest;
 import com.shrooml.services.api.RegisterRequest;
 
+import java.io.IOException;
 import java.util.List;
 
 import retrofit2.Call;
@@ -16,7 +17,6 @@ import retrofit2.Response;
 
 public class OAuthService {
 
-    private List<MushroomEntity> mushrooms;
 
     private final OAuthApi api;
 
@@ -114,6 +114,27 @@ public class OAuthService {
         });
     }
 
+    public void refreshUserSession(String authToken, OAuthUserCallback callback) {
+        Call<TokenResponseFull> call = api.refresh("Bearer " + authToken);
+
+        call.enqueue(new Callback<TokenResponseFull>() {
+            @Override
+            public void onResponse(Call<TokenResponseFull> call, Response<TokenResponseFull> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                    return;
+                }
+
+                callback.onError("Erreur refresh session : " + response.code());
+            }
+
+            @Override
+            public void onFailure(Call<TokenResponseFull> call, Throwable t) {
+                callback.onError("Erreur réseau : " + t.getMessage());
+            }
+        });
+    }
+
     public void exchangeGoogleToken(com.shrooml.services.api.GoogleTokenRequest request, OAuthUserCallback callback) {
         Call<TokenResponseFull> call = api.exchangeGoogleToken(request);
 
@@ -126,7 +147,14 @@ public class OAuthService {
                     callback.onSuccess(response.body());
 
                 } else {
-                    callback.onError("Erreur Google Sign-In : " + response.code() + " - " + response.message());
+                    String errorDetail = response.message();
+                    try {
+                        if (response.errorBody() != null) {
+                            errorDetail = response.errorBody().string();
+                        }
+                    } catch (IOException ignored) {
+                    }
+                    callback.onError("Erreur Google Sign-In : " + response.code() + " - " + errorDetail);
                 }
             }
 

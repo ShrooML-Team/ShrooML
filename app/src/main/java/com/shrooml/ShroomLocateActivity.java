@@ -4,11 +4,16 @@ import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.SensorManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
 import android.location.Location;
 import com.google.android.gms.location.LocationRequest;
+
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -17,7 +22,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,29 +30,30 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.Priority;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.shrooml.models.MushroomAdapter;
 import com.shrooml.models.MushroomCompleteEntity;
 import com.shrooml.services.OAuthService;
 import com.shrooml.services.ShroomLocService;
-import com.shrooml.services.api.ShroomLocApi;
-import com.shrooml.services.api.ShroomLocRetrofitClient;
 
-import java.text.BreakIterator;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
+import android.content.Context;
 
-public class ShroomLocateActivity extends AppCompatActivity {
+public class ShroomLocateActivity extends BackgroundActivity {
+
+    private SensorManager sensorManager;
+    private Sensor accelerometer;
+
+    private float shakeThreshold = 12f; // seuil de secouage
+    private long lastShakeTime = 0;
 
     private static final int REQUEST_LOCATION = 1001;
 
     private FusedLocationProviderClient fusedLocationClient;
     private ShroomLocService api;
-    private TextView mushroomListText;
 
     private ImageView refreshButton;
 
@@ -58,23 +63,40 @@ public class ShroomLocateActivity extends AppCompatActivity {
     private ObjectAnimator refreshAnimator;
 
     private TextView loadingText;
-    private TextView emptyMessage;
+    private View emptyState;
+    private TextView emptyTitle;
+    private TextView emptySubtitle;
+
     private RecyclerView recycler;
 
     private Handler handler = new Handler();
     private Runnable loadingAnimation;
+
+    private Vibrator vibrator;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_locate);
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
 
         loadingText = findViewById(R.id.loadingText);
-        emptyMessage = findViewById(R.id.emptyMessage);
+        emptyState = findViewById(R.id.emptyState);
+        emptyTitle = findViewById(R.id.emptyTitle);
+        emptySubtitle = findViewById(R.id.emptySubtitle);
+
         recycler = findViewById(R.id.mushroomRecycler);
 
-        String[] frames = {"loading .", "loading ..", "loading ..."};
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+        String[] frames = {
+                getString(R.string.loading_1),
+                getString(R.string.loading_2),
+                getString(R.string.loading_3)
+        };
         final int[] index = {0};
 
         loadingAnimation = new Runnable() {
@@ -91,21 +113,8 @@ public class ShroomLocateActivity extends AppCompatActivity {
 
         OAuthService api_auth = new OAuthService();
 
-
-        api_auth.login("admin", "password123", new OAuthService.OAuthCallback() {
-            @Override
-            public void onSuccess(String token) {
-                ShroomLocRetrofitClient.setToken(token);
-                api = new ShroomLocService();
-                requestLocationPermission();
-            }
-
-            @Override
-            public void onError(String errorMessage) {
-                Toast.makeText(ShroomLocateActivity.this, "Erreur : "
-                        + errorMessage, Toast.LENGTH_LONG).show();
-            }
-        });
+        api = new ShroomLocService();
+        requestLocationPermission();
 
         refreshButton = findViewById(R.id.refreshButton);
         refreshAnimator = ObjectAnimator.ofFloat(refreshButton, "rotation", 0f, 360f);
@@ -128,36 +137,53 @@ public class ShroomLocateActivity extends AppCompatActivity {
 
 
 
-        BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
-        bottomNav.setSelectedItemId(R.id.nav_locate);
+        activityId = 1;
+        initNavBar(ShroomLocateActivity.this);
 
+    }
 
-        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+    private final SensorEventListener shakeListener = new SensorEventListener() {
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            float x = event.values[0];
+            float y = event.values[1];
+            float z = event.values[2];
 
-                int id = item.getItemId();
+            // Calcul de l'accélération brute
+            float acceleration = (float) Math.sqrt(x * x + y * y + z * z);
 
-                if (id == R.id.nav_locate) {
-                    return true;
+            long currentTime = System.currentTimeMillis();
+
+            if (acceleration > shakeThreshold && (currentTime - lastShakeTime) > 1000) {
+                lastShakeTime = currentTime;
+
+                // 👉 Action : lancer le refresh
+                if (!refreshAnimator.isRunning()) {
+                    refreshAnimator.start();
                 }
-                if (id == R.id.nav_quiz) {
-                    startActivity(new Intent(ShroomLocateActivity.this, QuizActivity.class));
-                    return true;
-                }
-                if (id == R.id.nav_home) {
-                    startActivity(new Intent(ShroomLocateActivity.this, SplashActivity.class));
-                    return true;
-                }
-                if(id == R.id.nav_identify) {
-                    startActivity(new Intent(ShroomLocateActivity.this, IdentifyActivity.class));
-                    return true;
-                }
 
-                return false;
+                if (lastLat != 0 && lastLon != 0) {
+                    callApi(lastLat, lastLon);
+                } else {
+                    Toast.makeText(ShroomLocateActivity.this, "Location not ready yet", Toast.LENGTH_SHORT).show();
+                }
             }
-        });
+        }
 
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+    };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sensorManager.registerListener(shakeListener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(shakeListener);
     }
 
 
@@ -249,7 +275,7 @@ public class ShroomLocateActivity extends AppCompatActivity {
         lastLat = lat;
         lastLon = lon;
         loadingText.setVisibility(View.VISIBLE);
-        emptyMessage.setVisibility(View.GONE);
+        emptyState.setVisibility(View.GONE);
         recycler.setVisibility(View.GONE);
 
         handler.post(loadingAnimation);
@@ -269,13 +295,20 @@ public class ShroomLocateActivity extends AppCompatActivity {
 
                 // Cas liste vide
                 if (mushrooms == null || mushrooms.isEmpty()) {
-                    emptyMessage.setVisibility(View.VISIBLE);
+                    emptyState.setVisibility(View.VISIBLE);
                     recycler.setVisibility(View.GONE);
+
+                    //Retour haptique
+                    if (vibrator != null && vibrator.hasVibrator()) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            vibrator.vibrate(VibrationEffect.createOneShot(250, 150));
+                        }
+                    }
                     return;
                 }
 
                 // Cas liste non vide
-                emptyMessage.setVisibility(View.GONE);
+                emptyState.setVisibility(View.GONE);
                 recycler.setVisibility(View.VISIBLE);
 
                 recycler.setLayoutManager(new LinearLayoutManager(ShroomLocateActivity.this));
@@ -288,6 +321,13 @@ public class ShroomLocateActivity extends AppCompatActivity {
                     intent.putExtra("scientificName", m.getScientificName());
                     startActivity(intent);
                 });
+
+                //Retour haptique
+                if (vibrator != null && vibrator.hasVibrator()) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        vibrator.vibrate(VibrationEffect.createOneShot(250, 150));
+                    }
+                }
             }
 
 
@@ -303,12 +343,22 @@ public class ShroomLocateActivity extends AppCompatActivity {
                 }
 
                 if ("EMPTY_LIST".equals(errorMessage)) {
-                    emptyMessage.setText("Aucun champignon trouvé à cet endroit");
+                    emptyTitle.setText(getString(R.string.noMushroomFoundNearYou));
+                    emptySubtitle.setText(getString(R.string.changeLocation));
+
+                    emptyState.setVisibility(View.VISIBLE);
+                    recycler.setVisibility(View.GONE);
+
                 } else {
-                    emptyMessage.setText("Erreur : " + errorMessage);
+                    emptyTitle.setText(getString(R.string.noMushroomFoundNearYou));
+                    emptySubtitle.setText(getString(R.string.changeLocation));
+
+                    emptyState.setVisibility(View.VISIBLE);
+                    recycler.setVisibility(View.GONE);
+
                 }
 
-                emptyMessage.setVisibility(View.VISIBLE);
+                emptyState.setVisibility(View.VISIBLE);
                 recycler.setVisibility(View.GONE);
             }
         });
@@ -335,6 +385,18 @@ public class ShroomLocateActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "Permission localisation refusée", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    // Dans ShroomLocateActivity.java
+    @Override
+    protected void onCorruptedStateChanged() {
+        super.onCorruptedStateChanged();
+
+        // On demande à la liste de se rafraîchir immédiatement
+        if (recycler != null && recycler.getAdapter() != null) {
+            // notifyDataSetChanged force onBindViewHolder à s'exécuter pour chaque item
+            recycler.getAdapter().notifyDataSetChanged();
         }
     }
 }
