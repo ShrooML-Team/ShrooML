@@ -1,0 +1,27 @@
+package com.shrooml.services.api;
+
+import com.shrooml.models.MushroomCompleteEntity;
+import com.shrooml.models.MushroomEntity;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
+
+public interface ShroomLocApi {
+    @GET("mushrooms/all")
+    Call<List<MushroomEntity>> getall();
+
+    @GET("mushrooms")
+    Call<List<MushroomCompleteEntity>> getMushroomsByLatiLong(
+                                            @Query("latitude") double latitude,
+                                            @Query("longitude") double longitude
+    );
+    @GET("mushrooms/{name}")
+    Call<MushroomCompleteEntity> getMushroomsByName(
+            @Path(value = "name", encoded = true) String name
+    );
+
+}

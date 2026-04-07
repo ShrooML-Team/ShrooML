@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#db9b71">
+
+    <!-- Titre en haut avec marge -->
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ShrooML"
+        android:textColor="#FFFFFF"
+        android:textSize="70sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/sugo_display"
+        android:layout_marginTop="120dp"
+        android:alpha="0"
+        android:layout_centerHorizontal="true"/>
+
+    <!-- Loading sous le titre -->
+    <TextView
+        android:id="@+id/loadingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/loadSplash"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"
+        android:layout_below="@id/title"
+        android:layout_marginTop="15dp"
+        android:alpha="0"
+        android:layout_centerHorizontal="true"/>
+
+    <!-- Logo collé en bas -->
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="350dp"
+        android:layout_height="200dp"
+        android:src="@drawable/logo_splash_bottom"
+        android:contentDescription="Logo"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:alpha="0"
+        android:layout_marginBottom="0dp"/>
+</RelativeLayout>

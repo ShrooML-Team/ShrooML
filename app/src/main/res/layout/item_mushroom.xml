@@ -1,0 +1,59 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/rootLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="12dp"
+    android:background="@drawable/item_bg"
+    android:layout_marginBottom="12dp">
+
+    <FrameLayout
+        android:id="@+id/mushroomImageContainer"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@drawable/mushroom_image_bg"
+        android:padding="2dp"
+        android:clipToPadding="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:id="@+id/mushroomImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/mushroom_image_bg"
+            android:scaleType="centerCrop"
+            android:clipToOutline="true"/>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/commonName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/mushroomImageContainer"
+        app:layout_constraintTop_toTopOf="@+id/mushroomImageContainer"
+        app:layout_constraintEnd_toStartOf="@id/statusIcon"
+        android:layout_marginStart="12dp"/>
+
+    <TextView
+        android:id="@+id/scientificName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="#DDDDDD"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/commonName"
+        app:layout_constraintTop_toBottomOf="@id/commonName"
+        app:layout_constraintEnd_toEndOf="@id/commonName"/>
+
+    <ImageView
+        android:id="@+id/statusIcon"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/commonName"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

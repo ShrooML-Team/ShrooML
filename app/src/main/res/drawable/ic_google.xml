@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+
+    <!-- White circle background -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M24,4C13,4 4,13 4,24C4,35 13,44 24,44C35,44 44,35 44,24C44,13 35,4 24,4Z" />
+
+    <!-- Blue part of G -->
+    <path
+        android:fillColor="#4285F4"
+        android:pathData="M35.5,24.2C35.5,23.5 35.4,22.8 35.3,22H24V26.1H30.5C30.2,27.7 29.3,29 28,29.8V32.5H31.9C34.2,30.4 35.5,27.6 35.5,24.2Z" />
+
+    <!-- Green part of G -->
+    <path
+        android:fillColor="#34A853"
+        android:pathData="M24,35C27,35 29.5,34 31.9,32.5L28,29.8C27,30.4 25.7,30.7 24,30.7C21.1,30.7 18.6,28.7 17.7,25.9H13.7V28.8C16.1,33.5 19.8,35 24,35Z" />
+
+    <!-- Yellow part of G -->
+    <path
+        android:fillColor="#FBBC04"
+        android:pathData="M17.7,25.9C17.5,25.3 17.3,24.7 17.3,24C17.3,23.3 17.5,22.7 17.7,22.1V19.2H13.7C13,20.6 12.6,22.2 12.6,24C12.6,25.8 13,27.4 13.7,28.8L17.7,25.9Z" />
+
+    <!-- Red part of G -->
+    <path
+        android:fillColor="#EA4335"
+        android:pathData="M24,17.3C25.9,17.3 27.5,18 28.8,19.2L32,16C29.6,13.8 27,12.6 24,12.6C19.8,12.6 16.1,15.1 13.7,19.2L17.7,22.1C18.6,19.3 21.1,17.3 24,17.3Z" />
+
+</vector>

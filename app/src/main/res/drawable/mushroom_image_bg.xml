@@ -1,0 +1,14 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- Coins arrondis -->
+    <corners android:radius="12dp"/>
+
+    <!-- Bordure blanche -->
+    <stroke
+        android:width="2dp"
+        android:color="#FFFFFFFF"/>
+
+    <!-- Fond transparent -->
+    <solid android:color="@android:color/transparent"/>
+</shape>

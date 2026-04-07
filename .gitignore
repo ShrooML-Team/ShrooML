@@ -32,3 +32,9 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# VS Code
+.vscode/
+
+# gradle.properties 
+gradle.properties

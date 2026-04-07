@@ -1,0 +1,14 @@
+<resources>
+    <style name="Theme.SplashBackground" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="Theme.ShrooMLSplash"
+        parent="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+
+        <item name="android:windowBackground">@drawable/launch_background</item>
+
+    </style>
+</resources>

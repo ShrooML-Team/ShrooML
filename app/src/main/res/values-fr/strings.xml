@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="loadSplash">Chargement ...</string>
+
+
+    <string name="app_name">ShrooML appli</string>
+    <string name="hello_world">Bonjour le monde !</string>
+    <string name="menu_settings">Paramètre</string>
+
+    <string name="quizz_question_1">Comment s\'appelle ce champignon ?</string>
+    <string name="quizz_question_2">Quel est le nom scientifique du %1$s ?</string>
+    <string name="quizz_question_3">Le champignon %1$s est-il comestible ?</string>
+    <string name="quizz_question_4">Dans qu\'elle habitat pousse le %1$s ?</string>
+    <string name="quizz_question_5">En qu\'elle saison pousse le %1$s ?</string>
+
+    <!--<string name="summer">été</string>
+    <string name="winter">hiver</string>
+    <string name="spring">printemps</string>
+    <string name="autumn">automne</string>-->
+
+    <string name="summer">summer</string>
+    <string name="winter">winter</string>
+    <string name="spring">spring</string>
+    <string name="autumn">autumn</string>
+
+    <string name="title_1">Vous êtes un champignon Noobs</string>
+    <string name="title_2">Vous êtes un champignon novice</string>
+    <string name="title_3">Vous êtes un champignon débutant</string>
+    <string name="title_4">Vous êtes un champignon confirmé</string>
+    <string name="title_5">Vous êtes un champignon expert</string>
+    <string name="title_6">Vous êtes un champiRoi</string>
+    <string name="nav_profile_title">Profil</string>
+
+    <string name="descriptionLocate">ShrooML Locate vous aide à identifier les espèces de champignons susceptibles de pousser près de chez vous, en fonction de votre localisation, de votre biome et de la météo, grâce à ShroomLoc !</string>
+    <string name="noMushroomFoundNearYou">Aucun champignon trouvé proche de vous.</string>
+    <string name="changeLocation">Essayez de changer d\'endroit ou rafraichissez.</string>
+
+    <string name="tox">Toxicité</string>
+    <string name="genInfo">Informations générales</string>
+    <string name="eco">Écologie</string>
+    <string name="reci">Recette</string>
+    <string name="accu">Précision</string>
+
+    <string name="loading_1">Chargement .</string>
+    <string name="loading_2">Chargement ..</string>
+    <string name="loading_3">Chargement ...</string>
+
+
+    <string name="choice_title">Choix d\'identification</string>
+
+    <string name="choice_description">ShrooML vous aide a identifier un champigon
+        en ce basant sur une image ou critère grace au machine learning !</string>
+
+    <string name="choice_label">— OU —</string>
+
+    <!-- Profile page strings -->
+    <string name="profile_favorite_mushroom">Champignon préféré</string>
+    <string name="profile_informations">Informations</string>
+    <string name="profile_edition">Édition</string>
+    <string name="profile_score">Score : %s</string>
+    <string name="profile_streak">Streak : %s</string>
+    <string name="profile_niveau">Niveau : %s</string>
+    <string name="profile_created_at">Créé le : %s</string>
+    <string name="profile_common_name">Nom commun : %s</string>
+    <string name="profile_scientific_name">Nom scientifique : %s</string>
+    <string name="profile_picture">Photo de profil</string>
+    <string name="profile_favorite_image">Image du champignon préféré</string>
+    <string name="profile_edibility_status">Statut de comestibilité</string>
+
+    <!-- Login page strings -->
+    <string name="login_title">Connexion</string>
+    <string name="login_identifiant_hint">Identifiant ...</string>
+    <string name="login_password_hint">Mot de passe ...</string>
+    <string name="login_button">CONNEXION</string>
+    <string name="login_or_text">- ou -</string>
+    <string name="login_google_signin">Connexion Google</string>
+    <string name="login_not_registered">Pas encore inscrit ?</string>
+    <string name="login_register_button">S\'INSCRIRE</string>
+
+    <!-- Register page strings -->
+    <string name="register_title">Inscription</string>
+    <string name="register_identifiant_hint">Identifiant ...</string>
+    <string name="register_email_hint">E-mail ...</string>
+    <string name="register_password_hint">Mot de passe ...</string>
+    <string name="register_favorite_mushroom_hint">Champignon préféré ...</string>
+    <string name="register_button">S\'INSCRIRE</string>
+    <string name="register_or_text">- ou -</string>
+    <string name="register_google_signin">Connexion Google</string>
+    <string name="register_back_to_login">← Retour à la connexion</string>
+
+    <!-- Profile Edit Form -->
+    <string name="profile_email_hint">E-mail</string>
+    <string name="profile_favorite_mushroom_input">Champignon préféré</string>
+    <string name="profile_save_button">Enregistrer</string>
+    <string name="profile_logout_button">Déconnexion</string>
+    <string name="profile_logout_success">Déconnexion réussie</string>
+    <string name="profile_history_title">Historique d\'identification</string>
+    <string name="profile_history_loading">Chargement de l\'historique...</string>
+    <string name="profile_history_empty">Aucune identification pour le moment.</string>
+
+    <!-- Result fragment strings -->
+    <string name="result_title">ShroomML</string>
+    <string name="result_description">ShroomML vous aide à déterminer la comestibilité d\'un champignon en fonction de ses caractéristiques grâce à AutoML. Veuillez noter que l\'évaluation finale de la comestibilité reste incertaine, car l\'IA peut se tromper.</string>
+    <string name="result_mushroom_label">Votre champignon est :</string>
+    <string name="result_placeholder">...</string>
+    <string name="result_disclaimer">ShroomML décline toute responsabilité pour tout problème résultant de la consommation d\'un champignon identifié avec ShroomML.</string>
+    <string name="result_new_prediction">Nouvelle prédiction</string>
+    <string name="profile_history_unavailable">Historique indisponible.</string>
+    <string name="profile_history_item_main">• %1$s • %2$s pts</string>
+    <string name="profile_history_today">Aujourd\'hui</string>
+    <string name="profile_history_days_ago">Il y a %1$d jours</string>
+    <string name="profile_history_one_month_ago">Il y a 1 mois</string>
+    <string name="profile_history_months_ago">Il y a %1$d mois</string>
+    <string name="profile_history_one_year_ago">Il y a 1 an</string>
+    <string name="profile_history_years_ago">Il y a %1$d ans</string>
+
+    <!-- Profile Descriptions - Phrases rigolotes -->
+    <string-array name="profile_descriptions">
+        <item>Chasseur de champignons extraordinaire</item>
+        <item>Enthousiaste de mycologie confirmé</item>
+        <item>Je vis ma vie de crapaud</item>
+        <item>Collecteur de spores en formation</item>
+        <item>Passionné absolu des fungus</item>
+        <item>Collectionneur de chapeaux errants</item>
+        <item>Obsédé sérieusement par les spores</item>
+        <item>Nerd mycologie pour toujours</item>
+        <item>Les potins fongiques me motivent</item>
+        <item>Aventures avec fungus géniales</item>
+        <item>Manger des champignons pure joie</item>
+        <item>La chasse aux champignons me vit</item>
+        <item>La science fongique rend heureuse</item>
+        <item>Amoureux des caps sans limite</item>
+        <item>Expert du royaume fongique progressif</item>
+    </string-array>
+
+    <string name="CorrectAnswer">La bonne réponse est : %1$s</string>
+
+    <string name="trueAnswer">Vrai</string>
+    <string name="falseAnswer">Faux</string>
+
+    <string name="playAgain">Rejouer</string>
+    <string name="backHome">Accueil</string>
+    <string name="nextButton">Suivant</string>
+    <string name="score">Score : %1$s/5</string>
+
+    <!-- ResultFragment strings -->
+    <string name="result_edible">🍄 Comestible</string>
+    <string name="result_inedible">☠️ Non comestible</string>
+
+    <!-- CameraFragment strings -->
+    <string name="camera_file_read_error">Erreur lecture fichier</string>
+    <string name="camera_create_photo_error">Impossible de créer le fichier photo</string>
+    <string name="camera_not_mushroom">Cette photo n\'est pas un champignon</string>
+    <string name="camera_permission_required">Permission caméra requise</string>
+    <string name="camera_low_light">Lumière faible, pensez à activer la lampe torche</string>
+
+    <!-- FormFragment strings -->
+    <string name="form_please_login">Veuillez vous connecter d\'abord</string>
+    <string name="form_no_prediction">Aucune prédiction reçue</string>
+    <string name="form_network_error">Erreur réseau : %s</string>
+    <string name="form_view_not_initialized">Erreur : vue non initialisée</string>
+    <string name="form_fill_all_fields">Veuillez remplir tous les champs</string>
+    <string name="form_identifying">Identification…</string>
+    <string name="form_identify">Identifier</string>
+    <string name="form_prediction_failed">Prédiction échouée : %d</string>
+    <string name="form_question_cap_shape">Quelle est la forme du chapeau ?</string>
+    <string name="form_question_cap_surface">Quelle est la surface du chapeau ?</string>
+    <string name="form_question_cap_color">Quelle est la couleur du chapeau ?</string>
+    <string name="form_question_bruises">Se tache-t-il au toucher ?</string>
+    <string name="form_question_odor">Quelle est l\'odeur ?</string>
+    <string name="form_question_gill_attachment">Comment les lamelles sont-elles attachées ?</string>
+    <string name="form_question_gill_spacing">Quel est l\'espacement des lamelles ?</string>
+    <string name="form_question_gill_size">Quelle est la taille des lamelles ?</string>
+    <string name="form_question_gill_color">Quelle est la couleur des lamelles ?</string>
+    <string name="form_question_stalk_shape">Quelle est la forme du pied ?</string>
+    <string name="form_question_stalk_root">À quoi ressemble la base du pied ?</string>
+    <string name="form_question_stalk_surface_above">Surface du pied au-dessus de l\'anneau ?</string>
+    <string name="form_question_stalk_surface_below">Surface du pied en dessous de l\'anneau ?</string>
+    <string name="form_question_stalk_color_above">Quelle est la couleur du pied ?</string>
+    <string name="form_question_stalk_color_below">Couleur du pied en dessous de l\'anneau ?</string>
+    <string name="form_question_veil_type">Quel type de voile ?</string>
+    <string name="form_question_veil_color">Quelle est la couleur du voile ?</string>
+    <string name="form_question_ring_number">Combien d\'anneaux ?</string>
+    <string name="form_question_ring_type">Quel type d\'anneau ?</string>
+    <string name="form_question_spore_print_color">Quelle est la couleur de la sporée ?</string>
+    <string name="form_question_population">Quelle est la population ?</string>
+    <string name="form_question_habitat">Quel est l\'habitat ?</string>
+
+    <!-- FormFragment spinner arrays -->
+    <string-array name="spinner_cap_shape">
+        <item>Choisir…</item>
+        <item>Bombé</item>
+        <item>Conique</item>
+        <item>Convexe</item>
+        <item>Plat</item>
+        <item>Mamelonné</item>
+        <item>Déprimé</item>
+    </string-array>
+    <string-array name="spinner_cap_surface">
+        <item>Choisir…</item>
+        <item>Fibreux</item>
+        <item>Sillonné</item>
+        <item>Écailleux</item>
+        <item>Lisse</item>
+    </string-array>
+    <string-array name="spinner_cap_color">
+        <item>Choisir…</item>
+        <item>Brun</item>
+        <item>Beige</item>
+        <item>Cannelle</item>
+        <item>Gris</item>
+        <item>Vert</item>
+        <item>Rose</item>
+        <item>Violet</item>
+        <item>Rouge</item>
+        <item>Blanc</item>
+        <item>Jaune</item>
+    </string-array>
+    <string-array name="spinner_bruises">
+        <item>Choisir…</item>
+        <item>Non</item>
+        <item>Oui</item>
+    </string-array>
+    <string-array name="spinner_odor">
+        <item>Choisir…</item>
+        <item>Amande</item>
+        <item>Anis</item>
+        <item>Créosote</item>
+        <item>Poissonneux</item>
+        <item>Nauséabond</item>
+        <item>Moisi</item>
+        <item>Aucune</item>
+        <item>Piquant</item>
+        <item>Épicé</item>
+    </string-array>
+    <string-array name="spinner_gill_attachment">
+        <item>Choisir…</item>
+        <item>Attachée</item>
+        <item>Descendante</item>
+        <item>Libre</item>
+        <item>Échancrée</item>
+    </string-array>
+    <string-array name="spinner_gill_spacing">
+        <item>Choisir…</item>
+        <item>Serré</item>
+        <item>Dense</item>
+        <item>Espacé</item>
+    </string-array>
+    <string-array name="spinner_gill_size">
+        <item>Choisir…</item>
+        <item>Large</item>
+        <item>Étroit</item>
+    </string-array>
+    <string-array name="spinner_gill_color">
+        <item>Choisir…</item>
+        <item>Noir</item>
+        <item>Brun</item>
+        <item>Beige</item>
+        <item>Chocolat</item>
+        <item>Gris</item>
+        <item>Vert</item>
+        <item>Orange</item>
+        <item>Rose</item>
+        <item>Violet</item>
+        <item>Rouge</item>
+        <item>Blanc</item>
+        <item>Jaune</item>
+    </string-array>
+    <string-array name="spinner_stalk_shape">
+        <item>Choisir…</item>
+        <item>Renflé</item>
+        <item>Effilé</item>
+    </string-array>
+    <string-array name="spinner_stalk_root">
+        <item>Choisir…</item>
+        <item>Bulbeux</item>
+        <item>En massue</item>
+        <item>En coupe</item>
+        <item>Égal</item>
+        <item>Rhizomorphes</item>
+        <item>Enraciné</item>
+    </string-array>
+    <string-array name="spinner_stalk_surface_above">
+        <item>Choisir…</item>
+        <item>Fibreux</item>
+        <item>Écailleux</item>
+        <item>Soyeux</item>
+        <item>Lisse</item>
+    </string-array>
+    <string-array name="spinner_stalk_surface_below">
+        <item>Choisir…</item>
+        <item>Fibreux</item>
+        <item>Écailleux</item>
+        <item>Soyeux</item>
+        <item>Lisse</item>
+    </string-array>
+    <string-array name="spinner_stalk_color_above">
+        <item>Choisir…</item>
+        <item>Brun</item>
+        <item>Beige</item>
+        <item>Cannelle</item>
+        <item>Gris</item>
+        <item>Orange</item>
+        <item>Rose</item>
+        <item>Rouge</item>
+        <item>Blanc</item>
+        <item>Jaune</item>
+    </string-array>
+    <string-array name="spinner_stalk_color_below">
+        <item>Choisir…</item>
+        <item>Brun</item>
+        <item>Beige</item>
+        <item>Cannelle</item>
+        <item>Gris</item>
+        <item>Orange</item>
+        <item>Rose</item>
+        <item>Rouge</item>
+        <item>Blanc</item>
+        <item>Jaune</item>
+    </string-array>
+    <string-array name="spinner_veil_type">
+        <item>Choisir…</item>
+        <item>Partiel</item>
+        <item>Universel</item>
+    </string-array>
+    <string-array name="spinner_veil_color">
+        <item>Choisir…</item>
+        <item>Brun</item>
+        <item>Orange</item>
+        <item>Blanc</item>
+        <item>Jaune</item>
+    </string-array>
+    <string-array name="spinner_ring_number">
+        <item>Choisir…</item>
+        <item>Aucun</item>
+        <item>Un</item>
+        <item>Deux</item>
+    </string-array>
+    <string-array name="spinner_ring_type">
+        <item>Choisir…</item>
+        <item>Arachnéen</item>
+        <item>Évanescent</item>
+        <item>Évasé</item>
+        <item>Grand</item>
+        <item>Aucun</item>
+        <item>Pendant</item>
+    </string-array>
+    <string-array name="spinner_spore_print_color">
+        <item>Choisir…</item>
+        <item>Noir</item>
+        <item>Brun</item>
+        <item>Beige</item>
+        <item>Chocolat</item>
+        <item>Vert</item>
+        <item>Orange</item>
+        <item>Violet</item>
+        <item>Blanc</item>
+        <item>Jaune</item>
+    </string-array>
+    <string-array name="spinner_population">
+        <item>Choisir…</item>
+        <item>Abondant</item>
+        <item>En groupes</item>
+        <item>Nombreux</item>
+        <item>Dispersé</item>
+        <item>Plusieurs</item>
+        <item>Solitaire</item>
+    </string-array>
+    <string-array name="spinner_habitat">
+        <item>Choisir…</item>
+        <item>Prairies</item>
+        <item>Feuilles</item>
+        <item>Prés</item>
+        <item>Sentiers</item>
+        <item>Urbain</item>
+        <item>Déchets</item>
+        <item>Forêts</item>
+    </string-array>
+
+</resources>

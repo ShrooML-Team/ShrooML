@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="loadSplash">Loading ...</string>
+
+    <string name="app_name">ShrooML APP</string>
+    <string name="hello_world">Hello The world !</string>
+    <string name="menu_settings">Settings</string>
+
+    <string name="quizz_question_1">What is the name of this mushroom ?</string>
+    <string name="quizz_question_2">What is the scientific name of the %1$s ?</string>
+    <string name="quizz_question_3">Is the %1$s edible ?</string>
+    <string name="quizz_question_4">In which habitat does the %1$s grow ?</string>
+    <string name="quizz_question_5">In which season does the %1$s grow ?</string>
+
+    <string name="summer">summer</string>
+    <string name="winter">winter</string>
+    <string name="spring">spring</string>
+    <string name="autumn">autumn</string>
+
+    <string name="title_1">You are a mushroom Noobs</string>
+    <string name="title_2">You are a mushroom novice</string>
+    <string name="title_3">You are a mushroom beginner</string>
+    <string name="title_4">You are a mushroom confirmate</string>
+    <string name="title_5">You are a mushroom expert</string>
+    <string name="title_6">You are a mushroom king</string>
+    <string name="nav_profile_title">Profile</string>
+
+    <string name="descriptionLocate">ShrooML locate helps you find possibly growing mushrooms species near you based on your location, biome and weather, thanks to ShroomLoc !</string>
+    <string name="noMushroomFoundNearYou">No mushroom found near you.</string>
+    <string name="changeLocation">Try moving to another location or reload.</string>
+
+    <string name="tox">Toxicity</string>
+    <string name="genInfo">General Informations</string>
+    <string name="eco">Ecology</string>
+    <string name="reci">Recipe</string>
+    <string name="accu">Accuracy</string>
+
+    <string name="loading_1">Loading .</string>
+    <string name="loading_2">Loading ..</string>
+    <string name="loading_3">Loading ...</string>
+
+
+    <string name="choice_title">Choice identify</string>
+    <string name="choice_description">ShrooML helps you identify mushrooms
+        based on pictures or criterie thank to machine learnings !</string>
+    <string name="choice_label">— OR —</string>
+
+    <!-- Profile page strings -->
+    <string name="profile_favorite_mushroom">Favorite Mushroom</string>
+    <string name="profile_informations">Information</string>
+    <string name="profile_edition">Edit</string>
+    <string name="profile_score">Score: %s</string>
+    <string name="profile_streak">Streak: %s</string>
+    <string name="profile_niveau">Level: %s</string>
+    <string name="profile_created_at">Created on: %s</string>
+    <string name="profile_common_name">Common name: %s</string>
+    <string name="profile_scientific_name">Scientific name: %s</string>
+    <string name="profile_picture">Profile picture</string>
+    <string name="profile_favorite_image">Favorite mushroom image</string>
+    <string name="profile_edibility_status">Edibility status</string>
+
+    <!-- Login page strings -->
+    <string name="login_title">Login</string>
+    <string name="login_identifiant_hint">Login ...</string>
+    <string name="login_password_hint">Password ...</string>
+    <string name="login_button">LOGIN</string>
+    <string name="login_or_text">- or -</string>
+    <string name="login_google_signin">Google Sign In</string>
+    <string name="login_not_registered">Not registered yet ?</string>
+    <string name="login_register_button">REGISTER</string>
+
+    <!-- Register page strings -->
+    <string name="register_title">Register</string>
+    <string name="register_identifiant_hint">Login ...</string>
+    <string name="register_email_hint">Mail ...</string>
+    <string name="register_password_hint">Password ...</string>
+    <string name="register_favorite_mushroom_hint">Favorite Mushroom ...</string>
+    <string name="register_button">REGISTER</string>
+    <string name="register_or_text">- or -</string>
+    <string name="register_google_signin">Google Sign In</string>
+    <string name="register_back_to_login">← Back to Login</string>
+
+    <!-- Profile Edit Form -->
+    <string name="profile_email_hint">Email</string>
+    <string name="profile_favorite_mushroom_input">Favorite Mushroom</string>
+    <string name="profile_save_button">Save</string>
+    <string name="profile_logout_button">Log out</string>
+    <string name="profile_logout_success">Logged out successfully</string>
+    <string name="profile_history_title">Identification history</string>
+    <string name="profile_history_loading">Loading history...</string>
+    <string name="profile_history_empty">No identification yet.</string>
+    <string name="profile_history_unavailable">History unavailable.</string>
+    <string name="profile_history_item_main">• %1$s • %2$s pts</string>
+    <string name="profile_history_today">Today</string>
+    <string name="profile_history_days_ago">%1$d days ago</string>
+    <string name="profile_history_one_month_ago">1 month ago</string>
+    <string name="profile_history_months_ago">%1$d months ago</string>
+    <string name="profile_history_one_year_ago">1 year ago</string>
+    <string name="profile_history_years_ago">%1$d years ago</string>
+
+    <!-- Result fragment strings -->
+    <string name="result_title">ShroomML</string>
+    <string name="result_description">ShroomML helps you determine a mushroom\'s edibility based on its characteristics using AutoML. Please note that the final assessment of edibility remains uncertain, as AI can make mistakes.</string>
+    <string name="result_mushroom_label">Your mushroom is:</string>
+    <string name="result_placeholder">...</string>
+    <string name="result_disclaimer">ShroomML declines all responsibility for any issues resulting from the consumption of a mushroom identified using ShroomML.</string>
+    <string name="result_new_prediction">New Prediction</string>
+
+    <!-- Profile Descriptions - Funny short phrases -->
+    <string-array name="profile_descriptions">
+        <item>Mushroom hunter extraordinaire</item>
+        <item>Professional fungi enthusiast here</item>
+        <item>Living my best toadstool life</item>
+        <item>Spore collector in training mode</item>
+        <item>Fungi fanatic with main passion</item>
+        <item>Cap collector and forest wanderer</item>
+        <item>Seriously obsessed with fungus biology</item>
+        <item>Mycology nerd forever and ever</item>
+        <item>Mushroom gossip is my fuel</item>
+        <item>Adventures with fungi are awesome</item>
+        <item>Eating fungi is pure joy</item>
+        <item>Foraging is my reason for living</item>
+        <item>Mushroom science makes me happy</item>
+        <item>Cap lover through and through</item>
+        <item>Fungal kingdom expert in progress</item>
+    </string-array>
+
+    <string name="CorrectAnswer">The correct Answer is : %1$s</string>
+
+    <string name="trueAnswer">True</string>
+    <string name="falseAnswer">False</string>
+
+    <string name="playAgain">Play again</string>
+    <string name="backHome">Home</string>
+    <string name="nextButton">Next</string>
+    <string name="score">Score : %1$s/5</string>
+
+    <!-- ResultFragment strings -->
+    <string name="result_edible">🍄 Edible</string>
+    <string name="result_inedible">☠️ Inedible</string>
+
+    <!-- CameraFragment strings -->
+    <string name="camera_file_read_error">Error reading file</string>
+    <string name="camera_create_photo_error">Unable to create photo file</string>
+    <string name="camera_not_mushroom">This photo is not a mushroom</string>
+    <string name="camera_permission_required">Camera permission required</string>
+    <string name="camera_low_light">Low light, consider enabling the flashlight</string>
+
+    <!-- FormFragment strings -->
+    <string name="form_please_login">Please login first</string>
+    <string name="form_no_prediction">No prediction received</string>
+    <string name="form_network_error">Network error: %s</string>
+    <string name="form_view_not_initialized">Error: View not initialized</string>
+    <string name="form_fill_all_fields">Please fill all fields</string>
+    <string name="form_identifying">Identifying…</string>
+    <string name="form_identify">Identify</string>
+    <string name="form_prediction_failed">Prediction failed: %d</string>
+    <string name="form_question_cap_shape">What is the shape of the cap ?</string>
+    <string name="form_question_cap_surface">What is the surface of the cap ?</string>
+    <string name="form_question_cap_color">What is the color of the cap ?</string>
+    <string name="form_question_bruises">Does it bruise when touched ?</string>
+    <string name="form_question_odor">What is the odor ?</string>
+    <string name="form_question_gill_attachment">How are the gills attached ?</string>
+    <string name="form_question_gill_spacing">What is the gill spacing ?</string>
+    <string name="form_question_gill_size">What is the gill size ?</string>
+    <string name="form_question_gill_color">What is the gill color ?</string>
+    <string name="form_question_stalk_shape">What is the shape of the stalk ?</string>
+    <string name="form_question_stalk_root">What is the stalk root like ?</string>
+    <string name="form_question_stalk_surface_above">Stalk surface above ring ?</string>
+    <string name="form_question_stalk_surface_below">Stalk surface below ring ?</string>
+    <string name="form_question_stalk_color_above">What is the color of the foot ?</string>
+    <string name="form_question_stalk_color_below">Stalk color below ring ?</string>
+    <string name="form_question_veil_type">What type of veil ?</string>
+    <string name="form_question_veil_color">What is the color of the veil ?</string>
+    <string name="form_question_ring_number">How many rings ?</string>
+    <string name="form_question_ring_type">What type of ring ?</string>
+    <string name="form_question_spore_print_color">What is the spore print color ?</string>
+    <string name="form_question_population">What is the population ?</string>
+    <string name="form_question_habitat">What is the habitat ?</string>
+
+    <!-- FormFragment spinner arrays -->
+    <string-array name="spinner_cap_shape">
+        <item>Choose…</item>
+        <item>Bell</item>
+        <item>Conical</item>
+        <item>Convex</item>
+        <item>Flat</item>
+        <item>Knobbed</item>
+        <item>Sunken</item>
+    </string-array>
+    <string-array name="spinner_cap_surface">
+        <item>Choose…</item>
+        <item>Fibrous</item>
+        <item>Grooves</item>
+        <item>Scaly</item>
+        <item>Smooth</item>
+    </string-array>
+    <string-array name="spinner_cap_color">
+        <item>Choose…</item>
+        <item>Brown</item>
+        <item>Buff</item>
+        <item>Cinnamon</item>
+        <item>Gray</item>
+        <item>Green</item>
+        <item>Pink</item>
+        <item>Purple</item>
+        <item>Red</item>
+        <item>White</item>
+        <item>Yellow</item>
+    </string-array>
+    <string-array name="spinner_bruises">
+        <item>Choose…</item>
+        <item>No</item>
+        <item>Yes</item>
+    </string-array>
+    <string-array name="spinner_odor">
+        <item>Choose…</item>
+        <item>Almond</item>
+        <item>Anise</item>
+        <item>Creosote</item>
+        <item>Fishy</item>
+        <item>Foul</item>
+        <item>Musty</item>
+        <item>None</item>
+        <item>Pungent</item>
+        <item>Spicy</item>
+    </string-array>
+    <string-array name="spinner_gill_attachment">
+        <item>Choose…</item>
+        <item>Attached</item>
+        <item>Descending</item>
+        <item>Free</item>
+        <item>Notched</item>
+    </string-array>
+    <string-array name="spinner_gill_spacing">
+        <item>Choose…</item>
+        <item>Close</item>
+        <item>Crowded</item>
+        <item>Distant</item>
+    </string-array>
+    <string-array name="spinner_gill_size">
+        <item>Choose…</item>
+        <item>Broad</item>
+        <item>Narrow</item>
+    </string-array>
+    <string-array name="spinner_gill_color">
+        <item>Choose…</item>
+        <item>Black</item>
+        <item>Brown</item>
+        <item>Buff</item>
+        <item>Chocolate</item>
+        <item>Gray</item>
+        <item>Green</item>
+        <item>Orange</item>
+        <item>Pink</item>
+        <item>Purple</item>
+        <item>Red</item>
+        <item>White</item>
+        <item>Yellow</item>
+    </string-array>
+    <string-array name="spinner_stalk_shape">
+        <item>Choose…</item>
+        <item>Enlarging</item>
+        <item>Tapering</item>
+    </string-array>
+    <string-array name="spinner_stalk_root">
+        <item>Choose…</item>
+        <item>Bulbous</item>
+        <item>Club</item>
+        <item>Cup</item>
+        <item>Equal</item>
+        <item>Rhizomorphs</item>
+        <item>Rooted</item>
+    </string-array>
+    <string-array name="spinner_stalk_surface_above">
+        <item>Choose…</item>
+        <item>Fibrous</item>
+        <item>Scaly</item>
+        <item>Silky</item>
+        <item>Smooth</item>
+    </string-array>
+    <string-array name="spinner_stalk_surface_below">
+        <item>Choose…</item>
+        <item>Fibrous</item>
+        <item>Scaly</item>
+        <item>Silky</item>
+        <item>Smooth</item>
+    </string-array>
+    <string-array name="spinner_stalk_color_above">
+        <item>Choose…</item>
+        <item>Brown</item>
+        <item>Buff</item>
+        <item>Cinnamon</item>
+        <item>Gray</item>
+        <item>Orange</item>
+        <item>Pink</item>
+        <item>Red</item>
+        <item>White</item>
+        <item>Yellow</item>
+    </string-array>
+    <string-array name="spinner_stalk_color_below">
+        <item>Choose…</item>
+        <item>Brown</item>
+        <item>Buff</item>
+        <item>Cinnamon</item>
+        <item>Gray</item>
+        <item>Orange</item>
+        <item>Pink</item>
+        <item>Red</item>
+        <item>White</item>
+        <item>Yellow</item>
+    </string-array>
+    <string-array name="spinner_veil_type">
+        <item>Choose…</item>
+        <item>Partial</item>
+        <item>Universal</item>
+    </string-array>
+    <string-array name="spinner_veil_color">
+        <item>Choose…</item>
+        <item>Brown</item>
+        <item>Orange</item>
+        <item>White</item>
+        <item>Yellow</item>
+    </string-array>
+    <string-array name="spinner_ring_number">
+        <item>Choose…</item>
+        <item>None</item>
+        <item>One</item>
+        <item>Two</item>
+    </string-array>
+    <string-array name="spinner_ring_type">
+        <item>Choose…</item>
+        <item>Cobwebby</item>
+        <item>Evanescent</item>
+        <item>Flaring</item>
+        <item>Large</item>
+        <item>None</item>
+        <item>Pendant</item>
+    </string-array>
+    <string-array name="spinner_spore_print_color">
+        <item>Choose…</item>
+        <item>Black</item>
+        <item>Brown</item>
+        <item>Buff</item>
+        <item>Chocolate</item>
+        <item>Green</item>
+        <item>Orange</item>
+        <item>Purple</item>
+        <item>White</item>
+        <item>Yellow</item>
+    </string-array>
+    <string-array name="spinner_population">
+        <item>Choose…</item>
+        <item>Abundant</item>
+        <item>Clustered</item>
+        <item>Numerous</item>
+        <item>Scattered</item>
+        <item>Several</item>
+        <item>Solitary</item>
+    </string-array>
+    <string-array name="spinner_habitat">
+        <item>Choose…</item>
+        <item>Grasses</item>
+        <item>Leaves</item>
+        <item>Meadows</item>
+        <item>Paths</item>
+        <item>Urban</item>
+        <item>Waste</item>
+        <item>Woods</item>
+    </string-array>
+
+</resources>
