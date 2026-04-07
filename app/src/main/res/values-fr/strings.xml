@@ -98,6 +98,14 @@
     <string name="profile_history_title">Historique d\'identification</string>
     <string name="profile_history_loading">Chargement de l\'historique...</string>
     <string name="profile_history_empty">Aucune identification pour le moment.</string>
+
+    <!-- Result fragment strings -->
+    <string name="result_title">ShroomML</string>
+    <string name="result_description">ShroomML vous aide à déterminer la comestibilité d\'un champignon en fonction de ses caractéristiques grâce à AutoML. Veuillez noter que l\'évaluation finale de la comestibilité reste incertaine, car l\'IA peut se tromper.</string>
+    <string name="result_mushroom_label">Votre champignon est :</string>
+    <string name="result_placeholder">...</string>
+    <string name="result_disclaimer">ShroomML décline toute responsabilité pour tout problème résultant de la consommation d\'un champignon identifié avec ShroomML.</string>
+    <string name="result_new_prediction">Nouvelle prédiction</string>
     <string name="profile_history_unavailable">Historique indisponible.</string>
     <string name="profile_history_item_main">• %1$s • %2$s pts</string>
     <string name="profile_history_today">Aujourd\'hui</string>

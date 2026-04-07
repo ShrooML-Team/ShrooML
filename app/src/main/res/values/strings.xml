@@ -99,6 +99,14 @@
     <string name="profile_history_one_year_ago">1 year ago</string>
     <string name="profile_history_years_ago">%1$d years ago</string>
 
+    <!-- Result fragment strings -->
+    <string name="result_title">ShroomML</string>
+    <string name="result_description">ShroomML helps you determine a mushroom\'s edibility based on its characteristics using AutoML. Please note that the final assessment of edibility remains uncertain, as AI can make mistakes.</string>
+    <string name="result_mushroom_label">Your mushroom is:</string>
+    <string name="result_placeholder">...</string>
+    <string name="result_disclaimer">ShroomML declines all responsibility for any issues resulting from the consumption of a mushroom identified using ShroomML.</string>
+    <string name="result_new_prediction">New Prediction</string>
+
     <!-- Profile Descriptions - Funny short phrases -->
     <string-array name="profile_descriptions">
         <item>Mushroom hunter extraordinaire</item>

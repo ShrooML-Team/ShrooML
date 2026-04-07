@@ -53,6 +53,8 @@ jobs:
           KINDWISE_API_KEY_1=your_api_key_1_here
           KINDWISE_API_KEY_2=your_api_key_2_here
           KINDWISE_API_KEY_3=your_api_key_3_here
+          LOGIN_OAUTH=test
+          PWD_OAUTH=testtest
           EOF
 
       - name: Grant execute permission to gradlew
